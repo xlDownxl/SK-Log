@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),//fbUser == null ? LoginScreen():HomeScreen(),
+      home: fbUser == null ? LoginScreen():HomeScreen(),
       routes: {
         LoginScreen.routeName: (ctx)=> LoginScreen(),
         HomeScreen.routeName: (ctx)=> HomeScreen(),
