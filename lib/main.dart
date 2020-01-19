@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
+      home: LoginScreen(),
       routes: {
         LoginScreen.routeName: (ctx)=> LoginScreen(),
         HomeScreen.routeName: (ctx)=> HomeScreen(),

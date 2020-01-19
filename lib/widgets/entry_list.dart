@@ -17,10 +17,6 @@ class _EntryListState extends State<EntryList> {
 
   TextEditingController editingController=TextEditingController();
 
-  void initState() {
-    //filteredList.addAll(autoList);
-  }
-
 
   @override
   Widget build(BuildContext context) {
