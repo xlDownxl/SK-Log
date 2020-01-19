@@ -76,6 +76,7 @@ class _LoginPageState extends State<LoginScreen> {
   }
 
   Future<String> _register(LoginData data) async {
+    return null;
     var code = await _registerUser(data);
     switch (code) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
@@ -114,6 +115,7 @@ class _LoginPageState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
+      //messages: LoginMessages(loginButton: "LEL"),
       title: 'SK!Log',
       //logo: 'assets/images/Download.jpeg',
       onLogin: _login,

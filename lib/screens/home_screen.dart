@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/leftside_menu.dart';
 import '../widgets/entry_list.dart';
-
+import '../widgets/tags.dart';
+import '../widgets/pairs.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -11,8 +12,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
-  int mode=1;
+  int mode=0;
+  var pair="";
 
+  void changePair(pair){
+    this.pair=pair;
+  }
 
   void changeMode(val){
     setState(() {
@@ -30,6 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
         MediaQuery.of(context).padding.top;
     final deviceWidth   =  MediaQuery.of(context).size.width;
 
+    var rightSide =[EntryList(pair),Pairs(changeMode,changePair),Tags(),];
+
     return Scaffold(
       appBar:appBar,
       body: Container(
@@ -38,11 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(children:[
         Container(
           width: deviceWidth*0.25,
-          child:LeftsideMenu(changeMode),
+          child:LeftsideMenu(changeMode,changePair),
         ),
         Container(
           width: deviceWidth*0.75,
-          child: EntryList(mode),
+          child: rightSide[mode],
         ),
       ]),
       ),
