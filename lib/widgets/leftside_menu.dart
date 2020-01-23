@@ -18,23 +18,41 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
   Widget build(BuildContext context) {
 
     Widget buildEntry(tag,mode){
-      return FlatButton(
-        onPressed: (){if(mode==0){widget.changePair("");}widget.changeMode(mode);},  //TODO make provider who keeps track of current pair
-        child: Text(tag,
-            style: TextStyle(fontSize: 16,color: Colors.white)
+      return Container(
+
+        child: FlatButton(
+          onPressed: (){if(mode==0){widget.changePair("");}widget.changeMode(mode);},  //TODO make provider who keeps track of current pair
+          child: Text(tag,
+              style: TextStyle(fontSize: 20,color: Colors.white)
+          ),
+          color: Theme.of(context).primaryColor,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
         ),
-        color: Theme.of(context).accentColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
       );
     }
 
     return Container(
-      color: Colors.lightBlueAccent,
+      //color: Theme.of(context).primaryColor,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomLeft,
+              stops: [
+                0.5,
+                0.8,
+
+              ],
+              colors: [
+                Colors.cyan,
+
+                Colors.indigo,
+
+              ])),
       padding: const EdgeInsets.only(top:20.0,left: 10,right: 10,bottom: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Center(child: Text("Deine Einträge",style: TextStyle(fontSize: 20,color: Colors.white),),),    // schwarz oder weiß?
+          Center(child: Text("Deine Einträge",style: TextStyle(fontSize: 20,color: Colors.black),),),    // schwarz oder weiß?
           Divider(),
           SizedBox(height: 8,),
           buildEntry("Chronologisch", 0,),
@@ -47,7 +65,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
             onTap: (){Navigator.pushNamed(context, AnalyseScreen.routeName);},
             child: CircleAvatar(
               radius: 30,
-              backgroundColor: Theme.of(context).accentColor,
+              backgroundColor: Theme.of(context).primaryColor,
 
                 child: Center(child: Icon(Icons.add,color: Colors.white,size: 50,)),
               //decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),

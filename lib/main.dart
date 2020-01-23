@@ -4,6 +4,8 @@ import 'screens/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'models/user.dart';
 import 'screens/analyse_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -40,10 +42,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: '"SK Log',
+      title: 'SK Log',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.indigo,
+        accentColor: Colors.cyan,
+        fontFamily: "OpenSans",
       ),
+
       home: LoginScreen(),
       routes: {
         LoginScreen.routeName: (ctx)=> LoginScreen(),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+
 class AnalysePictureArea extends StatefulWidget {
 
   @override
@@ -106,26 +107,37 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                     width: 10,
                   ),
                   Container(
-                    child: TextField(
+                    child: TextFormField(
                       decoration: InputDecoration(
                           border: OutlineInputBorder(),
                           labelText: "Link",
                           labelStyle: TextStyle(fontSize: 20)),
+
                       style: TextStyle(
                         fontSize: 14.0,
                         color: Colors.black,
                       ),
                       onChanged: (val) {
+                        if(val.contains("tradingview")){
                         setState(() {
                           link =
                               val; //TODO tradingview link validator
                         });
+                        }
+                        else{setState(() {
+                          link=null;
+                        });}
                       },
-                      onSubmitted: (val) {
-                        setState(() {
-                          link =
-                              val; //TODO tradingview link validator
-                        });
+                      onFieldSubmitted: (val) {
+                        if(val.contains("tradingview")){
+                          setState(() {
+                            link =
+                                val; //TODO tradingview link validator
+                          });
+                        }
+                        else{setState(() {
+                          link=null;
+                        });}
                       },
                       controller: textEditingController,
                      /* initialValue:
@@ -142,6 +154,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                   Container(
                     width: constraints.maxWidth * 0.2,
                     child: RaisedButton(
+
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0)),
                       elevation: 4.0,
@@ -176,11 +189,10 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                               width: 5,
                             ),
                           ],
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
                         ),
                       ),
-                      color: Theme.of(context).accentColor,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                   // Container(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/analyse_input_area.dart';
 import '../widgets/analyse_picture_area.dart';
-
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";
   @override
@@ -9,45 +9,50 @@ class AnalyseScreen extends StatefulWidget {
 }
 
 class _AnalyseScreenState extends State<AnalyseScreen> {
+  var titleFocus=FocusNode();
 
   bool editText=false;
   var title="Analyse Nr. 5";
 
   @override
+  void dispose() {
+    titleFocus.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: InkWell(
-          onTap: (){
-            editText=true;
-          },
-          child: !editText?Container(
-            width: 300,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  "Analyse Nr. 5",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 30,
-                    decoration: TextDecoration.underline,
-                  ),
-                ),
-                SizedBox(width: 5,),
-                Icon(Icons.edit,size: 35,),
-              ],
+      appBar: GradientAppBar(
+        gradient: LinearGradient(colors: [Colors.cyan,Colors.indigo]),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Container(
+              decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              child: InkWell(child: Icon(Icons.edit,color: Colors.white54,size: 36,),
+              onTap: (){ FocusScope.of(context).requestFocus(titleFocus);}),
             ),
-          ):TextFormField(
-            initialValue: title,
-            onFieldSubmitted: (val){
-              setState(() {
-                title=val;
-                editText=false;
-              });
-            },
-          ),
+            Flexible(
+              child: Container(
+                width: 500,
+                child: TextFormField(
+                  focusNode: titleFocus,
+                  style: TextStyle(color: Colors.black,fontSize: 30,fontWeight: FontWeight.bold,decoration: TextDecoration.underline),
+                  initialValue: title,
+                  cursorColor: Colors.white,
+                  onFieldSubmitted: (val){
+                    setState(() {
+                      title=val;
+                      editText=false;
+                    });
+                  },
+                ),
+              ),
+            ),
+
+          ],
         ),
         centerTitle: true,
       ),

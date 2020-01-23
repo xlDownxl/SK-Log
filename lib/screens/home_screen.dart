@@ -3,6 +3,7 @@ import 'package:flutter_app/widgets/leftside_menu.dart';
 import '../widgets/entry_list.dart';
 import '../widgets/tags.dart';
 import '../widgets/pairs.dart';
+import 'package:gradient_app_bar/gradient_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -28,7 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar=AppBar(title: Text("Dein Journal"),);
+    var appBar=GradientAppBar(
+      title: Text("Dein Journal"),
+      gradient: LinearGradient(colors: [Colors.cyan,Colors.indigo]),
+    );
 
     final deviceHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
