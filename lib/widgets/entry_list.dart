@@ -24,6 +24,9 @@ class _EntryListState extends State<EntryList> {
   @override
   Widget build(BuildContext context) {
 
+    print("build entry list");
+    widget.filter.write();
+
     analysen=Provider.of<Analysen>(context);
 
     Widget buildHeadline(){

@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MediaQuery.of(context).padding.top;
     final deviceWidth   =  MediaQuery.of(context).size.width;
 
-    var rightSide =[EntryList(AnalyseFilter()),Pairs(changeMode,changePair),Tags(),];
+    var rightSide =[EntryList(AnalyseFilter(null)),Pairs(),TagScreen(),];
 
     return Scaffold(
       appBar:appBar,
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(children:[
         Container(
           width: deviceWidth*0.25,
-          child:LeftsideMenu(changeMode,changePair),
+          child:LeftsideMenu(changeMode),
         ),
         Container(
           width: deviceWidth*0.75,

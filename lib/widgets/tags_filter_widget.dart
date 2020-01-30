@@ -2,18 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
 import 'dart:math';
 import '../models/user_tags.dart';
-class TagsWidget extends StatefulWidget {
+import 'tags_screen.dart';
+
+import 'package:provider/provider.dart';
+class TagsFilterWidget extends StatefulWidget {
   @override
-  _TagsWidgetState createState() => _TagsWidgetState();
+  _TagsFilterWidgetState createState() => _TagsFilterWidgetState();
 }
 
-class _TagsWidgetState extends State<TagsWidget> {
+class _TagsFilterWidgetState extends State<TagsFilterWidget> {
 
   var _tags=UserTags().getTags(); // TODO tags als provider
-
+  FilterList filterTags;
 
   @override
   Widget build(BuildContext context) {
+    try {
+      filterTags= Provider.of<FilterList>(context);
+      print(filterTags.filters);
+    } catch(error){print(error);}
+
+
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(10),
@@ -45,14 +55,30 @@ class _TagsWidgetState extends State<TagsWidget> {
                     .toDouble(),
               ),
               active: false,
+              onPressed: (item){
+                // setState(() {
 
+
+                print(filterTags.filters);
+                if(filterTags.filters.contains(item.title)){
+                  filterTags.delete(item.title);
+                }else{
+                  filterTags.add(item.title);
+                }
+                // });
+              },
               removeButton:
               ItemTagsRemoveButton(), // OR null,
               onRemoved: () {
-
+                // print(min(14,max((23-_tags.length),22)).toDouble().toString());
+                // Remove the item from the data source.
                 setState(() {
-
-                  _tags.removeAt(index); // does this really remove or do i need to init usertags alone
+                  // required
+                  print(_tags[index]+"<- das ist das was deleted werden soll ");
+                  if(filterTags.filters.contains(_tags[index])){
+                    filterTags.filters.remove(_tags[index]);
+                  }
+                  _tags.removeAt(index);
                 });
               },
             );

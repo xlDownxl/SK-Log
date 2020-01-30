@@ -6,8 +6,9 @@ class AnalyseFilter{
   Map<String,bool> pairs ={};
   List<String> tags=[];
   DateTime time;
-
-  AnalyseFilter(){
+  var filter;
+  AnalyseFilter(lol){
+    filter=lol;
     /*PairList.pairs.forEach((pair){
       pairs.addAll({pair:true});
     });
@@ -16,5 +17,9 @@ class AnalyseFilter{
     });*/
 
     time=DateTime.now();
+  }
+
+  void write(){
+    print(filter.toString());
   }
 }

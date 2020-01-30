@@ -1,10 +1,24 @@
 import 'package:flutter/material.dart';
 import '../models/pair_list.dart';
-class Pairs extends StatelessWidget {
-  final changeMode;
-  final changePair;
-  Pairs(this.changeMode,this.changePair);
+import 'package:provider/provider.dart';
+import 'entry_list.dart';
+import '../models/analysen_filter.dart';
+class Pairs extends StatefulWidget {
 
+  @override
+  _PairsState createState() => _PairsState();
+}
+
+class Pair with ChangeNotifier{
+  String pair="";
+  void change(item){
+    pair=item;
+    notifyListeners();
+  }
+}
+
+class _PairsState extends State<Pairs> {
+  var filterPair=Pair();
 
   List buildPairs(){
     var pairs= PairList.pairs;
@@ -16,32 +30,37 @@ class Pairs extends StatelessWidget {
         child: InkWell(
             child: Center(child: Text(pair,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),),
           onTap: (){
-            changePair(pair);
-            changeMode(0);
+              setState(() {
+                filterPair.change(pair); //refreshes?
+              });
           },
         ),
       )
       );
     });
-
     return pairWidgets;
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: GridView( gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 8,
-        childAspectRatio: 2 / 2,
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
+
+    print("build pairs"+filterPair.pair);
+
+    return ChangeNotifierProvider.value(
+      value: filterPair,
+      child: filterPair.pair==""?Container(
+        child: GridView( gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 8,
+          childAspectRatio: 2 / 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        children: <Widget>[
+          ...buildPairs(),
+        ],
       ),
-      children: <Widget>[
-        ...buildPairs(),
-      ],
-    ),
-      padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(20),
+      ):EntryList(AnalyseFilter(filterPair)),
     );
   }
 }

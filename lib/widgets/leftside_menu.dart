@@ -5,8 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
-  final Function changePair;
-  LeftsideMenu(this.changeMode,this.changePair);
+  LeftsideMenu(this.changeMode);
 
   @override
   _LeftsideMenuState createState() => _LeftsideMenuState();
@@ -21,7 +20,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
       return Container(
 
         child: FlatButton(
-          onPressed: (){if(mode==0){widget.changePair("");}widget.changeMode(mode);},  //TODO make provider who keeps track of current pair
+          onPressed: (){widget.changeMode(mode);},  //TODO make provider who keeps track of current pair
           child: Text(tag,
               style: TextStyle(fontSize: 20,color: Colors.white)
           ),
