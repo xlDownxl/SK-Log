@@ -5,6 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'models/user.dart';
 import 'screens/analyse_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'models/analysen.dart';
+import 'models/user_tags.dart';
+import 'models/user.dart';
 
 void main() => runApp(MyApp());
 
@@ -22,6 +26,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+
     getUser().then((fbuser) {
       if (fbuser != null) {
         print("fbuser not null");
@@ -41,20 +46,33 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SK Log',
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        accentColor: Colors.cyan,
-        fontFamily: "OpenSans",
+    return MultiProvider(
+      providers:[
+        ChangeNotifierProvider(
+        builder: (ctx) => Analysen(),
       ),
+        ChangeNotifierProvider(
+          builder: (ctx) => UserTags(),
+        ),
+        ChangeNotifierProvider(
+         builder:(ctx)=> User(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'SK Log',
+        theme: ThemeData(
+          primarySwatch: Colors.indigo,
+          accentColor: Colors.cyan,
+          fontFamily: "OpenSans",
+        ),
 
-      home: LoginScreen(),
-      routes: {
-        LoginScreen.routeName: (ctx)=> LoginScreen(),
-        HomeScreen.routeName: (ctx)=> HomeScreen(),
-        AnalyseScreen.routeName: (ctx)=> AnalyseScreen(),
-      },
+        home: HomeScreen(),
+        routes: {
+          LoginScreen.routeName: (ctx)=> LoginScreen(),
+          HomeScreen.routeName: (ctx)=> HomeScreen(),
+          AnalyseScreen.routeName: (ctx)=> AnalyseScreen(),
+        },
+      ),
     );
   }
 }

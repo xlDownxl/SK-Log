@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/leftside_menu.dart';
 import '../widgets/entry_list.dart';
-import '../widgets/tags.dart';
+import '../widgets/tags_screen.dart';
 import '../widgets/pairs.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
+import '../models/analysen_filter.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -39,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MediaQuery.of(context).padding.top;
     final deviceWidth   =  MediaQuery.of(context).size.width;
 
-    var rightSide =[EntryList(pair),Pairs(changeMode,changePair),Tags(),];
+    var rightSide =[EntryList(AnalyseFilter()),Pairs(changeMode,changePair),Tags(),];
 
     return Scaffold(
       appBar:appBar,

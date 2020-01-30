@@ -1,0 +1,16 @@
+import 'package:flutter/material.dart';
+
+class PairButton extends StatefulWidget {
+  var radioValue;
+  PairButton(this.radioValue);
+
+  @override
+  _PairButtonState createState() => _PairButtonState();
+}
+
+class _PairButtonState extends State<PairButton> {
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}

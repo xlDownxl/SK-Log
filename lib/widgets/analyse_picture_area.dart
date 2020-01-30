@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import '../models/analyse.dart';
+import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import '../models/SaveFile.dart';
+import '../models/pair.dart';
 
 class AnalysePictureArea extends StatefulWidget {
-
+final Function safe;
+AnalysePictureArea(this.safe);
   @override
   _AnalysePictureAreaState createState() => _AnalysePictureAreaState();
 }
 
 class _AnalysePictureAreaState extends State<AnalysePictureArea> {
-  var id;
-  DateTime _date;
-  String link = "https://www.tradingview.com/x/nYWLxqjP/";
   var textEditingController;
-
+  Analyse analyse;
 
   void presentDatePicker() {
     showDatePicker(
@@ -29,41 +32,94 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
         return;
       }
       setState(() {
-        _date = pickedData;
+        analyse.date=pickedData;
       });
     });
   }
+
+
+/*  void doML() async {
+    print("do ml");
+    var file = await DefaultCacheManager().getSingleFile("https://www.fonic.de/dlc/pdf/FONIC-Mobilfunk-Preisliste.pdf");
+    print("chache manager done");
+    final image = FirebaseVisionImage.fromFile(file);
+    print("image is here");
+    VisionText whatever=await FirebaseVision.instance.textRecognizer().processImage(image);
+    print("done");
+    print(whatever.text+"image detection");
+  } */
 
   @override
   void initState() {
-
-    Future.delayed(Duration(microseconds: 0)).then((_) {
-      setState(() {
-        id = ModalRoute.of(context).settings.arguments;
-        if (id == null) {
-           textEditingController=TextEditingController();
-          setState(() {
-            link = null;
-          });
-        }
-        else{
-           textEditingController=TextEditingController(text: link);
-        }
-      });
-
-    });
+    //print("initState");
+    //doML();
     super.initState();
   }
+  int _radioValue1 = -1;
+
+  void _handleRadioValueChange1(int value) {
+    setState(() {
+      _radioValue1 = value;
+      if(_radioValue1==1){
+        analyse.pair=Pair.AUDCAD;
+      }else{
+        analyse.pair=Pair.EURCAD;
+      }
+
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    analyse=Provider.of<Analyse>(context);
+
+    Widget buildRadios(){
+      return  Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+           Radio(
+            value: 0,
+            groupValue: _radioValue1,
+            onChanged: _handleRadioValueChange1,
+          ),
+           Text(
+            'EURUSD',
+            style: new TextStyle(fontSize: 16.0),
+          ),
+           Radio(
+            value: 1,
+            groupValue: _radioValue1,
+            onChanged: _handleRadioValueChange1,
+          ),
+           Text(
+            'AUDUSD',
+            style: new TextStyle(fontSize: 16.0),
+          ),
+           Radio(
+            value: 2,
+            groupValue: _radioValue1,
+            onChanged: _handleRadioValueChange1,
+          ),
+           Text(
+            'USDJPY',
+            style: new TextStyle(fontSize: 16.0),
+          ),
+        ],
+      );
+    }
+
+
+       return Column(
       children: <Widget>[
         Flexible(
+          child: buildRadios(),
+        ),
+        Flexible(
           child: LayoutBuilder(
-            builder: (ctx, constraints) => link != null
+            builder: (ctx, constraints) => analyse.link != ""
                 ? Image.network(
-              link,
+              analyse.link,
               height: constraints.maxHeight,
               width: constraints.maxWidth,
             )
@@ -83,12 +139,15 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
           fit: FlexFit.tight,
           flex: 16,
         ),
+        RaisedButton(onPressed: (){
+          widget.safe();
+        }),
         Flexible(
           flex: 4,
           child: Container(
             child: LayoutBuilder(
               builder: (ctx, constraints) => Row(
-                //crossAxisAlignment: CrossAxisAlignment.center,
+
                 children: <Widget>[
                   Container(
                     width: constraints.maxWidth * 0.1,
@@ -120,30 +179,27 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                       onChanged: (val) {
                         if(val.contains("tradingview")){
                         setState(() {
-                          link =
+                          analyse.link =
                               val; //TODO tradingview link validator
                         });
                         }
                         else{setState(() {
-                          link=null;
+                          analyse.link="";
                         });}
                       },
                       onFieldSubmitted: (val) {
                         if(val.contains("tradingview")){
                           setState(() {
-                            link =
-                                val; //TODO tradingview link validator
+                            analyse.link =
+                                val;
                           });
                         }
                         else{setState(() {
-                          link=null;
+                          analyse.link="";
                         });}
                       },
                       controller: textEditingController,
-                     /* initialValue:
-                      id == null
-                          ? "https://www.tradingview.com/x/nYWLxqjP/"
-                          : "lol",*/
+                      initialValue:analyse.link,
 
                     ),
                     width: constraints.maxWidth * 0.4,
@@ -172,14 +228,14 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                             SizedBox(
                               width: 5,
                             ),
-                            Text(
-                              _date == null
+                            Text( //TODO handle time
+                              analyse.date == null
                                   ? "Heute"
-                                  : _date.day.toString() +
+                                  : analyse.date.day.toString() +
                                   "." +
-                                  _date.month.toString() +
+                                  analyse.date.month.toString() +
                                   "." +
-                                  _date.year.toString(),
+                                  analyse.date.year.toString(),
                               style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,

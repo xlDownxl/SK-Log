@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../models/pair_list.dart';
 class Pairs extends StatelessWidget {
   final changeMode;
   final changePair;
@@ -7,7 +7,7 @@ class Pairs extends StatelessWidget {
 
 
   List buildPairs(){
-    var pairs=["AUD/USD","AUD/CAD","AUD/JPY","AUD/CHF","AUD/NZD","CAD/CHF","CAD/JPY","CHF/JPY","EUR/AUD","EUR/CAD","EUR/CHF","EUR/GBP","EUR/JPY","EUR/NZD","EUR/USD","GBP/AUD","GBP/CAD","GBP/CHF","GBP/JPY","GBP/NZD","GBP/USD","NZD/CAD","NZD/CHF","NZD/JPY","NZD/USD","USD/CAD","USD/CHF","USD/JPY","XAUUSD"];
+    var pairs= PairList.pairs;
     var pairWidgets=[];
     pairs.forEach((pair){
       pairWidgets.add(Card(
