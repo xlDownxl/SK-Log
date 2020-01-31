@@ -36,11 +36,10 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     super.initState();
   }
 
-
   bool init=true;
 
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() {   //TODO als future.delayed in init state implementieren für performance
     if(init) {
       id = ModalRoute
           .of(context)
@@ -60,13 +59,14 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   void safe(){
     descriptionKey.currentState.safeDocument();
     learningKey.currentState.safeDocument();
-    Provider.of<Analysen>(context,listen: false).add(analyse);
+    if(id==null){
+      Provider.of<Analysen>(context,listen: false).add(analyse);
+    }
     Navigator.pushReplacementNamed(context, HomeScreen.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
-
 
     return ChangeNotifierProvider.value(
       value: analyse,
@@ -100,7 +100,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   ),
                 ),
               ),
-
             ],
           ),
           centerTitle: true,

@@ -75,7 +75,7 @@ class _EntryListState extends State<EntryList> {
 
     print(analysen.toString());
 
-    var lel=analysen.getAll(widget.filter);
+    //var lel=analysen.getAll(widget.filter);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50,vertical: 5),
@@ -87,8 +87,8 @@ class _EntryListState extends State<EntryList> {
           SizedBox(height: 10,),
           Expanded(
             child: Container(child: ListView.builder(
-                itemBuilder:(ctx,index)=> ListElement(lel[index]),
-              itemCount: lel.length,
+                itemBuilder:(ctx,index)=> ListElement(analysen.getAll(widget.filter)[index]),
+              itemCount: analysen.getAll(widget.filter).length,
 
             ),
             ),

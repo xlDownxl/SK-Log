@@ -6,12 +6,48 @@ import 'analysen_filter.dart';
 
 class Analysen with ChangeNotifier {
 
-  List<Analyse> analysen;
+  List<Analyse> analysen=[];
 
-  Analysen(){analysen=[];}
 
 
   // TODO create some dummy analysen im constructor und danach die filter logik
+
+  Analysen.getDummy(){
+    var dummy=Analyse();
+    dummy.id="id1";
+    dummy.link="https://www.tradingview.com/x/KgXTpAye/";
+    //dummy.description="this is analyse 1";
+    dummy.title="Analyse 1";
+    //dummy.learning="this is learning of analysis 1";
+    dummy.pair=Pair.AUDJPY;
+    dummy.owner="me";
+    dummy.activeTags=[];
+    dummy.date=DateTime.now();
+    analysen.add(dummy);
+     dummy=Analyse();
+    dummy.id="id2";
+    dummy.link="https://www.tradingview.com/x/KgXTpAye/";
+    //dummy.description="this is analyse 2";
+    dummy.title="Analyse 2";
+    //dummy.learning="this is learning of analysis 2";
+    dummy.pair=Pair.AUDCHF;
+    dummy.owner="me";
+    dummy.activeTags=[];
+    dummy.date=DateTime.now();
+    analysen.add(dummy);
+    dummy=Analyse();
+    dummy.id="id3";
+    dummy.link="https://www.tradingview.com/x/KgXTpAye/";
+    //dummy.description="this is analyse 3";
+    dummy.title="Analyse 3";
+    //dummy.learning="this is learning of analysis 3";
+    dummy.pair=Pair.GBPJPY;
+    dummy.owner="me";
+    dummy.activeTags=[];
+    dummy.date=DateTime.now();
+    analysen.add(dummy);
+  }
+
 
   //String userid im constructor?
 
