@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'analyse.dart';
 import 'pair.dart';
+import 'analysen_filter.dart';
 
 class Analysen with ChangeNotifier {
 
@@ -9,9 +10,13 @@ class Analysen with ChangeNotifier {
 
   Analysen(){analysen=[];}
 
+
+  // TODO create some dummy analysen im constructor und danach die filter logik
+
   //String userid im constructor?
 
-  List<Analyse> getAll(){
+  List<Analyse> getAll(AnalyseFilter filter){
+    //TODO filter logik
     return analysen;
   }
 

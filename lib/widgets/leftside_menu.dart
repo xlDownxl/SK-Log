@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../screens/analyse_screen.dart';
 import '../screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:provider/provider.dart';
+import 'pairs.dart';
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
   LeftsideMenu(this.changeMode);
@@ -20,7 +21,10 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
       return Container(
 
         child: FlatButton(
-          onPressed: (){widget.changeMode(mode);},  //TODO make provider who keeps track of current pair
+          onPressed: (){
+            widget.changeMode(mode);
+            Provider.of<Pair>(context,listen: false).change("");
+            },  //TODO make provider who keeps track of current pair
           child: Text(tag,
               style: TextStyle(fontSize: 20,color: Colors.white)
           ),
@@ -61,7 +65,10 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
           buildEntry("Tags", 2),
           SizedBox(height: 10,),
           InkWell(
-            onTap: (){Navigator.pushNamed(context, AnalyseScreen.routeName);},
+            onTap: (){
+              Provider.of<Pair>(context,listen: false).pair="";
+              Navigator.pushNamed(context, AnalyseScreen.routeName);
+              },
             child: CircleAvatar(
               radius: 30,
               backgroundColor: Theme.of(context).primaryColor,

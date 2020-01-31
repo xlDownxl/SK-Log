@@ -22,9 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void changeMode(val){
-    setState(() {
-      mode=val;
-    });
+    if(val!=mode){
+      setState(() {
+        mode=val;
+      });
+    }
+
   }
 
 
@@ -38,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final deviceHeight = MediaQuery.of(context).size.height -
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
-    final deviceWidth   =  MediaQuery.of(context).size.width;
+    final deviceWidth  =  MediaQuery.of(context).size.width;
 
     var rightSide =[EntryList(AnalyseFilter(null)),Pairs(),TagScreen(),];
 

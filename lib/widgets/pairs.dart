@@ -18,7 +18,7 @@ class Pair with ChangeNotifier{
 }
 
 class _PairsState extends State<Pairs> {
-  var filterPair=Pair();
+  var filterPair;
 
   List buildPairs(){
     var pairs= PairList.pairs;
@@ -43,12 +43,12 @@ class _PairsState extends State<Pairs> {
 
   @override
   Widget build(BuildContext context) {
+    filterPair=Provider.of<Pair>(context);
 
     print("build pairs"+filterPair.pair);
 
-    return ChangeNotifierProvider.value(
-      value: filterPair,
-      child: filterPair.pair==""?Container(
+    return filterPair.pair=="" ?
+      Container(
         child: GridView( gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 8,
           childAspectRatio: 2 / 2,
@@ -60,7 +60,7 @@ class _PairsState extends State<Pairs> {
         ],
       ),
         padding: EdgeInsets.all(20),
-      ):EntryList(AnalyseFilter(filterPair)),
+      ):EntryList(AnalyseFilter(filterPair),
     );
   }
 }

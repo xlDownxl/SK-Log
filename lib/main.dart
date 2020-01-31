@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
 import 'models/user.dart';
+import 'widgets/pairs.dart';
 
 void main() => runApp(MyApp());
 
@@ -56,6 +57,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
          builder:(ctx)=> User(),
+        ),
+        ChangeNotifierProvider(
+          builder: (ctx) => Pair(),
         ),
       ],
       child: MaterialApp(
