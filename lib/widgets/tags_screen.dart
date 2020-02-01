@@ -22,7 +22,7 @@ class TagScreen extends StatelessWidget {
           ),
           Container(
             height: constr.maxHeight*0.8,
-              child: EntryList(AnalyseFilter(filters)),
+              child: EntryList(AnalyseFilter.tagFilter(filters)),
           ),
         ],),
       ),

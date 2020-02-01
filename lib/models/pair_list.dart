@@ -1,4 +1,6 @@
+import 'pair_enum.dart';
+
 class PairList{
-  static const pairs=["AUD/USD","AUD/CAD","AUD/JPY","AUD/CHF","AUD/NZD","CAD/CHF","CAD/JPY","CHF/JPY","EUR/AUD","EUR/CAD","EUR/CHF","EUR/GBP","EUR/JPY","EUR/NZD","EUR/USD","GBP/AUD","GBP/CAD","GBP/CHF","GBP/JPY","GBP/NZD","GBP/USD","NZD/CAD","NZD/CHF","NZD/JPY","NZD/USD","USD/CAD","USD/CHF","USD/JPY","XAUUSD"];
+  static const List<PairEnum> pairs=[PairEnum.AUDUSD,PairEnum.AUDCAD,PairEnum.AUDJPY,PairEnum.AUDCHF,PairEnum.AUDNZD,PairEnum.CADCHF,PairEnum.CADJPY,PairEnum.CHFJPY,PairEnum.EURAUD,PairEnum.EURCAD,PairEnum.EURCHF,PairEnum.EURGBP,PairEnum.EURJPY,PairEnum.EURNZD,PairEnum.EURUSD,PairEnum.GBPAUD,PairEnum.GBPCAD,PairEnum.GBPCHF,PairEnum.GBPJPY,PairEnum.GBPNZD,PairEnum.GBPUSD,PairEnum.NZDCAD,PairEnum.NZDCHF,PairEnum.NZDJPY,PairEnum.NZDUSD,PairEnum.USDCAD,PairEnum.USDCHF,PairEnum.USDJPY,PairEnum.XAUUSD];
 
 }

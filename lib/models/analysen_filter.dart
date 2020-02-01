@@ -1,25 +1,34 @@
 import 'package:flutter/material.dart';
-import 'pair.dart';
+import 'pair_enum.dart';
 import 'pair_list.dart';
+import '../widgets/tags_screen.dart';
 class AnalyseFilter{
 
-  Map<String,bool> pairs ={};
+  PairEnum pair;
   List<String> tags=[];
   DateTime time;
-  var filter;
-  AnalyseFilter(lol){
-    filter=lol;
-    /*PairList.pairs.forEach((pair){
-      pairs.addAll({pair:true});
-    });
-    PairList.pairs.forEach((pair){
-      pairs.addAll({pair:false});
-    });*/
 
-    time=DateTime.now();
+  bool isTag;
+  bool isPair;
+
+  AnalyseFilter.pairFilter(PairEnum pair){
+    isPair=true;
+    isTag=false;
+    this.pair=pair;
+    print(this.pair);
+  }
+  AnalyseFilter.tagFilter(FilterList filterList){
+    isPair=false;
+    isTag=true;
+    this.tags=filterList.filters;
   }
 
-  void write(){
-    print(filter.toString());
+  AnalyseFilter.showAll(){
+    isPair=false;
+    isTag=false;
+
   }
+
+
+
 }

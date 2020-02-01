@@ -4,7 +4,7 @@ import '../models/analyse.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import '../models/SaveFile.dart';
-import '../models/pair.dart';
+import '../models/pair_enum.dart';
 
 class AnalysePictureArea extends StatefulWidget {
 final Function safe;
@@ -61,9 +61,9 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
     setState(() {
       _radioValue1 = value;
       if(_radioValue1==1){
-        analyse.pair=Pair.AUDCAD;
+        analyse.pair=PairEnum.AUDCAD;
       }else{
-        analyse.pair=Pair.EURCAD;
+        analyse.pair=PairEnum.EURCAD;
       }
 
     });

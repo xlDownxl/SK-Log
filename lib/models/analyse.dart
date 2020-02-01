@@ -1,4 +1,4 @@
-import 'pair.dart';
+import 'pair_enum.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 class Analyse with ChangeNotifier {
@@ -7,7 +7,7 @@ class Analyse with ChangeNotifier {
   var description;
   String title;
   String learning;
-  Pair pair;
+  PairEnum pair;
   String owner;
   List<String> activeTags;
   DateTime date;
@@ -28,7 +28,7 @@ class Analyse with ChangeNotifier {
     link="https://www.tradingview.com/x/L8uGb5au/";
     id=DateTime.now().toString();
     title="Analysis $id";
-    pair=Pair.AUDCAD;
+    pair=PairEnum.AUDCAD;
     owner="sdfsdf";
     activeTags=[];
     //learning="Das habe ich gelernt";
@@ -36,7 +36,7 @@ class Analyse with ChangeNotifier {
   }
 
   String toString(){
-    return "Analyse mit der ID: $id, Titel: $title, Pair: $pair., Description: ${description.toString()}";
+    return "Analyse mit der ID: $id, Titel: $title, Pair: $pair., Tags: $activeTags";
   }
 
 }

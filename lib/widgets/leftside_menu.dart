@@ -22,9 +22,10 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
 
         child: FlatButton(
           onPressed: (){
+            Provider.of<Pair>(context,listen: false).change(null);
             widget.changeMode(mode);
-            Provider.of<Pair>(context,listen: false).change("");
-            },  //TODO make provider who keeps track of current pair
+
+            },
           child: Text(tag,
               style: TextStyle(fontSize: 20,color: Colors.white)
           ),
@@ -66,7 +67,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
           SizedBox(height: 10,),
           InkWell(
             onTap: (){
-              Provider.of<Pair>(context,listen: false).pair="";
+              Provider.of<Pair>(context,listen: false).pair=null;
               Navigator.pushNamed(context, AnalyseScreen.routeName);
               },
             child: CircleAvatar(

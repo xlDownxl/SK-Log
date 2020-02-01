@@ -17,11 +17,7 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
 
   @override
   Widget build(BuildContext context) {
-    try {
-      filterTags= Provider.of<FilterList>(context);
-      print(filterTags.filters);
-    } catch(error){print(error);}
-
+    filterTags= Provider.of<FilterList>(context);
 
 
     return SingleChildScrollView(

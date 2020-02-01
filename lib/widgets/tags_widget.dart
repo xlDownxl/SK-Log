@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
 import 'dart:math';
+import 'package:provider/provider.dart';
 import '../models/user_tags.dart';
+import '../models/analyse.dart';
 class TagsWidget extends StatefulWidget {
   @override
   _TagsWidgetState createState() => _TagsWidgetState();
@@ -14,6 +16,9 @@ class _TagsWidgetState extends State<TagsWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var analyse=Provider.of<Analyse>(context);
+
+
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(10),
@@ -44,7 +49,18 @@ class _TagsWidgetState extends State<TagsWidget> {
                 min(14, max((25 - _tags.length), 21))
                     .toDouble(),
               ),
-              active: false,
+              active: analyse.activeTags.contains(_tags[index]),
+              onPressed: (item){
+                print("onpressed");
+                print(item.title);
+                if(!item.active){  // is executed after the active change is executed
+                  analyse.activeTags.remove(item.title);
+                }
+                else{
+                  analyse.activeTags.add(item.title);
+                }
+
+              },
 
               removeButton:
               ItemTagsRemoveButton(), // OR null,

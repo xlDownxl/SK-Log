@@ -3,6 +3,7 @@ import '../models/pair_list.dart';
 import 'package:provider/provider.dart';
 import 'entry_list.dart';
 import '../models/analysen_filter.dart';
+import '../models/pair_enum.dart';
 class Pairs extends StatefulWidget {
 
   @override
@@ -10,8 +11,8 @@ class Pairs extends StatefulWidget {
 }
 
 class Pair with ChangeNotifier{
-  String pair="";
-  void change(item){
+  PairEnum pair;
+  void change(PairEnum item){
     pair=item;
     notifyListeners();
   }
@@ -28,7 +29,7 @@ class _PairsState extends State<Pairs> {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)),side: BorderSide(color: Colors.white)),
         child: InkWell(
-            child: Center(child: Text(pair,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),),
+            child: Center(child: Text(pair.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),),
           onTap: (){
               setState(() {
                 filterPair.change(pair); //refreshes?
@@ -44,10 +45,10 @@ class _PairsState extends State<Pairs> {
   @override
   Widget build(BuildContext context) {
     filterPair=Provider.of<Pair>(context);
+    //print("hier gucken"+filterPair.toString());
+   // print("build pairs"+filterPair.pair);
 
-    print("build pairs"+filterPair.pair);
-
-    return filterPair.pair=="" ?
+    return filterPair.pair==null ?
       Container(
         child: GridView( gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 8,
@@ -60,7 +61,7 @@ class _PairsState extends State<Pairs> {
         ],
       ),
         padding: EdgeInsets.all(20),
-      ):EntryList(AnalyseFilter(filterPair),
+      ):EntryList(AnalyseFilter.pairFilter(filterPair.pair),
     );
   }
 }

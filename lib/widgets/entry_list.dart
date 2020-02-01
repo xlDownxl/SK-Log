@@ -24,8 +24,8 @@ class _EntryListState extends State<EntryList> {
   @override
   Widget build(BuildContext context) {
 
-    print("build entry list");
-    widget.filter.write();
+    //print("build entry list");
+    //widget.filter.write();
 
     analysen=Provider.of<Analysen>(context);
 
@@ -73,9 +73,10 @@ class _EntryListState extends State<EntryList> {
       );
     }
 
-    print(analysen.toString());
+    //print(analysen.toString());
 
-    //var lel=analysen.getAll(widget.filter);
+    //if filter
+    var lel=analysen.get(widget.filter); //TODO rename
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50,vertical: 5),
@@ -87,8 +88,8 @@ class _EntryListState extends State<EntryList> {
           SizedBox(height: 10,),
           Expanded(
             child: Container(child: ListView.builder(
-                itemBuilder:(ctx,index)=> ListElement(analysen.getAll(widget.filter)[index]),
-              itemCount: analysen.getAll(widget.filter).length,
+                itemBuilder:(ctx,index)=> ListElement(lel[index]),
+              itemCount: lel.length,
 
             ),
             ),
