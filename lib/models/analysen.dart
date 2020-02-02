@@ -48,29 +48,45 @@ class Analysen with ChangeNotifier {
     analysen.add(dummy);
   }
 
-
-  //String userid im constructor?
+  bool equalsIgnoreCase(String string1, String string2) {
+    return string1?.toLowerCase().contains(string2?.toLowerCase());
+  }
 
   List<Analyse> get(AnalyseFilter filter){
-    //TODO filter logik
+    print("get running");
+    List<Analyse> result=[];
+
     if(filter.isPair){
-      return analysen.where((analyse){return analyse.pair==filter.pair;}).toList();
+      result= analysen.where((analyse){return analyse.pair==filter.pair;}).toList();
     }
-    if(filter.isTag){
+
+    else if(filter.isTag){
       print("tagfilter gefunden");
       if(filter.tags.isNotEmpty)
       {
         print("tagfilter not empty");
-        return analysen.where(
+        result= analysen.where(
                 (analyse){
                   return filter.tags.every((tag){
                     return analyse.activeTags.contains(tag);
                   });
                 }
       ).toList();
+      }else{
+        result=analysen;
       }
     }
-    return analysen;
+    else {
+      result=analysen;
+    }
+
+    if(filter.isSearch){
+      print("filter aktiv");
+      result=result.where((analyse){
+        return equalsIgnoreCase(analyse.title,filter.word);
+      }).toList();
+    }
+    return result;
   }
 
   String toString(){

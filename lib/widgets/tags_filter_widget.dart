@@ -6,6 +6,7 @@ import 'tags_screen.dart';
 
 import 'package:provider/provider.dart';
 class TagsFilterWidget extends StatefulWidget {
+
   @override
   _TagsFilterWidgetState createState() => _TagsFilterWidgetState();
 }
@@ -17,6 +18,7 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
 
   @override
   Widget build(BuildContext context) {
+    print("tags filter widget wid gerebuilded");
     filterTags= Provider.of<FilterList>(context);
 
 
@@ -26,21 +28,11 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
         child: Tags(
           spacing: 4,
           runSpacing: 3,
-          textField: TagsTextField(
-            hintText: "Füge einen Tag hinzu",
-            textStyle: TextStyle(fontSize: 15),
-            onSubmitted: (String str) {
-              // Add item to the data source.
-              setState(() {
-                // required
-                _tags.add(str);
-              });
-            },
-          ),
+
           itemCount: _tags.length,
           itemBuilder: (int index) {
             return ItemTags(
-              //textScaleFactor: 2,
+
               elevation: 3,
               key: Key(index.toString()),
               index: index,
@@ -50,18 +42,15 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
                 min(14, max((25 - _tags.length), 21))
                     .toDouble(),
               ),
-              active: false,
+              active: filterTags.filters.contains(_tags[index]),
               onPressed: (item){
-                // setState(() {
 
-
-                print(filterTags.filters);
                 if(filterTags.filters.contains(item.title)){
                   filterTags.delete(item.title);
                 }else{
                   filterTags.add(item.title);
                 }
-                // });
+                print(filterTags.filters);
               },
               removeButton:
               ItemTagsRemoveButton(), // OR null,

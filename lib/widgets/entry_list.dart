@@ -6,8 +6,9 @@ import '../models/analyse.dart';
 import '../models/analysen_filter.dart';
 class EntryList extends StatefulWidget {
   final AnalyseFilter filter;
+  final bool buildSearchField;
 
-  EntryList(this.filter);
+  EntryList(this.filter,this.buildSearchField);
 
   @override
   _EntryListState createState() => _EntryListState();
@@ -17,15 +18,18 @@ class _EntryListState extends State<EntryList> {
 
   var filteredList;
   Analysen analysen;
+  AnalyseFilter filter;
+
+  void initState() {
+    super.initState();
+    filter=widget.filter;
+  }
 
   TextEditingController editingController=TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
-
-    //print("build entry list");
-    //widget.filter.write();
 
     analysen=Provider.of<Analysen>(context);
 
@@ -60,8 +64,12 @@ class _EntryListState extends State<EntryList> {
           margin: EdgeInsets.only(bottom: 5),
           width: constraint.maxWidth*0.25,
           child: TextFormField(
-            onChanged: (value) {},
-
+            onChanged: (value) {
+              print(value);
+              setState(() {
+                filter.addSearch(value);
+              });
+              },
             controller: editingController,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -75,15 +83,16 @@ class _EntryListState extends State<EntryList> {
 
     //print(analysen.toString());
 
-    //if filter
-    var lel=analysen.get(widget.filter); //TODO rename
-
+    print(filter.isSearch);
+    var lel=analysen.get(filter); //TODO rename
+    print("lel");
+    print(lel);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50,vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          buildSearchfield(),
+          widget.buildSearchField?buildSearchfield():Container(),
           buildHeadline(),
           SizedBox(height: 10,),
           Expanded(

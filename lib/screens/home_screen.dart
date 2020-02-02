@@ -43,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
         MediaQuery.of(context).padding.top;
     final deviceWidth  =  MediaQuery.of(context).size.width;
 
-    var rightSide =[EntryList(AnalyseFilter.showAll()),Pairs(),TagScreen(),];
+    var rightSide =[EntryList(AnalyseFilter.showAll(),true),Pairs(),TagScreen(),];
 
     return Scaffold(
       appBar:appBar,

@@ -4,6 +4,7 @@ import '../screens/login_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'pairs.dart';
+import 'tags_screen.dart';
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
   LeftsideMenu(this.changeMode);
@@ -23,6 +24,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
         child: FlatButton(
           onPressed: (){
             Provider.of<Pair>(context,listen: false).change(null);
+            Provider.of<FilterList>(context,listen: false).filters=[];
             widget.changeMode(mode);
 
             },
@@ -44,11 +46,9 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
               stops: [
                 0.5,
                 0.8,
-
               ],
               colors: [
                 Colors.cyan,
-
                 Colors.indigo,
 
               ])),

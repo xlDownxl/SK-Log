@@ -51,8 +51,6 @@ class _TagsWidgetState extends State<TagsWidget> {
               ),
               active: analyse.activeTags.contains(_tags[index]),
               onPressed: (item){
-                print("onpressed");
-                print(item.title);
                 if(!item.active){  // is executed after the active change is executed
                   analyse.activeTags.remove(item.title);
                 }

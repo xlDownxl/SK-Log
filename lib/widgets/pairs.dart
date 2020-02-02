@@ -29,7 +29,7 @@ class _PairsState extends State<Pairs> {
         elevation: 2,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)),side: BorderSide(color: Colors.white)),
         child: InkWell(
-            child: Center(child: Text(pair.toString(),style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),),
+            child: Center(child: Text(pair.toString().split('.')[1],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),),
           onTap: (){
               setState(() {
                 filterPair.change(pair); //refreshes?
@@ -61,7 +61,6 @@ class _PairsState extends State<Pairs> {
         ],
       ),
         padding: EdgeInsets.all(20),
-      ):EntryList(AnalyseFilter.pairFilter(filterPair.pair),
-    );
+      ):EntryList(AnalyseFilter.pairFilter(filterPair.pair),false);
   }
 }

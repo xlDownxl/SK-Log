@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "sk-log"
+  },
+  "targets": {
+    "sk-log": {
+      "hosting": {
+        "dev": [
+          "sk-log-build"
+        ]
+      }
+    }
   }
 }
