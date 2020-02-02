@@ -18,13 +18,13 @@ class AnalyseFilter{
     isTag=false;
     isSearch=false;
     this.pair=pair;
-    print(this.pair);
+    //print(this.pair);
   }
-  AnalyseFilter.tagFilter(FilterList filterList){
+  AnalyseFilter.tagFilter(List<String> filterList){
     isPair=false;
     isTag=true;
     isSearch=false;
-    this.tags=filterList.filters;
+    this.tags=filterList;
   }
 
   AnalyseFilter.showAll(){
@@ -41,7 +41,7 @@ class AnalyseFilter{
 void addSearch(word){
   isSearch=true;
   this.word=word;
-  print("add search"+word);
+  //print("add search"+word);
 }
 
 }

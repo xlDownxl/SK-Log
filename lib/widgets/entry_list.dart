@@ -30,6 +30,7 @@ class _EntryListState extends State<EntryList> {
 
   @override
   Widget build(BuildContext context) {
+    print("entry list rebuild");
 
     analysen=Provider.of<Analysen>(context);
 

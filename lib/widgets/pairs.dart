@@ -5,20 +5,33 @@ import 'entry_list.dart';
 import '../models/analysen_filter.dart';
 import '../models/pair_enum.dart';
 class Pairs extends StatefulWidget {
+  Pairs({Key key}):super (key:key);
 
   @override
-  _PairsState createState() => _PairsState();
+  PairsState createState() => PairsState();
 }
 
 class Pair with ChangeNotifier{
   PairEnum pair;
+  bool isActive=false;
+
   void change(PairEnum item){
+    isActive=true;
     pair=item;
+    print("inchange:");
+    print(pair);
     notifyListeners();
+  }
+
+  void resetPair(){
+   // isActive=false;
+    //notifyListeners();
   }
 }
 
-class _PairsState extends State<Pairs> {
+
+
+class PairsState extends State<Pairs> {
   var filterPair;
 
   List buildPairs(){
@@ -32,7 +45,7 @@ class _PairsState extends State<Pairs> {
             child: Center(child: Text(pair.toString().split('.')[1],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),),
           onTap: (){
               setState(() {
-                filterPair.change(pair); //refreshes?
+                filterPair=pair; //refreshes?
               });
           },
         ),
@@ -42,13 +55,18 @@ class _PairsState extends State<Pairs> {
     return pairWidgets;
   }
 
+  void resetPair(){
+    setState(() {
+      filterPair=null;
+    });
+
+    print("reset pair");
+  }
+
   @override
   Widget build(BuildContext context) {
-    filterPair=Provider.of<Pair>(context);
-    //print("hier gucken"+filterPair.toString());
-   // print("build pairs"+filterPair.pair);
 
-    return filterPair.pair==null ?
+    return filterPair==null ?
       Container(
         child: GridView( gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 8,
@@ -61,6 +79,6 @@ class _PairsState extends State<Pairs> {
         ],
       ),
         padding: EdgeInsets.all(20),
-      ):EntryList(AnalyseFilter.pairFilter(filterPair.pair),false);
+      ):EntryList(AnalyseFilter.pairFilter(filterPair),false);
   }
 }

@@ -5,22 +5,35 @@ import '../models/analysen_filter.dart';
 import 'tags_widget.dart';
 import 'package:provider/provider.dart';
 import 'tags_filter_widget.dart';
-class TagScreen extends StatelessWidget {
+class TagScreen extends StatefulWidget {
+
+  TagScreen({Key key}):super (key:key);
+  @override
+  TagScreenState createState() => TagScreenState();
+}
+
+class TagScreenState extends State<TagScreen> {
+  List<String> filters=[];
+
+
+  void update(newList){
+    setState(() {
+     filters=newList;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("tagsscreen wird neu gebuilded");
 
-    var filters=Provider.of<FilterList>(context);
 
-    //show all tags und mach die clickable und darunter/daneben die liste wie sie liv eimmer kleiner wird so mehr man anklickt
-    return Container(
+    return  Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: LayoutBuilder(
         builder:(ctx,constr)=> Column(children: <Widget>[
           Container(
             height: constr.maxHeight*0.15,
 
-            child: TagsFilterWidget(),
+            child: TagsFilterWidget(filters,update),
           ),
           Container(
             height: constr.maxHeight*0.85,
@@ -32,11 +45,17 @@ class TagScreen extends StatelessWidget {
     );
   }
 }
-
+/*
 class FilterList with ChangeNotifier {
   List<String> filters=[];
 
+  void reset(){
+    filters=[];
+    notifyListeners();
+  }
+
   void add(item){
+    print("add");
     filters.add(item);
     notifyListeners();
   }
@@ -44,4 +63,4 @@ class FilterList with ChangeNotifier {
     filters.remove(item);
     notifyListeners();
   }
-}
+}*/

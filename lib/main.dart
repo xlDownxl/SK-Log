@@ -11,7 +11,7 @@ import 'models/user_tags.dart';
 import 'models/user.dart';
 import 'widgets/pairs.dart';
 import 'widgets/tags_screen.dart';
-
+import 'models/dummy.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -51,20 +51,20 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers:[
         ChangeNotifierProvider(
-        builder: (ctx) => Analysen.getDummy(),
+        create: (ctx) => Analysen.getDummy(),
       ),
         ChangeNotifierProvider(
-          builder: (ctx) => UserTags(),
+          create: (ctx) => UserTags(),
         ),
         ChangeNotifierProvider(
-         builder:(ctx)=> User(),
+         create:(ctx)=> User(),
         ),
         ChangeNotifierProvider(
-          builder: (ctx) => Pair(),
+          create: (ctx) => Pair(),
+          lazy: false,
         ),
-        ChangeNotifierProvider(
-          builder: (ctx) => FilterList(),
-        ),
+
+
       ],
       child: MaterialApp(
         title: 'SK Log',

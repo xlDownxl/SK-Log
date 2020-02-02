@@ -4,23 +4,15 @@ import 'dart:math';
 import '../models/user_tags.dart';
 import 'tags_screen.dart';
 
-import 'package:provider/provider.dart';
-class TagsFilterWidget extends StatefulWidget {
-
-  @override
-  _TagsFilterWidgetState createState() => _TagsFilterWidgetState();
-}
-
-class _TagsFilterWidgetState extends State<TagsFilterWidget> {
+class TagsFilterWidget extends StatelessWidget {
+  final List<String> filterTags;
+  final Function update;
+  TagsFilterWidget(this.filterTags,this.update);
 
   var _tags=UserTags().getTags(); // TODO tags als provider
-  FilterList filterTags;
 
   @override
   Widget build(BuildContext context) {
-    print("tags filter widget wid gerebuilded");
-    filterTags= Provider.of<FilterList>(context);
-
 
     return SingleChildScrollView(
       child: Container(
@@ -42,29 +34,29 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
                 min(14, max((25 - _tags.length), 21))
                     .toDouble(),
               ),
-              active: filterTags.filters.contains(_tags[index]),
+              active: filterTags.contains(_tags[index]),
               onPressed: (item){
 
-                if(filterTags.filters.contains(item.title)){
-                  filterTags.delete(item.title);
+                if(filterTags.contains(item.title)){
+                  filterTags.remove(item.title);
+                  update(filterTags);
                 }else{
                   filterTags.add(item.title);
+                  update(filterTags);
                 }
-                print(filterTags.filters);
+                //print(filterTags.filters);
               },
               removeButton:
               ItemTagsRemoveButton(), // OR null,
               onRemoved: () {
-                // print(min(14,max((23-_tags.length),22)).toDouble().toString());
-                // Remove the item from the data source.
-                setState(() {
-                  // required
-                  print(_tags[index]+"<- das ist das was deleted werden soll ");
-                  if(filterTags.filters.contains(_tags[index])){
-                    filterTags.filters.remove(_tags[index]);
-                  }
+
+
                   _tags.removeAt(index);
-                });
+                  if(filterTags.contains(_tags[index])){
+                    filterTags.remove(_tags[index]);
+                    update(filterTags);
+                  }
+
               },
             );
           },

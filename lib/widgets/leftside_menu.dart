@@ -5,9 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'pairs.dart';
 import 'tags_screen.dart';
+import '../models/dummy.dart';
+import '../models/analysen.dart';
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
-  LeftsideMenu(this.changeMode);
+  final Function reset;
+  LeftsideMenu(this.changeMode,this.reset);
 
   @override
   _LeftsideMenuState createState() => _LeftsideMenuState();
@@ -23,10 +26,10 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
 
         child: FlatButton(
           onPressed: (){
-            Provider.of<Pair>(context,listen: false).change(null);
-            Provider.of<FilterList>(context,listen: false).filters=[];
-            widget.changeMode(mode);
 
+
+            widget.changeMode(mode);
+            widget.reset();
             },
           child: Text(tag,
               style: TextStyle(fontSize: 20,color: Colors.white)
@@ -67,7 +70,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
           SizedBox(height: 10,),
           InkWell(
             onTap: (){
-              Provider.of<Pair>(context,listen: false).pair=null;
+              //Provider.of<Pair>(context,listen: false).pair=null;
               Navigator.pushNamed(context, AnalyseScreen.routeName);
               },
             child: CircleAvatar(
