@@ -4,73 +4,84 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analyse.dart';
 import '../models/analysen_filter.dart';
+
 class EntryList extends StatefulWidget {
   final AnalyseFilter filter;
   final bool buildSearchField;
 
-  EntryList(this.filter,this.buildSearchField);
+  EntryList(this.filter, this.buildSearchField);
 
   @override
   _EntryListState createState() => _EntryListState();
 }
 
 class _EntryListState extends State<EntryList> {
-
   var filteredList;
   Analysen analysen;
   AnalyseFilter filter;
 
   void initState() {
     super.initState();
-    filter=widget.filter;
+    filter = widget.filter;
   }
 
-  TextEditingController editingController=TextEditingController();
-
+  TextEditingController editingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     print("entry list rebuild");
 
-    analysen=Provider.of<Analysen>(context);
+    analysen = Provider.of<Analysen>(context);
 
-    Widget buildHeadline(){
+    Widget buildHeadline() {
       return Container(
-        decoration: BoxDecoration(border: Border(bottom: BorderSide(color: Colors.blueGrey))),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Colors.blueGrey))),
         padding: EdgeInsets.only(bottom: 3),
-        child: Row(children: <Widget>[
-          Flexible(
-            child: Center(
-                child: Text("Analyse Title",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)),
-            fit: FlexFit.tight,
-          ),
-          Flexible(
-            child: Center(
-                child: Text("Paar",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20))),
-            fit: FlexFit.tight,
-          ),
-          Flexible(
-            child: Center(
-                child: Text("Tags",style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,))),
-            fit: FlexFit.tight,
-          ),
-        ],),
+        child: Row(
+          children: <Widget>[
+            Flexible(
+              child: Center(
+                  child: Text(
+                "Analyse Title",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              )),
+              fit: FlexFit.tight,
+            ),
+            Flexible(
+              child: Center(
+                  child: Text("Paar",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20))),
+              fit: FlexFit.tight,
+            ),
+            Flexible(
+              child: Center(
+                  child: Text("Tags",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ))),
+              fit: FlexFit.tight,
+            ),
+          ],
+        ),
       );
     }
 
-    Widget buildSearchfield(){
+    Widget buildSearchfield() {
       return LayoutBuilder(
-        builder:(_,constraint)=> Container(
+        builder: (_, constraint) => Container(
           //decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.tealAccent)),
           margin: EdgeInsets.only(bottom: 5),
-          width: constraint.maxWidth*0.25,
+          width: constraint.maxWidth * 0.25,
           child: TextFormField(
             onChanged: (value) {
               print(value);
               setState(() {
                 filter.addSearch(value);
               });
-              },
+            },
             controller: editingController,
             decoration: InputDecoration(
               border: InputBorder.none,
@@ -84,24 +95,27 @@ class _EntryListState extends State<EntryList> {
 
     //print(analysen.toString());
 
-    print(filter.isSearch);
-    var lel=analysen.get(filter); //TODO rename
-    print("lel");
-    print(lel);
+    //print(filter.isSearch);
+    //var lel=analysen.get(filter); //TODO rename
+    //print("lel");
+    //print(lel);
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 50,vertical: 5),
+      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          widget.buildSearchField?buildSearchfield():Container(),
+          widget.buildSearchField ? buildSearchfield() : Container(),
           buildHeadline(),
-          SizedBox(height: 10,),
+          SizedBox(
+            height: 10,
+          ),
           Expanded(
-            child: Container(child: ListView.builder(
-                itemBuilder:(ctx,index)=> ListElement(lel[index]),
-              itemCount: lel.length,
-
-            ),
+            child: Container(
+              child: ListView.builder(
+                itemBuilder: (ctx, index) =>
+                    ListElement(analysen.get(filter)[index]),
+                itemCount: analysen.get(filter).length,
+              ),
             ),
           ),
         ],

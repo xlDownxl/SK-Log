@@ -7,8 +7,8 @@ import '../models/SaveFile.dart';
 import '../models/pair_enum.dart';
 
 class AnalysePictureArea extends StatefulWidget {
-final Function safe;
-AnalysePictureArea(this.safe);
+  final Function safe;
+  AnalysePictureArea(this.safe);
   @override
   _AnalysePictureAreaState createState() => _AnalysePictureAreaState();
 }
@@ -19,24 +19,23 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
 
   void presentDatePicker() {
     showDatePicker(
-        context: context,
-        firstDate: DateTime.now().subtract(
-          Duration(
-            days: 100,
-          ),
-        ),
-        initialDate: DateTime.now(),
-        lastDate: DateTime.now())
+            context: context,
+            firstDate: DateTime.now().subtract(
+              Duration(
+                days: 100,
+              ),
+            ),
+            initialDate: DateTime.now(),
+            lastDate: DateTime.now())
         .then((pickedData) {
       if (pickedData == null) {
         return;
       }
       setState(() {
-        analyse.date=pickedData;
+        analyse.date = pickedData;
       });
     });
   }
-
 
 /*  void doML() async {
     print("do ml");
@@ -55,53 +54,54 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
     //doML();
     super.initState();
   }
+
   int _radioValue1 = -1;
 
   void _handleRadioValueChange1(int value) {
     setState(() {
       _radioValue1 = value;
-      if(_radioValue1==1){
-        analyse.pair=PairEnum.AUDCAD;
-      }else{
-        analyse.pair=PairEnum.EURCAD;
+      if (_radioValue1 == 0) {
+        analyse.pair = PairEnum.EURUSD;
+      } else if (_radioValue1 == 1) {
+        analyse.pair = PairEnum.AUDUSD;
+      } else if (_radioValue1 == 2) {
+        analyse.pair = PairEnum.USDJPY;
       }
-
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    analyse=Provider.of<Analyse>(context);
+    analyse = Provider.of<Analyse>(context);
 
-    Widget buildRadios(){
-      return  Row(
+    Widget buildRadios() {
+      return Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-           Radio(
+          Radio(
             value: 0,
             groupValue: _radioValue1,
             onChanged: _handleRadioValueChange1,
           ),
-           Text(
+          Text(
             'EURUSD',
             style: new TextStyle(fontSize: 16.0),
           ),
-           Radio(
+          Radio(
             value: 1,
             groupValue: _radioValue1,
             onChanged: _handleRadioValueChange1,
           ),
-           Text(
+          Text(
             'AUDUSD',
             style: new TextStyle(fontSize: 16.0),
           ),
-           Radio(
+          Radio(
             value: 2,
             groupValue: _radioValue1,
             onChanged: _handleRadioValueChange1,
           ),
-           Text(
+          Text(
             'USDJPY',
             style: new TextStyle(fontSize: 16.0),
           ),
@@ -109,8 +109,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
       );
     }
 
-
-       return Column(
+    return Column(
       children: <Widget>[
         Flexible(
           child: buildRadios(),
@@ -119,27 +118,26 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
           child: LayoutBuilder(
             builder: (ctx, constraints) => analyse.link != ""
                 ? Image.network(
-              analyse.link,
-              height: constraints.maxHeight,
-              width: constraints.maxWidth,
-            )
+                    analyse.link,
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                  )
                 : Container(
-              child: Center(
-                child: Text(
-                  "Enter your TradingView Link below",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              decoration: BoxDecoration(
-                border:
-                Border.all(color: Colors.black, width: 2),
-              ),
-            ),
+                    child: Center(
+                      child: Text(
+                        "Enter your TradingView Link below",
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2),
+                    ),
+                  ),
           ),
           fit: FlexFit.tight,
           flex: 16,
         ),
-        RaisedButton(onPressed: (){
+        RaisedButton(onPressed: () {
           widget.safe();
         }),
         Flexible(
@@ -147,7 +145,6 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
           child: Container(
             child: LayoutBuilder(
               builder: (ctx, constraints) => Row(
-
                 children: <Widget>[
                   Container(
                     width: constraints.maxWidth * 0.1,
@@ -155,11 +152,10 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                   Container(
                     child: FittedBox(
                         child: Text(
-                          "Chart Link:",
-                          style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold),
-                        )),
+                      "Chart Link:",
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    )),
                     width: constraints.maxWidth * 0.1,
                   ),
                   SizedBox(
@@ -171,36 +167,35 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                           border: OutlineInputBorder(),
                           labelText: "Link",
                           labelStyle: TextStyle(fontSize: 20)),
-
                       style: TextStyle(
                         fontSize: 14.0,
                         color: Colors.black,
                       ),
                       onChanged: (val) {
-                        if(val.contains("tradingview")){
-                        setState(() {
-                          analyse.link =
-                              val; //TODO tradingview link validator
-                        });
-                        }
-                        else{setState(() {
-                          analyse.link="";
-                        });}
-                      },
-                      onFieldSubmitted: (val) {
-                        if(val.contains("tradingview")){
+                        if (val.contains("tradingview")) {
                           setState(() {
                             analyse.link =
-                                val;
+                                val; //TODO tradingview link validator
+                          });
+                        } else {
+                          setState(() {
+                            analyse.link = "";
                           });
                         }
-                        else{setState(() {
-                          analyse.link="";
-                        });}
+                      },
+                      onFieldSubmitted: (val) {
+                        if (val.contains("tradingview")) {
+                          setState(() {
+                            analyse.link = val;
+                          });
+                        } else {
+                          setState(() {
+                            analyse.link = "";
+                          });
+                        }
                       },
                       controller: textEditingController,
-                      initialValue:analyse.link,
-
+                      initialValue: analyse.link,
                     ),
                     width: constraints.maxWidth * 0.4,
                   ),
@@ -210,7 +205,6 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                   Container(
                     width: constraints.maxWidth * 0.2,
                     child: RaisedButton(
-
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(5.0)),
                       elevation: 4.0,
@@ -220,29 +214,42 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                       child: Container(
                         child: Row(
                           children: <Widget>[
-                            Icon(
-                              Icons.access_time,
-                              size: 18.0,
-                              color: Colors.white,
+                            Flexible(
+                              flex: 12,
+                              child: Icon(
+                                Icons.access_time,
+                                size: 18.0,
+                                color: Colors.white,
+                              ),
                             ),
-                            SizedBox(
-                              width: 5,
+                            Flexible(
+                              child: SizedBox(
+                                width: 5,
+                              ),
                             ),
-                            Text( //TODO handle time
-                              analyse.date == null
-                                  ? "Heute"
-                                  : analyse.date.day.toString() +
-                                  "." +
-                                  analyse.date.month.toString() +
-                                  "." +
-                                  analyse.date.year.toString(),
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18.0),
+                            Flexible(
+                              flex: 25,
+                              child: FittedBox(
+                                child: Text(
+                                  //TODO handle time
+                                  analyse.date == null
+                                      ? "Heute"
+                                      : analyse.date.day.toString() +
+                                          "." +
+                                          analyse.date.month.toString() +
+                                          "." +
+                                          analyse.date.year.toString(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18.0),
+                                ),
+                              ),
                             ),
-                            SizedBox(
-                              width: 5,
+                            Flexible(
+                              child: SizedBox(
+                                width: 5,
+                              ),
                             ),
                           ],
                           mainAxisAlignment: MainAxisAlignment.center,
