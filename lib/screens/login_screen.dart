@@ -114,7 +114,7 @@ class _LoginPageState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
+    return FlutterLogin(   //TODO email und passwort validator in flutter_login wieder aktivieren
       //messages: LoginMessages(loginButton: "LEL"),
       title: 'SK!Log',
       //logo: 'assets/images/Download.jpeg',

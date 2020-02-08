@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/analyse.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import '../models/SaveFile.dart';
 import '../models/pair_enum.dart';
+import '../models/pair_list.dart';
+import 'package:custom_radio/custom_radio.dart';
 
 class AnalysePictureArea extends StatefulWidget {
-  final Function safe;
-  AnalysePictureArea(this.safe);
+  final bool showError;
+  AnalysePictureArea(this.showError);
   @override
   _AnalysePictureAreaState createState() => _AnalysePictureAreaState();
 }
@@ -17,7 +16,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
   var textEditingController;
   Analyse analyse;
 
-  void presentDatePicker() {
+  void presentDatePicker(context) {
     showDatePicker(
             context: context,
             firstDate: DateTime.now().subtract(
@@ -37,82 +36,141 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
     });
   }
 
-/*  void doML() async {
-    print("do ml");
-    var file = await DefaultCacheManager().getSingleFile("https://www.fonic.de/dlc/pdf/FONIC-Mobilfunk-Preisliste.pdf");
-    print("chache manager done");
-    final image = FirebaseVisionImage.fromFile(file);
-    print("image is here");
-    VisionText whatever=await FirebaseVision.instance.textRecognizer().processImage(image);
-    print("done");
-    print(whatever.text+"image detection");
-  } */
+  List buildPairs(){
+    var pairs= PairList.pairs;
+    var pairWidgets=[];
+    pairs.forEach((pair){
 
-  @override
-  void initState() {
-    //print("initState");
-    //doML();
-    super.initState();
-  }
+      pairWidgets.add(Card(
+        elevation: 2,
 
-  int _radioValue1 = -1;
 
-  void _handleRadioValueChange1(int value) {
-    setState(() {
-      _radioValue1 = value;
-      if (_radioValue1 == 0) {
-        analyse.pair = PairEnum.EURUSD;
-      } else if (_radioValue1 == 1) {
-        analyse.pair = PairEnum.AUDUSD;
-      } else if (_radioValue1 == 2) {
-        analyse.pair = PairEnum.USDJPY;
-      }
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)),side: BorderSide(color: Colors.white)),
+        child: FlatButton(
+          child: Center(child: Text(pair.toString().split('.')[1],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10),),),
+          onPressed: (){
+setState(() {
+
+});
+          },
+        ),
+      )
+      );
     });
+    return pairWidgets;
   }
+  String radioValue = 'First';
 
   @override
   Widget build(BuildContext context) {
+
     analyse = Provider.of<Analyse>(context);
 
-    Widget buildRadios() {
-      return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Radio(
-            value: 0,
-            groupValue: _radioValue1,
-            onChanged: _handleRadioValueChange1,
-          ),
-          Text(
-            'EURUSD',
-            style: new TextStyle(fontSize: 16.0),
-          ),
-          Radio(
-            value: 1,
-            groupValue: _radioValue1,
-            onChanged: _handleRadioValueChange1,
-          ),
-          Text(
-            'AUDUSD',
-            style: new TextStyle(fontSize: 16.0),
-          ),
-          Radio(
-            value: 2,
-            groupValue: _radioValue1,
-            onChanged: _handleRadioValueChange1,
-          ),
-          Text(
-            'USDJPY',
-            style: new TextStyle(fontSize: 16.0),
-          ),
-        ],
-      );
-    }
 
     return Column(
       children: <Widget>[
         Flexible(
-          child: buildRadios(),
+          flex: 4,
+          child: GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 6,
+            childAspectRatio: 2 / 2,
+            crossAxisSpacing: 2,
+            mainAxisSpacing: 2,),children: <Widget>[
+            CustomRadio<String, dynamic>(
+              value: 'First',
+              groupValue: radioValue,
+              animsBuilder: (AnimationController controller) => [
+                CurvedAnimation(
+                    parent: controller,
+                    curve: Curves.easeInOut
+                ),
+                ColorTween(
+                    begin: Colors.white,
+                    end: Colors.deepPurple
+                ).animate(controller),
+                ColorTween(
+                    begin: Colors.deepPurple,
+                    end: Colors.white
+                ).animate(controller),
+              ],
+              builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
+                return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        radioValue = value;
+                      });
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.all(18.0),
+                        padding: EdgeInsets.all(32.0 + animValues[0] * 12.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: animValues[1],
+                            border: Border.all(
+                                color: animValues[2],
+                                width: 2.0
+                            )
+                        ),
+                        child: Text(
+                          value,
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                              fontSize: 20.0,
+                              color: animValues[2]
+                          ),
+                        )
+                    )
+                );
+              },
+            ),
+            CustomRadio<String, dynamic>(
+              value: 'First',
+              groupValue: radioValue,
+              animsBuilder: (AnimationController controller) => [
+                CurvedAnimation(
+                    parent: controller,
+                    curve: Curves.easeInOut
+                ),
+                ColorTween(
+                    begin: Colors.white,
+                    end: Colors.deepPurple
+                ).animate(controller),
+                ColorTween(
+                    begin: Colors.deepPurple,
+                    end: Colors.white
+                ).animate(controller),
+              ],
+              builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
+                return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        radioValue = value;
+                      });
+                    },
+                    child: Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.all(18.0),
+                        padding: EdgeInsets.all(32.0 + animValues[0] * 12.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: animValues[1],
+                            border: Border.all(
+                                color: animValues[2],
+                                width: 2.0
+                            )
+                        ),
+                        child: Text(
+                          value,
+                          style: Theme.of(context).textTheme.body1.copyWith(
+                              fontSize: 20.0,
+                              color: animValues[2]
+                          ),
+                        )
+                    )
+                );
+              },
+            ),
+          ],),
         ),
         Flexible(
           child: LayoutBuilder(
@@ -137,9 +195,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
           fit: FlexFit.tight,
           flex: 16,
         ),
-        RaisedButton(onPressed: () {
-          widget.safe();
-        }),
+
         Flexible(
           flex: 4,
           child: Container(
@@ -209,7 +265,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                           borderRadius: BorderRadius.circular(5.0)),
                       elevation: 4.0,
                       onPressed: () {
-                        presentDatePicker();
+                        presentDatePicker(context);
                       },
                       child: Container(
                         child: Row(

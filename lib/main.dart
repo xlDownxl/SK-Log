@@ -59,12 +59,6 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
          create:(ctx)=> User(),
         ),
-        ChangeNotifierProvider(
-          create: (ctx) => Pair(),
-          lazy: false,
-        ),
-
-
       ],
       child: MaterialApp(
         title: 'SK Log',
@@ -74,7 +68,7 @@ class _MyAppState extends State<MyApp> {
           fontFamily: "OpenSans",
         ),
 
-        home: HomeScreen(),
+        home: LoginScreen(),
         routes: {
           LoginScreen.routeName: (ctx)=> LoginScreen(),
           HomeScreen.routeName: (ctx)=> HomeScreen(),

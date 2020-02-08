@@ -53,7 +53,6 @@ class Analysen with ChangeNotifier {
   }
 
   List<Analyse> get(AnalyseFilter filter){
-    print("get running");
     List<Analyse> result=[];
 
     if(filter.isPair){
@@ -98,7 +97,11 @@ class Analysen with ChangeNotifier {
 
   }
 
-  void delete(id){}
+  void delete(id){
+    analysen.removeWhere((analyse){
+      return analyse.id==id;
+    });
+  }
 
   void add(Analyse analyse){
     analysen.add(analyse);

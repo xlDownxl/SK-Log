@@ -7,6 +7,7 @@ import '../models/analysen.dart';
 import '../models/analyse.dart';
 import '../widgets/zefyr_textfield.dart';
 import '../screens/home_screen.dart';
+import '../models/analysen.dart';
 
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";
@@ -31,11 +32,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   bool init = true;
 
   @override
@@ -54,13 +50,23 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   }
 
   void safe() {
-    descriptionKey.currentState.safeDocument();
-    learningKey.currentState.safeDocument();
-    if (id == null) {
-      Provider.of<Analysen>(context, listen: false).add(analyse);
+    if(analyse.pair==null){
+      setState(() {
+        error=true;
+      });
+
+    }else{
+      descriptionKey.currentState.safeDocument();
+      learningKey.currentState.safeDocument();
+      if (id == null) {
+        Provider.of<Analysen>(context, listen: false).add(analyse);
+      }
+      Navigator.pop(context);
     }
-    Navigator.pop(context);
+
   }
+
+  bool error=false;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +88,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
             ),
             gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
             title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 /*InkWell(
                   //TODO inkwell design/verhalten
@@ -90,39 +96,49 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   onTap: safe,
                 ),*/
                 InkWell(
-                  child: Icon(Icons.delete),
-                  onTap: () {
+                  child: Icon(Icons.delete,size:36),
+                  onTap: (
+
+                      ) {
+                    if(id!=null)
+                      Provider.of<Analysen>(context,listen: false).delete(id);
                     Navigator.pop(context);
                   },
                 ),
+                Flexible(child: Container(),),
                 Flexible(
-                  child: TextFormField(
-                    decoration: InputDecoration(
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.white54,
-                        size: 36,
+                  flex: 2,
+                  child: Container(
+                    width: 400,
+                    child: TextFormField(
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.edit,
+                          color: Colors.white54,
+                          size: 30,
+                        ),
                       ),
+                      focusNode: titleFocus,
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          decoration: TextDecoration.underline),
+                      //initialValue: analyse.title,
+                      cursorColor: Colors.white,
+                      onChanged: (val) {
+                        //nur on submit ändern
+                        setState(() {
+                          analyse.title = val;
+                          print(analyse.title);
+                          editText = false;
+                        });
+                      },
+                      initialValue: analyse.title,
                     ),
-                    focusNode: titleFocus,
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline),
-                    //initialValue: analyse.title,
-                    cursorColor: Colors.white,
-                    onChanged: (val) {
-                      //nur on submit ändern
-                      setState(() {
-                        analyse.title = val;
-                        print(analyse.title);
-                        editText = false;
-                      });
-                    },
-                    initialValue: analyse.title,
                   ),
                 ),
+                Flexible(child: Container(),),
               ],
             ),
             centerTitle: true,
@@ -139,7 +155,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   ),
                   Container(
                     width: constr.maxWidth * 0.5,
-                    child: AnalysePictureArea(safe),
+                    child: AnalysePictureArea(error),
                   )
                 ],
               ),

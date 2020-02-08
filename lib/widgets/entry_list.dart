@@ -93,12 +93,8 @@ class _EntryListState extends State<EntryList> {
       );
     }
 
-    //print(analysen.toString());
+    var filteredAnalysen=analysen.get(filter); //TODO rename
 
-    //print(filter.isSearch);
-    //var lel=analysen.get(filter); //TODO rename
-    //print("lel");
-    //print(lel);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       child: Column(
@@ -113,8 +109,8 @@ class _EntryListState extends State<EntryList> {
             child: Container(
               child: ListView.builder(
                 itemBuilder: (ctx, index) =>
-                    ListElement(analysen.get(filter)[index]),
-                itemCount: analysen.get(filter).length,
+                    ListElement(filteredAnalysen[index]),
+                itemCount: filteredAnalysen.length,
               ),
             ),
           ),

@@ -11,25 +11,6 @@ class Pairs extends StatefulWidget {
   PairsState createState() => PairsState();
 }
 
-class Pair with ChangeNotifier{
-  PairEnum pair;
-  bool isActive=false;
-
-  void change(PairEnum item){
-    isActive=true;
-    pair=item;
-    print("inchange:");
-    print(pair);
-    notifyListeners();
-  }
-
-  void resetPair(){
-   // isActive=false;
-    //notifyListeners();
-  }
-}
-
-
 
 class PairsState extends State<Pairs> {
   var filterPair;
