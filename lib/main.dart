@@ -65,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           accentColor: Colors.cyan,
           fontFamily: "OpenSans",
         ),
-        home: HomeScreen(),
+        home: LoginScreen(),
         routes: {
           LoginScreen.routeName: (ctx) => LoginScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),

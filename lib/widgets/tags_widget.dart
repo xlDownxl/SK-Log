@@ -18,7 +18,7 @@ class _TagsWidgetState extends State<TagsWidget> {
     var analyse = Provider.of<Analyse>(context);
 
     return Padding(
-      padding: EdgeInsets.all(top: 3),
+      padding: EdgeInsets.only(top: 3),
       child: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(10),
