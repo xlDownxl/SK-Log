@@ -3,11 +3,12 @@ import 'package:provider/provider.dart';
 import '../models/analyse.dart';
 import '../models/pair_enum.dart';
 import '../models/pair_list.dart';
-import 'package:custom_radio/custom_radio.dart';
 
 class AnalysePictureArea extends StatefulWidget {
   final bool showError;
+
   AnalysePictureArea(this.showError);
+
   @override
   _AnalysePictureAreaState createState() => _AnalysePictureAreaState();
 }
@@ -36,141 +37,62 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
     });
   }
 
-  List buildPairs(){
-    var pairs= PairList.pairs;
-    var pairWidgets=[];
-    pairs.forEach((pair){
-
+  List buildPairs() {
+    var pairs = PairList.pairs;
+    var pairWidgets = [];
+    pairs.forEach((pair) {
       pairWidgets.add(Card(
+        color: choseColor(pair),
         elevation: 2,
-
-
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(30)),side: BorderSide(color: Colors.white)),
-        child: FlatButton(
-          child: Center(child: Text(pair.toString().split('.')[1],style: TextStyle(fontWeight: FontWeight.bold,fontSize: 10),),),
-          onPressed: (){
-setState(() {
-
-});
-          },
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(30)),
+          //side: BorderSide(color: Colors.white)
         ),
-      )
-      );
+        child: InkWell(
+          onTap: () {
+            setState(() {
+              analyse.pair = pair;
+            });
+          },
+          child: Center(
+            child: FittedBox(
+              child: Text(
+                pair.toString().split('.')[1],
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+              ),
+            ),
+          ),
+        ),
+      ));
     });
     return pairWidgets;
   }
-  String radioValue = 'First';
+
+  Color choseColor(pair) {
+    if (analyse.pair == pair)
+      return Theme.of(context).accentColor;
+    else
+      return Colors.white;
+  }
 
   @override
   Widget build(BuildContext context) {
-
     analyse = Provider.of<Analyse>(context);
-
 
     return Column(
       children: <Widget>[
         Flexible(
           flex: 4,
-          child: GridView(gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 6,
-            childAspectRatio: 2 / 2,
-            crossAxisSpacing: 2,
-            mainAxisSpacing: 2,),children: <Widget>[
-            CustomRadio<String, dynamic>(
-              value: 'First',
-              groupValue: radioValue,
-              animsBuilder: (AnimationController controller) => [
-                CurvedAnimation(
-                    parent: controller,
-                    curve: Curves.easeInOut
-                ),
-                ColorTween(
-                    begin: Colors.white,
-                    end: Colors.deepPurple
-                ).animate(controller),
-                ColorTween(
-                    begin: Colors.deepPurple,
-                    end: Colors.white
-                ).animate(controller),
-              ],
-              builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
-                return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        radioValue = value;
-                      });
-                    },
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.all(18.0),
-                        padding: EdgeInsets.all(32.0 + animValues[0] * 12.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: animValues[1],
-                            border: Border.all(
-                                color: animValues[2],
-                                width: 2.0
-                            )
-                        ),
-                        child: Text(
-                          value,
-                          style: Theme.of(context).textTheme.body1.copyWith(
-                              fontSize: 20.0,
-                              color: animValues[2]
-                          ),
-                        )
-                    )
-                );
-              },
-            ),
-            CustomRadio<String, dynamic>(
-              value: 'First',
-              groupValue: radioValue,
-              animsBuilder: (AnimationController controller) => [
-                CurvedAnimation(
-                    parent: controller,
-                    curve: Curves.easeInOut
-                ),
-                ColorTween(
-                    begin: Colors.white,
-                    end: Colors.deepPurple
-                ).animate(controller),
-                ColorTween(
-                    begin: Colors.deepPurple,
-                    end: Colors.white
-                ).animate(controller),
-              ],
-              builder: (BuildContext context, List<dynamic> animValues, Function updateState, String value) {
-                return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        radioValue = value;
-                      });
-                    },
-                    child: Container(
-                        alignment: Alignment.center,
-                        margin: EdgeInsets.all(18.0),
-                        padding: EdgeInsets.all(32.0 + animValues[0] * 12.0),
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: animValues[1],
-                            border: Border.all(
-                                color: animValues[2],
-                                width: 2.0
-                            )
-                        ),
-                        child: Text(
-                          value,
-                          style: Theme.of(context).textTheme.body1.copyWith(
-                              fontSize: 20.0,
-                              color: animValues[2]
-                          ),
-                        )
-                    )
-                );
-              },
-            ),
-          ],),
+          child: GridView(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 15,
+                childAspectRatio: 2 / 2,
+                crossAxisSpacing: 2,
+                mainAxisSpacing: 2,
+              ),
+              children: <Widget>[
+                ...buildPairs(),
+              ]),
         ),
         Flexible(
           child: LayoutBuilder(
@@ -195,7 +117,6 @@ setState(() {
           fit: FlexFit.tight,
           flex: 16,
         ),
-
         Flexible(
           flex: 4,
           child: Container(

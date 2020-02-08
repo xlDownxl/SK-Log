@@ -12,29 +12,27 @@ import 'models/user.dart';
 import 'widgets/pairs.dart';
 import 'widgets/tags_screen.dart';
 import 'models/dummy.dart';
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
-
   @override
   _MyAppState createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
-
   FirebaseAuth auth = FirebaseAuth.instance;
   User user = User();
   FirebaseUser fbUser;
 
   @override
   void initState() {
-
     getUser().then((fbuser) {
       if (fbuser != null) {
         print("fbuser not null");
         user.email = fbuser.email;
         user.id = fbuser.uid;
-       /* Firestore.instance.collection("User_Data").document(fbUser.uid).get().then((snap){
+        /* Firestore.instance.collection("User_Data").document(fbUser.uid).get().then((snap){
           user.username = snap.data["username"];
         });*/
       }
@@ -49,15 +47,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers:[
+      providers: [
         ChangeNotifierProvider(
-        create: (ctx) => Analysen.getDummy(),
-      ),
+          create: (ctx) => Analysen.getDummy(),
+        ),
         ChangeNotifierProvider(
           create: (ctx) => UserTags(),
         ),
         ChangeNotifierProvider(
-         create:(ctx)=> User(),
+          create: (ctx) => User(),
         ),
       ],
       child: MaterialApp(
@@ -67,15 +65,13 @@ class _MyAppState extends State<MyApp> {
           accentColor: Colors.cyan,
           fontFamily: "OpenSans",
         ),
-
-        home: LoginScreen(),
+        home: HomeScreen(),
         routes: {
-          LoginScreen.routeName: (ctx)=> LoginScreen(),
-          HomeScreen.routeName: (ctx)=> HomeScreen(),
-          AnalyseScreen.routeName: (ctx)=> AnalyseScreen(),
+          LoginScreen.routeName: (ctx) => LoginScreen(),
+          HomeScreen.routeName: (ctx) => HomeScreen(),
+          AnalyseScreen.routeName: (ctx) => AnalyseScreen(),
         },
       ),
     );
   }
 }
-

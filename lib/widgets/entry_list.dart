@@ -29,10 +29,6 @@ class _EntryListState extends State<EntryList> {
 
   @override
   Widget build(BuildContext context) {
-    print("entry list rebuild");
-
-    analysen = Provider.of<Analysen>(context);
-
     Widget buildHeadline() {
       return Container(
         decoration: BoxDecoration(
@@ -93,7 +89,7 @@ class _EntryListState extends State<EntryList> {
       );
     }
 
-    var filteredAnalysen=analysen.get(filter); //TODO rename
+    var filteredAnalysen = analysen.get(filter); //TODO rename
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
