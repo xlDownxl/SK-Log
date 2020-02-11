@@ -31,8 +31,10 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
             widget.changeMode(mode);
             widget.reset();
             },
-          child: Text(tag,
-              style: TextStyle(fontSize: 20,color: Colors.white)
+          child: FittedBox(
+            child: Text(tag,
+                style: TextStyle(fontSize: 20,color: Colors.white)
+            ),
           ),
           color: Theme.of(context).primaryColor,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),

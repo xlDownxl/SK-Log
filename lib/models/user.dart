@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 
 
-class User with ChangeNotifier {
+class AppUser with ChangeNotifier {
   //String username;
   String email;
   String id;

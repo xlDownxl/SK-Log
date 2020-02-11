@@ -19,22 +19,19 @@ class _LoginPageState extends State<LoginScreen> {
   var init = true;
 
   Future setupUserInFirebase(context) async {
-   /* var user = await FirebaseAuth.instance.currentUser();
-    Provider.of<User>(context, listen: false).email = user.email;
-    Provider.of<User>(context, listen: false).id = user.uid;
+    var user = await FirebaseAuth.instance.currentUser();
+    Provider.of<AppUser>(context, listen: false).email = user.email;
+    Provider.of<AppUser>(context, listen: false).id = user.uid;
 
-    return Firestore.instance.collection("User_Data").document(user.uid).setData({
-      "email": user.email,
-      "id": user.uid,
-    }).then((_){
-      return Provider.of<BoardPosts>(context, listen: false)
-          .connectToFirebase(user.uid);
-    });
-    */
+   // return Firestore.instance.collection("User_Data").document(user.uid).setData({
+    //  "email": user.email,
+
+      //"id": user.uid,
+    //});
+
   }
 
   Future<String> _login(LoginData data) async {
-    return null;
     var code = await Future.any(
       [
         _loginUser(data),
@@ -55,29 +52,29 @@ class _LoginPageState extends State<LoginScreen> {
       case "success":
         return null;
       default:
+        print(code);
         return "Invalid Inputs";
     }
   }
 
   Future<String> _loginUser(data) async {
-    var userProvider = Provider.of<User>(context, listen: false);
+    //var userProvider = Provider.of<AppUser>(context, listen: false);
     //TODO if user not in database -> create him
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
         .then((_) async {
-     /* userProvider.getUserFromDB();
+     // userProvider.getUserFromDB();
 
-      await Provider.of<BoardPosts>(context, listen: false)
-          .connectToFirebase(Provider.of<User>(context, listen: false).id);
-*/
+      //await Provider.of<BoardPosts>(context, listen: false)
+        //  .connectToFirebase(Provider.of<User>(context, listen: false).id);
+
       return "success";
     }).catchError((error) => error.code);
-    //});
   }
 
   Future<String> _register(LoginData data) async {
-    return null;
     var code = await _registerUser(data);
+    print(code);
     switch (code) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
         return "Email already taken";
@@ -88,21 +85,24 @@ class _LoginPageState extends State<LoginScreen> {
       case "success":
         return null;
       default:
+        print(code);
         return "Invalid Input";
     }
   }
 
-  Future<String> _registerUser(data) {
+  Future _registerUser(data) {
+    print("lel");
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-        email: data.name, password: data.password)
-        .then((_) async {
+        email: data.name, password: data.password);
+       // .then((_) async {
+         // print("done");
           /*
       //Provider.of<User>(context, listen: false).isNew = true;
       await setupUserInFirebase(context);
       */
-      return "success";
-    }).catchError((error) => error.code);
+      //return "success";
+    //}).catchError((error) => error.code);
   }
 
   Future<String> _recoverPassword(String name) async {

@@ -71,14 +71,14 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10)),
 
-      /*child: ZefyrScaffold(
+      child: ZefyrScaffold(
         child: ZefyrEditor(
           padding: EdgeInsets.all(16),
           controller: _controller,
           focusNode: _focusNode,
           
         ),
-      ),*/
+      ),
     );
   }
 }

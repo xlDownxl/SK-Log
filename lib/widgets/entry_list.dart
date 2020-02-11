@@ -29,6 +29,7 @@ class _EntryListState extends State<EntryList> {
 
   @override
   Widget build(BuildContext context) {
+    analysen=Provider.of<Analysen>(context);
     Widget buildHeadline() {
       return Container(
         decoration: BoxDecoration(

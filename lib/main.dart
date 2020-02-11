@@ -8,12 +8,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
-import 'models/user.dart';
-import 'widgets/pairs.dart';
-import 'widgets/tags_screen.dart';
-import 'models/dummy.dart';
 
-void main() => runApp(MyApp());
+import 'package:firebase/firebase.dart';
+import 'package:firebase/firestore.dart' as fs;
+void main() {
+  initializeApp(
+      apiKey: "AIzaSyBGzeNqKSgLXQtmvX1AO7SVkSwVQ2WRVCw",
+      authDomain: "sk-log.firebaseapp.com",
+      databaseURL: "https://sk-log.firebaseio.com",
+      projectId: "sk-log",
+      storageBucket: "sk-log.appspot.com",
+      messagingSenderId: "1038850440158",
+      appId: "1:1038850440158:web:ec7ff3e3d18bf72661fb4f");
+
+  runApp(MyApp());
+}
 
 class MyApp extends StatefulWidget {
   @override
@@ -22,12 +31,12 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   FirebaseAuth auth = FirebaseAuth.instance;
-  User user = User();
+  AppUser user = AppUser();
   FirebaseUser fbUser;
 
   @override
   void initState() {
-    getUser().then((fbuser) {
+   /* getUser().then((fbuser) {
       if (fbuser != null) {
         print("fbuser not null");
         user.email = fbuser.email;
@@ -36,7 +45,7 @@ class _MyAppState extends State<MyApp> {
           user.username = snap.data["username"];
         });*/
       }
-    });
+    }); */
     super.initState();
   }
 
@@ -55,7 +64,7 @@ class _MyAppState extends State<MyApp> {
           create: (ctx) => UserTags(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => User(),
+          create: (ctx) => AppUser(),
         ),
       ],
       child: MaterialApp(
@@ -65,7 +74,7 @@ class _MyAppState extends State<MyApp> {
           accentColor: Colors.cyan,
           fontFamily: "OpenSans",
         ),
-        home: LoginScreen(),
+        home: HomeScreen(),
         routes: {
           LoginScreen.routeName: (ctx) => LoginScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),
