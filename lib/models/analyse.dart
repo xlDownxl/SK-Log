@@ -2,6 +2,7 @@ import 'pair_enum.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'package:enum_to_string/enum_to_string.dart';
 class Analyse with ChangeNotifier {
   String id;
   String link;
@@ -24,6 +25,19 @@ class Analyse with ChangeNotifier {
     title="Analyse Nr. 1";
   }
 
+  Analyse.fromMap(Map snapshot){
+    id = snapshot['id'] ?? '';
+    title = snapshot['title'] ?? '';
+    link = snapshot['link'] ?? '';
+    activeTags = snapshot['activeTags'] ?? [];
+    learning = snapshot['learning'] ?? "";
+    description = snapshot['description'] ?? "";
+    pair = EnumToString.fromString(PairEnum.values,snapshot['pair']) ?? null;
+    owner = snapshot["owner"] ?? "not implemented";
+    date = DateTime.fromMillisecondsSinceEpoch(
+        snapshot["date"]);
+  }
+
   Analyse.fromExample(){
     date=DateTime.now();
     link="https://www.tradingview.com/x/L8uGb5au/";
@@ -37,7 +51,7 @@ class Analyse with ChangeNotifier {
   }
 
   String toString(){
-    return "Analyse mit der ID: $id, Titel: $title, Pair: $pair., Tags: $activeTags";
+    return "ID: $id, Titel: $title, Pair: $pair, Tags: $activeTags, description: $description, learning: $learning, date: $date, link: $link";
   }
 
 }

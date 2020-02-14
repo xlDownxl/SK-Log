@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import '../screens/analyse_screen.dart';
 import '../models/analyse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-
+import 'dart:math';
 class ListElement extends StatelessWidget {
   final Analyse analyse;
   ListElement(this.analyse);
 
+
   double fSize = 20;
 
   String writeTags(tags) {
+
     StringBuffer builder = StringBuffer();
     for (String value in tags) {
       builder.write(value);
@@ -17,12 +19,12 @@ class ListElement extends StatelessWidget {
     }
     var result = builder.toString();
 
-    return result.substring(0, result.length - 1);
+    return result.substring(0, max(result.length - 1,0));
   }
 
   @override
   Widget build(BuildContext context) {
-    //print(analyse);
+    print(analyse);
     return Card(
       shape: RoundedRectangleBorder(
           side: BorderSide(color: Theme.of(context).accentColor),

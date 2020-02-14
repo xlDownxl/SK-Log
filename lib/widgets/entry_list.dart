@@ -23,6 +23,7 @@ class _EntryListState extends State<EntryList> {
   void initState() {
     super.initState();
     filter = widget.filter;
+    analysen.get(filter);
   }
 
   TextEditingController editingController = TextEditingController();
@@ -89,9 +90,7 @@ class _EntryListState extends State<EntryList> {
         ),
       );
     }
-
-    var filteredAnalysen = analysen.get(filter); //TODO rename
-
+    print(analysen.analysen.length);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       child: Column(
@@ -106,8 +105,8 @@ class _EntryListState extends State<EntryList> {
             child: Container(
               child: ListView.builder(
                 itemBuilder: (ctx, index) =>
-                    ListElement(filteredAnalysen[index]),
-                itemCount: filteredAnalysen.length,
+                    ListElement(analysen.analysen[index]),
+                itemCount: analysen.analysen.length,
               ),
             ),
           ),

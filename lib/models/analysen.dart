@@ -5,11 +5,14 @@ import 'pair_enum.dart';
 import 'analysen_filter.dart';
 import 'package:firebase/firebase.dart';
 import 'package:firebase/firestore.dart' as fs;
+import 'package:enum_to_string/enum_to_string.dart';
 class Analysen with ChangeNotifier {
   List<Analyse> analysen = [];
-
+  fs.Firestore store;
   Analysen(){
-    fs.Firestore store = firestore();
+    print("init");
+    store = firestore();
+    get(null);
   }
 
   // TODO create some dummy analysen im constructor und danach die filter logik
@@ -18,8 +21,27 @@ class Analysen with ChangeNotifier {
     return string1?.toLowerCase().contains(string2?.toLowerCase());
   }
 
-  List<Analyse> get(AnalyseFilter filter) {
+  void get(AnalyseFilter filter) {
     List<Analyse> result = [];
+    store = firestore();
+    fs.CollectionReference ref = store.collection("Analysen");
+
+   /* ref.get().then((snapshot){
+
+      snapshot.forEach((document){
+
+        result.add(Analyse.fromMap(document.data()));
+
+      });
+    }).then((_){
+      print(result);
+      notifyListeners();
+    });*/
+
+   //TODO index daten in firebase nach paar,
+    // TODO search function can filter locally on the data it already pulled
+    //TODO tags erstmal weniger priorität, nach performance gucken
+    //TODO für die zukunft: für die entry list nur die 3 infos laden, nur beim drauf klicken den rest nachladen
 
     if (filter.isPair) {
       result = analysen.where((analyse) {
@@ -47,7 +69,9 @@ class Analysen with ChangeNotifier {
         return equalsIgnoreCase(analyse.title, filter.word);
       }).toList();
     }
-    return result;
+   analysen=result;
+
+   notifyListeners();
   }
 
   String toString() {
@@ -75,7 +99,7 @@ class Analysen with ChangeNotifier {
       "tags":analyse.activeTags,
       "description":analyse.description,
       "learning":analyse.learning,
-      "pair":analyse.pair.toString(),
+      "pair":EnumToString.parse(analyse.pair),
       "date":analyse.date.millisecondsSinceEpoch,
 
     });
@@ -100,7 +124,7 @@ class Analysen with ChangeNotifier {
     fs.CollectionReference ref = store.collection("Analysen");
     ref.get().then((snapshot){
       snapshot.forEach((document){
-        document.data()["pair"]
+        print(document.data()["pair"]);
       });
     });
     return analysen;

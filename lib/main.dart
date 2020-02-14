@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => Analysen.getDummy(),
+          create: (ctx) => Analysen(),
         ),
         ChangeNotifierProvider(
           create: (ctx) => UserTags(),
