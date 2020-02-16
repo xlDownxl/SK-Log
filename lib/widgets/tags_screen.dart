@@ -5,42 +5,41 @@ import '../models/analysen_filter.dart';
 import 'tags_widget.dart';
 import 'package:provider/provider.dart';
 import 'tags_filter_widget.dart';
-class TagScreen extends StatefulWidget {
+import '../models/analysen.dart';
 
-  TagScreen({Key key}):super (key:key);
+class TagScreen extends StatefulWidget {
+  TagScreen({Key key}) : super(key: key);
   @override
   TagScreenState createState() => TagScreenState();
 }
 
 class TagScreenState extends State<TagScreen> {
-  List<String> filters=[];
+  List<String> filters = [];
 
-
-  void update(newList){
-    setState(() {
-     filters=newList;
-    });
+  void update(newList) {
+    print("newList");
+    print(newList);
+    Provider.of<Analysen>(context, listen: false)
+        .setFilter(AnalyseFilter.tagFilter(newList));
   }
 
   @override
   Widget build(BuildContext context) {
-
-
-    return  Container(
+    return Container(
       padding: EdgeInsets.symmetric(vertical: 20),
       child: LayoutBuilder(
-        builder:(ctx,constr)=> Column(children: <Widget>[
-          Container(
-            height: constr.maxHeight*0.15,
-
-            child: TagsFilterWidget(filters,update),
-          ),
-          Container(
-            height: constr.maxHeight*0.85,
-
-              child: EntryList(AnalyseFilter.tagFilter(filters),false),
-          ),
-        ],),
+        builder: (ctx, constr) => Column(
+          children: <Widget>[
+            Container(
+              height: constr.maxHeight * 0.15,
+              child: TagsFilterWidget(filters, update),
+            ),
+            Container(
+              height: constr.maxHeight * 0.85,
+              child: EntryList(AnalyseFilter.tagFilter(filters), false),
+            ),
+          ],
+        ),
       ),
     );
   }

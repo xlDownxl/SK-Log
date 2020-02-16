@@ -23,14 +23,13 @@ class _EntryListState extends State<EntryList> {
   void initState() {
     super.initState();
     filter = widget.filter;
-    analysen.get(filter);
   }
 
   TextEditingController editingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    analysen=Provider.of<Analysen>(context);
+    analysen = Provider.of<Analysen>(context);
     Widget buildHeadline() {
       return Container(
         decoration: BoxDecoration(
@@ -90,6 +89,7 @@ class _EntryListState extends State<EntryList> {
         ),
       );
     }
+
     print(analysen.analysen.length);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
