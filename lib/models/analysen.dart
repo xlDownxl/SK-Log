@@ -11,10 +11,9 @@ class Analysen with ChangeNotifier {
   List<Analyse> analysen = [];
   List<Analyse> allAnalysen = [];
   fs.Firestore store;
-  AnalyseFilter filter;
+  AnalyseFilter filter = AnalyseFilter.showAll();
 
   Analysen() {
-    print("init");
     store = firestore();
     store = firestore();
     fs.CollectionReference ref = store.collection("Analysen");
@@ -33,11 +32,15 @@ class Analysen with ChangeNotifier {
     return string1?.toLowerCase().contains(string2?.toLowerCase());
   }
 
+  void addSearch(String value) {
+    filter.addSearch(value);
+    get();
+  }
+
   void get() async {
     List<Analyse> result = [];
-    if (filter == null) {
+    if (filter.isShowAll) {
       analysen = allAnalysen;
-      notifyListeners();
     } else {
       //TODO index daten in firebase nach paar,
       // TODO search function can filter locally on the data it already pulled
@@ -48,7 +51,6 @@ class Analysen with ChangeNotifier {
         analysen = allAnalysen.where((analyse) {
           return analyse.pair == filter.pair;
         }).toList();
-        notifyListeners();
       } else if (filter.isTag) {
         if (filter.tags.isNotEmpty) {
           analysen = allAnalysen.where((analyse) {
@@ -56,28 +58,23 @@ class Analysen with ChangeNotifier {
               return analyse.activeTags.contains(tag);
             });
           }).toList();
-          notifyListeners();
         } else {
-          print("empty filterlist");
           analysen = allAnalysen;
-          notifyListeners();
         }
       }
     }
-/*
+
     if (filter.isSearch) {
-      print("filter aktiv");
-      result = result.where((analyse) {
+      analysen = analysen.where((analyse) {
         return equalsIgnoreCase(analyse.title, filter.word);
       }).toList();
     }
-    analysen = result;
 
-    notifyListeners();*/
+    notifyListeners();
   }
 
   void setFilter(AnalyseFilter filter) {
-    //andere logik
+    //check if filter the same
     this.filter = filter;
     get();
   }
@@ -97,8 +94,6 @@ class Analysen with ChangeNotifier {
   }
 
   void add(Analyse analyse) {
-    print("add getriggert");
-
     fs.Firestore store = firestore();
     fs.CollectionReference ref = store.collection("Analysen");
     ref.add({
@@ -111,22 +106,11 @@ class Analysen with ChangeNotifier {
       "date": analyse.date.millisecondsSinceEpoch,
     });
     analysen.add(analyse);
+    allAnalysen.add(analyse);
     notifyListeners();
   }
 
-  void Listen() {
-    fs.CollectionReference ref = store.collection("Analysen");
-
-    ref.onSnapshot.listen((querySnapshot) {
-      querySnapshot.forEach((document) {
-        print(document.data().keys);
-        print(document.data().values);
-        print(document.ref);
-      });
-    });
-  }
-
-  List<Analyse> getPair(PairEnum pair) {
+  /*List<Analyse> getPair(PairEnum pair) {
     fs.CollectionReference ref = store.collection("Analysen");
     ref.get().then((snapshot) {
       snapshot.forEach((document) {
@@ -134,7 +118,7 @@ class Analysen with ChangeNotifier {
       });
     });
     return analysen;
-  }
+  }*/
 
   List<Analyse> getTags(List<String> tags) {
     return analysen;
@@ -153,7 +137,7 @@ class Analysen with ChangeNotifier {
   }
 
   Analyse getAnalyse(String id) {
-    return analysen.firstWhere((analyse) {
+    return allAnalysen.firstWhere((analyse) {
       return analyse.id == id;
     });
   }

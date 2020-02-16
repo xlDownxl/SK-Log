@@ -50,12 +50,11 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   }
 
   void safe() {
-    if(analyse.pair==null){
+    if (analyse.pair == null) {
       setState(() {
-        error=true;
+        error = true;
       });
-
-    }else{
+    } else {
       descriptionKey.currentState.safeDocument();
       learningKey.currentState.safeDocument();
       if (id == null) {
@@ -63,10 +62,9 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       }
       Navigator.pop(context);
     }
-
   }
 
-  bool error=false;
+  bool error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -96,16 +94,16 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   onTap: safe,
                 ),*/
                 InkWell(
-                  child: Icon(Icons.delete,size:36),
-                  onTap: (
-
-                      ) {
-                    if(id!=null)
-                      Provider.of<Analysen>(context,listen: false).delete(id);
+                  child: Icon(Icons.delete, size: 36),
+                  onTap: () {
+                    if (id != null)
+                      Provider.of<Analysen>(context, listen: false).delete(id);
                     Navigator.pop(context);
                   },
                 ),
-                Flexible(child: Container(),),
+                Flexible(
+                  child: Container(),
+                ),
                 Flexible(
                   flex: 2,
                   child: Container(
@@ -130,7 +128,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                         //nur on submit ändern
                         setState(() {
                           analyse.title = val;
-                          print(analyse.title);
+
                           editText = false;
                         });
                       },
@@ -138,7 +136,9 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                     ),
                   ),
                 ),
-                Flexible(child: Container(),),
+                Flexible(
+                  child: Container(),
+                ),
               ],
             ),
             centerTitle: true,

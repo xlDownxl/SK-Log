@@ -74,10 +74,7 @@ class _EntryListState extends State<EntryList> {
           width: constraint.maxWidth * 0.25,
           child: TextFormField(
             onChanged: (value) {
-              print(value);
-              setState(() {
-                filter.addSearch(value);
-              });
+              analysen.addSearch(value);
             },
             controller: editingController,
             decoration: InputDecoration(
@@ -90,7 +87,7 @@ class _EntryListState extends State<EntryList> {
       );
     }
 
-    print(analysen.analysen.length);
+    //print(analysen.analysen.length);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       child: Column(
