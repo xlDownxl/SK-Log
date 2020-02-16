@@ -33,7 +33,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if (pairsPage.currentState != null) {
       pairsPage.currentState.resetPair(); //TODO fix when not existing
     }
-    Provider.of<Analysen>(context, listen: false).setFilter(null);
+    Provider.of<Analysen>(context, listen: false).setFilter(AnalyseFilter.showAll());
+    print("filter auf null");
   }
 
   @override

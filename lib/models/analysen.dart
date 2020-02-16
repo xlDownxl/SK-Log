@@ -15,12 +15,11 @@ class Analysen with ChangeNotifier {
 
   Analysen() {
     store = firestore();
-    store = firestore();
     fs.CollectionReference ref = store.collection("Analysen");
 
     ref.get().then((snapshot) {
       snapshot.forEach((document) {
-        allAnalysen.add(Analyse.fromMap(document.data()));
+        allAnalysen.add(Analyse.fromMap(document.data(),document.id));
       });
     }).then((_) {
       analysen = allAnalysen;
@@ -97,7 +96,7 @@ class Analysen with ChangeNotifier {
     fs.Firestore store = firestore();
     fs.CollectionReference ref = store.collection("Analysen");
     ref.add({
-      "id": ref.path,
+      "id": ref.id,
       "title": analyse.title,
       "tags": analyse.activeTags,
       "description": analyse.description,

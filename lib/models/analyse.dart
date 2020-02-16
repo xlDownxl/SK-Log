@@ -12,7 +12,7 @@ class Analyse with ChangeNotifier {
   String learning;
   PairEnum pair;
   String owner;
-  List<String> activeTags;
+  var activeTags;
   DateTime date;
 
   Analyse() {
@@ -21,18 +21,14 @@ class Analyse with ChangeNotifier {
     id = DateTime.now().toString();
     title = "Analysis $id";
     activeTags = [];
-    // description="Beschreibung";
-    //learning="Learnings";
     title = "Analyse Nr. 1";
   }
 
-  Analyse.fromMap(Map snapshot) {
-    id = snapshot['id'] ?? '';
+  Analyse.fromMap(Map snapshot,docID) {
+    id = docID;
     title = snapshot['title'] ?? '';
     link = snapshot['link'] ?? '';
-    print("Tags:");
-    print(snapshot['tags']);
-    activeTags = snapshot['activeTags'] ?? [];
+    activeTags = snapshot['tags'] ?? [];
     learning = snapshot['learning'] ?? "";
     description = snapshot['description'] ?? "";
     pair = EnumToString.fromString(PairEnum.values, snapshot['pair']) ?? null;

@@ -11,11 +11,13 @@ class TagsWidget extends StatefulWidget {
 }
 
 class _TagsWidgetState extends State<TagsWidget> {
-  var _tags = UserTags().getTags(); // TODO tags als provider
+
 
   @override
   Widget build(BuildContext context) {
     var analyse = Provider.of<Analyse>(context);
+    var userTags = Provider.of<UserTags>(context);
+    var _tags = userTags.getTags(); // TODO tags als provider
 
     return Padding(
       padding: EdgeInsets.only(top: 3),
@@ -26,20 +28,20 @@ class _TagsWidgetState extends State<TagsWidget> {
             spacing: 4,
             runSpacing: 3,
             textField: TagsTextField(
-              hintText: "Füge einen Tag hinzu",
+              hintText: "Füge einen Tag hinzu", //TODO größe nach unten anpassen
               textStyle: TextStyle(fontSize: 15),
               onSubmitted: (String str) {
                 // Add item to the data source.
                 setState(() {
                   // required
-                  _tags.add(str);
+                  userTags.add(str);
                 });
               },
             ),
             itemCount: _tags.length,
             itemBuilder: (int index) {
               return ItemTags(
-                //textScaleFactor: 2,
+
                 elevation: 3,
                 key: Key(index.toString()),
                 index: index,
@@ -60,8 +62,7 @@ class _TagsWidgetState extends State<TagsWidget> {
                 removeButton: ItemTagsRemoveButton(), // OR null,
                 onRemoved: () {
                   setState(() {
-                    _tags.removeAt(
-                        index); // does this really remove or do i need to init usertags alone
+                    userTags.delete(_tags[index]); // does this really remove or do i need to init usertags alone
                   });
                 },
               );
