@@ -8,7 +8,7 @@ import '../models/analysen_filter.dart';
 import 'package:provider/provider.dart';
 import '../models/dummy.dart';
 import '../models/analysen.dart';
-
+import '../models/user_tags.dart';
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
   @override
@@ -18,6 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<PairsState> pairsPage = GlobalKey<PairsState>();
   final GlobalKey<TagScreenState> tagsPage = GlobalKey<TagScreenState>();
+
 
   int mode = 0;
 
@@ -38,7 +39,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void initState() {
+    Provider.of<UserTags>(context,listen: false).init();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     var appBar = GradientAppBar(
       title: Text("Dein Journal"),
       gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),

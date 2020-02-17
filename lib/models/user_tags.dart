@@ -5,6 +5,7 @@ import 'package:firebase/firebase.dart';
 
 class UserTags with ChangeNotifier {
   fs.Firestore store;
+  String userId;
 
   List<String> _tags = [  //delete wenn inti steht
     "Priceaction",
@@ -18,6 +19,8 @@ class UserTags with ChangeNotifier {
     "Hedging"
   ];
 
+  UserTags(this.userId);
+
   void init(){
     _tags = [
       "Priceaction",
@@ -28,12 +31,13 @@ class UserTags with ChangeNotifier {
       "Sequenzpuzzle",
       "Trademanagement",
       "Risikomanagement",
-      "Hedging"
+      "Hedging",
     ];
     store = firestore();
+    print("init");
     fs.CollectionReference ref = store.collection("User");
-    ref.add({"userTags":_tags});
-    notifyListeners();
+    ref.doc(userId).set({"user_tags":_tags});
+   // notifyListeners();
   }
 
   List<String> getTags(){
@@ -43,26 +47,26 @@ class UserTags with ChangeNotifier {
   void add(String tag){
     store = firestore();
     fs.CollectionReference ref = store.collection("User");
-    ref.doc("userTags").update();
-
-    _tags.add(tag);
-    notifyListeners();
+    ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayUnion([tag])}).then((_){
+      _tags.add(tag);
+      notifyListeners();
+    });
   }
 
   void delete(String tag){
     store = firestore();
     fs.CollectionReference ref = store.collection("User");
-
-
-    _tags.remove(tag);
-    notifyListeners();
+    ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayRemove([tag])}).then((_){
+      _tags.remove(tag);
+      notifyListeners();
+    });
   }
 
-  void loadTags(String userId)async{
+  void loadTags()async{
     store = firestore();
     fs.CollectionReference ref = store.collection("User");
     var user_data = await ref.doc(userId).get();
-    _tags=user_data.data()["userTags"];
+    _tags=user_data.data()["user_tags"];
     notifyListeners();
   }
 }

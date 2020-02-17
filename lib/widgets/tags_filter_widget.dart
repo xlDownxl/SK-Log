@@ -3,16 +3,18 @@ import 'package:flutter_tags/tag.dart';
 import 'dart:math';
 import '../models/user_tags.dart';
 import 'tags_screen.dart';
-
+import 'package:provider/provider.dart';
+import '../models/analyse.dart';
 class TagsFilterWidget extends StatelessWidget {
   final List<String> filterTags;
   final Function update;
   TagsFilterWidget(this.filterTags,this.update);
 
-  var _tags=UserTags().getTags(); // TODO tags als provider
-
   @override
   Widget build(BuildContext context) {
+
+    var userTags = Provider.of<UserTags>(context);
+    var _tags = userTags.getTags(); // TODO tags als provider
 
     return SingleChildScrollView(
       child: Container(
@@ -20,11 +22,9 @@ class TagsFilterWidget extends StatelessWidget {
         child: Tags(
           spacing: 4,
           runSpacing: 3,
-
           itemCount: _tags.length,
           itemBuilder: (int index) {
             return ItemTags(
-
               elevation: 3,
               key: Key(index.toString()),
               index: index,
@@ -36,7 +36,6 @@ class TagsFilterWidget extends StatelessWidget {
               ),
               active: filterTags.contains(_tags[index]),
               onPressed: (item){
-
                 if(filterTags.contains(item.title)){
                   filterTags.remove(item.title);
                   update(filterTags);
@@ -44,19 +43,15 @@ class TagsFilterWidget extends StatelessWidget {
                   filterTags.add(item.title);
                   update(filterTags);
                 }
-                //print(filterTags.filters);
               },
               removeButton:
               ItemTagsRemoveButton(), // OR null,
               onRemoved: () {
-
-
                   _tags.removeAt(index);
                   if(filterTags.contains(_tags[index])){
                     filterTags.remove(_tags[index]);
                     update(filterTags);
                   }
-
               },
             );
           },

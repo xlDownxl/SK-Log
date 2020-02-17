@@ -74,6 +74,11 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
     else
       return Colors.white;
   }
+  
+  bool isToday(date){
+    var now=DateTime.now();
+    return date.day==now.day &&  date.month ==now.month && date.year ==now.year;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -209,7 +214,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                               child: FittedBox(
                                 child: Text(
                                   //TODO handle time
-                                  analyse.date == null
+                                  isToday(analyse.date)
                                       ? "Heute"
                                       : analyse.date.day.toString() +
                                           "." +

@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
           create: (ctx) => Analysen(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => UserTags(),
+          create: (ctx) => UserTags("userid"),
         ),
         ChangeNotifierProvider(
           create: (ctx) => AppUser(),
