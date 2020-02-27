@@ -24,7 +24,7 @@ class ListElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(analyse);
+
     return Card(
       shape: RoundedRectangleBorder(
           side: BorderSide(color: Theme.of(context).accentColor),

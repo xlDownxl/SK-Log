@@ -60,6 +60,9 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       if (id == null) {
         Provider.of<Analysen>(context, listen: false).add(analyse);
       }
+      else{
+        Provider.of<Analysen>(context, listen: false).update(analyse);
+      }
       Navigator.pop(context);
     }
   }
