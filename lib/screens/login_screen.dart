@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginScreen> {
   }
 
   Future<String> _login(LoginData data) async {
-    return null;
     var code = await Future.any(
       [
         _loginUser(data),
@@ -95,15 +94,15 @@ class _LoginPageState extends State<LoginScreen> {
     print("lel");
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-        email: data.name, password: data.password);
-       // .then((_) async {
+        email: data.name, password: data.password)
+        .then((_) async {
          // print("done");
           /*
       //Provider.of<User>(context, listen: false).isNew = true;
       await setupUserInFirebase(context);
       */
-      //return "success";
-    //}).catchError((error) => error.code);
+      return "success";
+    }).catchError((error) => error.code);
   }
 
   Future<String> _recoverPassword(String name) async {
