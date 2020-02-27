@@ -5,7 +5,7 @@ import '../models/user.dart';
 
 import 'package:flutter_login/flutter_login.dart';
 import 'home_screen.dart';
-
+import '../models/user_tags.dart';
 
 class LoginScreen extends StatefulWidget{
   static const routeName = "/login";
@@ -60,13 +60,14 @@ class _LoginPageState extends State<LoginScreen> {
   Future<String> _loginUser(data) async {
     //var userProvider = Provider.of<AppUser>(context, listen: false);
     //TODO if user not in database -> create him
+    print("lel");
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
-        .then((_) async {
-     // userProvider.getUserFromDB();
-
-      //await Provider.of<BoardPosts>(context, listen: false)
-        //  .connectToFirebase(Provider.of<User>(context, listen: false).id);
+        .then((user) {
+          print(user.user.uid);
+      Provider.of<AppUser>(context, listen: false).email = user.user.email;
+      Provider.of<AppUser>(context, listen: false).id = user.user.uid;
+      //Provider.of<UserTags>(context).setUserId(user.user.uid);
 
       return "success";
     }).catchError((error) => error.code);
@@ -90,19 +91,21 @@ class _LoginPageState extends State<LoginScreen> {
     }
   }
 
-  Future _registerUser(data) {
+  Future _registerUser(data) async{
     print("lel");
+
+    return Future.delayed(Duration(seconds: 1)).then((_){
+      return "success";
+    });
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
-        email: data.name, password: data.password);
-       // .then((_) async {
-         // print("done");
-          /*
-      //Provider.of<User>(context, listen: false).isNew = true;
-      await setupUserInFirebase(context);
-      */
-      //return "success";
-    //}).catchError((error) => error.code);
+        email: data.name, password: data.password).then((user){
+          print(user.user.email);
+           Provider.of<AppUser>(context, listen: false).email = user.user.email;
+           Provider.of<AppUser>(context, listen: false).id = user.user.uid;
+          //23 Provider.of<UserTags>(context,listen: false).init(user.user.uid);
+           return "success";
+    });
   }
 
   Future<String> _recoverPassword(String name) async {

@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../models/dummy.dart';
 import '../models/analysen.dart';
 import '../models/user_tags.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
   @override
@@ -37,11 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
     Provider.of<Analysen>(context, listen: false).setFilter(AnalyseFilter.showAll());
     print("filter auf null");
   }
+  void lel() async{
+  var a= await FirebaseAuth.instance.currentUser();
+  print(a.uid);
+}
 
   @override
   void initState() {
-    Provider.of<UserTags>(context,listen: false).init();
+
     super.initState();
+    lel();
   }
 
   @override

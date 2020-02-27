@@ -19,9 +19,19 @@ class UserTags with ChangeNotifier {
     "Hedging"
   ];
 
-  UserTags(this.userId);
+  UserTags();
 
-  void init(){
+  void setUserId(id)async{
+    this.userId=id;
+    store = firestore();
+    fs.CollectionReference ref = store.collection("User");
+    var user_data = await ref.doc(userId).get();
+    _tags=user_data.data()["user_tags"];
+    notifyListeners();
+  }
+
+  void init(id){
+    this.userId=id;
     _tags = [
       "Priceaction",
       "Sequenzen",
@@ -35,8 +45,14 @@ class UserTags with ChangeNotifier {
     ];
     store = firestore();
     print("init");
-    fs.CollectionReference ref = store.collection("User");
-    ref.doc(userId).set({"user_tags":_tags});
+    fs.CollectionReference ref = store.collection("ficker");
+    print(id);
+    ref.add({"user_tags":_tags}).then( // das dokument existiert nicht
+            (lel){print(lel);print("done");}
+            ).catchError((error) => error.code);
+    store.collection("User").doc(userId).set(
+        {"user_tags":_tags}).then((lel){print(lel);print("done");}
+        ).catchError((error) => error.code);
    // notifyListeners();
   }
 
@@ -56,10 +72,12 @@ class UserTags with ChangeNotifier {
   void delete(String tag){
     store = firestore();
     fs.CollectionReference ref = store.collection("User");
+    print(userId);
     ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayRemove([tag])}).then((_){
+      print("then");
       _tags.remove(tag);
       notifyListeners();
-    });
+    }).catchError((error) => error.code);
   }
 
   void loadTags()async{

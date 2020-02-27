@@ -12,7 +12,7 @@ import 'models/user_tags.dart';
 import 'package:firebase/firebase.dart';
 import 'package:firebase/firestore.dart' as fs;
 void main() {
-  initializeApp(
+ /* initializeApp(
       apiKey: "AIzaSyBGzeNqKSgLXQtmvX1AO7SVkSwVQ2WRVCw",
       authDomain: "sk-log.firebaseapp.com",
       databaseURL: "https://sk-log.firebaseio.com",
@@ -20,7 +20,7 @@ void main() {
       storageBucket: "sk-log.appspot.com",
       messagingSenderId: "1038850440158",
       appId: "1:1038850440158:web:ec7ff3e3d18bf72661fb4f");
-
+*/
   runApp(MyApp());
 }
 
@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
           create: (ctx) => Analysen(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => UserTags("userid"),
+          create: (ctx) => UserTags(), //TODO übergeben von firebase user id
         ),
         ChangeNotifierProvider(
           create: (ctx) => AppUser(),
@@ -74,7 +74,7 @@ class _MyAppState extends State<MyApp> {
           accentColor: Colors.cyan,
           fontFamily: "OpenSans",
         ),
-        home: LoginScreen(),
+        home: HomeScreen(),
         routes: {
           LoginScreen.routeName: (ctx) => LoginScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),

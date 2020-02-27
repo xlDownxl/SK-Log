@@ -62,6 +62,7 @@ class _TagsWidgetState extends State<TagsWidget> {
                 removeButton: ItemTagsRemoveButton(), // OR null,
                 onRemoved: () {
                   setState(() {
+                   // print("delete");
                     userTags.delete(_tags[index]); // does this really remove or do i need to init usertags alone
                   });
                 },
