@@ -87,10 +87,15 @@ class Analysen with ChangeNotifier {
   }
 
   void delete(id) {
-    analysen.removeWhere((analyse) {
-      return analyse.id == id;
+    fs.Firestore store = firestore();
+    fs.CollectionReference ref = store.collection("Analysen");
+    ref.doc(id).delete().then((_){
+     analysen.removeWhere((analyse) {
+        return analyse.id == id;
+      });
+     notifyListeners();
     });
-  }
+  } //TODO catcherror
 
   void add(Analyse analyse) {
     fs.Firestore store = firestore();
@@ -109,15 +114,25 @@ class Analysen with ChangeNotifier {
     notifyListeners();
   }
 
-  /*List<Analyse> getPair(PairEnum pair) {
+  void update(Analyse analyse) {
+    fs.Firestore store = firestore();
     fs.CollectionReference ref = store.collection("Analysen");
-    ref.get().then((snapshot) {
-      snapshot.forEach((document) {
-        print(document.data()["pair"]);
-      });
+    ref.doc(analyse.id).update(data: {
+      "id": ref.id,
+      "title": analyse.title,
+      "tags": analyse.activeTags,
+      "description": analyse.description,
+      "learning": analyse.learning,
+      "pair": EnumToString.parse(analyse.pair),
+      "date": analyse.date.millisecondsSinceEpoch,
     });
-    return analysen;
-  }*/
+
+    analysen.removeWhere((anal){
+      return anal.id==analyse.id;
+    });
+    allAnalysen.add(analyse);
+    notifyListeners();
+  }
 
   List<Analyse> getTags(List<String> tags) {
     return analysen;
