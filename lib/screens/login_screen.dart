@@ -32,6 +32,7 @@ class _LoginPageState extends State<LoginScreen> {
   }
 
   Future<String> _login(LoginData data) async {
+    return null;
     var code = await Future.any(
       [
         _loginUser(data),
