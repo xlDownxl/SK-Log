@@ -12,12 +12,24 @@ class Analysen with ChangeNotifier {
   List<Analyse> allAnalysen = [];
   fs.Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
+  String userId;
 
-  Analysen() {
+  Analysen(){}
+
+  void reset(){
+    analysen = [];
+    allAnalysen = [];
+    userId="";
+    filter = AnalyseFilter.showAll();
+  }
+
+  void loadWithId(String id, bool isNew){
+    //TODO isnew=true implementation
+    this.userId=id;
     store = firestore();
-    fs.CollectionReference ref = store.collection("Analysen");
+    fs.CollectionReference ref = store.collection("Users");
 
-    ref.get().then((snapshot) {
+    ref.doc(userId).collection("analysen").get().then((snapshot) {
       snapshot.forEach((document) {
         allAnalysen.add(Analyse.fromMap(document.data(),document.id));
       });
@@ -88,18 +100,21 @@ class Analysen with ChangeNotifier {
 
   void delete(id) {
     fs.Firestore store = firestore();
-    fs.CollectionReference ref = store.collection("Analysen");
+    var ref = store.collection("Users").doc(userId).collection("analysen");
     ref.doc(id).delete().then((_){
      analysen.removeWhere((analyse) {
         return analyse.id == id;
       });
+     allAnalysen.removeWhere((analyse) {
+       return analyse.id == id;
+     });
      notifyListeners();
     });
   } //TODO catcherror
 
   void add(Analyse analyse) {
     fs.Firestore store = firestore();
-    fs.CollectionReference ref = store.collection("Analysen");
+    var ref = store.collection("Users").doc(userId).collection("analysen");
     ref.add({
       "id": ref.id,
       "title": analyse.title,
@@ -109,14 +124,20 @@ class Analysen with ChangeNotifier {
       "pair": EnumToString.parse(analyse.pair),
       "date": analyse.date.millisecondsSinceEpoch,
     });
-    analysen.add(analyse);
-    allAnalysen.add(analyse);
+    print(analysen.length);
+    print(allAnalysen.length);
+    print(analyse);
+
+    allAnalysen.add(analyse); //nur ein pointer: analysen liste wird auch geaddet
+    print(analysen.length);
+    print(allAnalysen.length);
     notifyListeners();
   }
 
   void update(Analyse analyse) {
+    print("update");
     fs.Firestore store = firestore();
-    fs.CollectionReference ref = store.collection("Analysen");
+    var ref = store.collection("Users").doc(userId).collection("analysen");
     ref.doc(analyse.id).update(data: {
       "id": ref.id,
       "title": analyse.title,
@@ -127,7 +148,7 @@ class Analysen with ChangeNotifier {
       "date": analyse.date.millisecondsSinceEpoch,
     });
 
-    analysen.removeWhere((anal){
+    allAnalysen.removeWhere((anal){
       return anal.id==analyse.id;
     });
     allAnalysen.add(analyse);

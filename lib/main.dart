@@ -30,28 +30,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  FirebaseAuth auth = FirebaseAuth.instance;
+
   AppUser user = AppUser();
-  FirebaseUser fbUser;
-
-  @override
-  void initState() {
-   /* getUser().then((fbuser) {
-      if (fbuser != null) {
-        print("fbuser not null");
-        user.email = fbuser.email;
-        user.id = fbuser.uid;
-        /* Firestore.instance.collection("User_Data").document(fbUser.uid).get().then((snap){
-          user.username = snap.data["username"];
-        });*/
-      }
-    }); */
-    super.initState();
-  }
-
-  Future<FirebaseUser> getUser() async {
-    return await auth.currentUser();
-  }
 
   @override
   Widget build(BuildContext context) {

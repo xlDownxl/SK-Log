@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    Provider.of<UserTags>(context,listen: false).init();
+
     super.initState();
   }
 

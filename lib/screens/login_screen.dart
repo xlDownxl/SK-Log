@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
-
+import '../models/user_tags.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'home_screen.dart';
-
+import '../models/analysen.dart';
 
 class LoginScreen extends StatefulWidget{
   static const routeName = "/login";
@@ -14,22 +14,11 @@ class LoginScreen extends StatefulWidget{
   _LoginPageState createState() => new _LoginPageState();
 }
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
 class _LoginPageState extends State<LoginScreen> {
   var fbUser;
   var init = true;
-
-  Future setupUserInFirebase(context) async {
-    var user = await FirebaseAuth.instance.currentUser();
-    Provider.of<AppUser>(context, listen: false).email = user.email;
-    Provider.of<AppUser>(context, listen: false).id = user.uid;
-
-   // return Firestore.instance.collection("User_Data").document(user.uid).setData({
-    //  "email": user.email,
-
-      //"id": user.uid,
-    //});
-
-  }
 
   Future<String> _login(LoginData data) async {
     var code = await Future.any(
@@ -58,16 +47,28 @@ class _LoginPageState extends State<LoginScreen> {
   }
 
   Future<String> _loginUser(data) async {
-    //var userProvider = Provider.of<AppUser>(context, listen: false);
+
     //TODO if user not in database -> create him
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
-        .then((_) async {
-     // userProvider.getUserFromDB();
+        .then((user) async {
+      Provider.of<Analysen>(context,listen: false).loadWithId(user.user.uid,false);
+      Provider.of<UserTags>(context,listen: false).loadTags(user.user.uid);
+      Provider.of<AppUser>(context,listen: false).email=user.user.email;
+      Provider.of<AppUser>(context,listen: false).id=user.user.uid;
+      return "success";
+    }).catchError((error) => error.code);
+  }
 
-      //await Provider.of<BoardPosts>(context, listen: false)
-        //  .connectToFirebase(Provider.of<User>(context, listen: false).id);
-
+  Future _registerUser(data) {
+    return FirebaseAuth.instance
+        .createUserWithEmailAndPassword(
+        email: data.name, password: data.password)
+        .then((user) async {
+      Provider.of<Analysen>(context,listen: false).loadWithId(user.user.uid,true);
+      Provider.of<UserTags>(context,listen: false).init(user.user.uid);
+      Provider.of<AppUser>(context,listen: false).email=user.user.email;
+      Provider.of<AppUser>(context,listen: false).id=user.user.uid;
       return "success";
     }).catchError((error) => error.code);
   }
@@ -90,25 +91,30 @@ class _LoginPageState extends State<LoginScreen> {
     }
   }
 
-  Future _registerUser(data) {
-    print("lel");
-    return FirebaseAuth.instance
-        .createUserWithEmailAndPassword(
-        email: data.name, password: data.password)
-        .then((_) async {
-         // print("done");
-          /*
-      //Provider.of<User>(context, listen: false).isNew = true;
-      await setupUserInFirebase(context);
-      */
-      return "success";
-    }).catchError((error) => error.code);
-  }
 
   Future<String> _recoverPassword(String name) async {
     print('Name: $name');
     return Future.delayed(Duration(seconds: 1)).then((_) {
       return "Not implemented yet";
+    });
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    _auth.onAuthStateChanged.listen((data){
+      if(data!=null){
+        Provider.of<Analysen>(context).loadWithId(data.uid, false);
+        Provider.of<UserTags>(context,listen: false).loadTags(data.uid);
+        Provider.of<AppUser>(context,listen: false).email=data.email;
+        Provider.of<AppUser>(context,listen: false).id=data.uid;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (ctx) => HomeScreen(),
+          ),
+        );
+      }
     });
   }
 

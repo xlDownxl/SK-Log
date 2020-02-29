@@ -7,6 +7,7 @@ import 'pairs.dart';
 import 'tags_screen.dart';
 import '../models/dummy.dart';
 import '../models/analysen.dart';
+import '../models/user.dart';
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
   final Function reset;
@@ -20,6 +21,9 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
 
   @override
   Widget build(BuildContext context) {
+
+    var analysen=Provider.of<Analysen>(context,listen: false);
+    var user=Provider.of<AppUser>(context,listen: false);
 
     Widget buildEntry(tag,mode){
       return Container(
@@ -87,6 +91,8 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
           InkWell(
             onTap: (){
               FirebaseAuth.instance.signOut();
+              analysen.reset();  
+              user.reset();
               Navigator.pushReplacementNamed(context, LoginScreen.routeName);
               },
             child: Row(

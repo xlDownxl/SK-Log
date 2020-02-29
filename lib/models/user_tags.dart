@@ -21,7 +21,8 @@ class UserTags with ChangeNotifier {
 
   UserTags(this.userId);
 
-  void init(){
+  void init(id){
+    this.userId=id;
     _tags = [
       "Priceaction",
       "Sequenzen",
@@ -44,6 +45,7 @@ class UserTags with ChangeNotifier {
     return _tags;
   }
 
+
   void add(String tag){
     store = firestore();
     fs.CollectionReference ref = store.collection("User");
@@ -62,7 +64,7 @@ class UserTags with ChangeNotifier {
     });
   }
 
-  void loadTags()async{
+  void loadTags(userId)async{
     store = firestore();
     fs.CollectionReference ref = store.collection("User");
     var user_data = await ref.doc(userId).get();

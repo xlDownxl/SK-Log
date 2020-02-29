@@ -8,6 +8,15 @@ class AppUser with ChangeNotifier {
   String email;
   String id;
   FirebaseUser fbUser;
+
+
+  void reset(){
+    email=null;
+    id=null;
+    fbUser=null;
+  }
+
+
 /*
   void setUsername(String username) async {
     await Firestore.instance.collection("User_Data").document(id).updateData({"username": username}).then((_) async {
