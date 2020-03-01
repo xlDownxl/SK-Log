@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
-
+import 'screens/login_screen_new.dart';
 import 'package:firebase/firebase.dart';
 import 'package:firebase/firestore.dart' as fs;
 void main() {
@@ -54,11 +54,12 @@ class _MyAppState extends State<MyApp> {
           accentColor: Colors.cyan,
           fontFamily: "OpenSans",
         ),
-        home: LoginScreen(),
+        home: LoginScreenNew(),
         routes: {
           LoginScreen.routeName: (ctx) => LoginScreen(),
           HomeScreen.routeName: (ctx) => HomeScreen(),
           AnalyseScreen.routeName: (ctx) => AnalyseScreen(),
+          LoginScreenNew.routeName: (ctx) => LoginScreenNew(),
         },
       ),
     );

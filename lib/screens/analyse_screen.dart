@@ -147,7 +147,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
             centerTitle: true,
           ),
           body: Container(
-            padding: EdgeInsets.all(20),
+            padding: EdgeInsets.only(top: 20,right: 20,left: 20,bottom: 0),
             child: LayoutBuilder(
               builder: (ctx, constr) => Row(
                 children: <Widget>[

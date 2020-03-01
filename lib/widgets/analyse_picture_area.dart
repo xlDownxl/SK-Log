@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../models/analyse.dart';
 import '../models/pair_enum.dart';
 import '../models/pair_list.dart';
+import 'package:responsive_grid/responsive_grid.dart';
 
 class AnalysePictureArea extends StatefulWidget {
   final bool showError;
@@ -37,28 +38,33 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
     });
   }
 
-  List buildPairs() {
+  List<Widget> buildPairs(constraints) {
+    var height=constraints.maxHeight;
+    var width=constraints.maxWidth;
     var pairs = PairList.pairs;
-    var pairWidgets = [];
+    List<Widget> pairWidgets = [];
     pairs.forEach((pair) {
-      pairWidgets.add(Card(
-        color: choseColor(pair),
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30)),
-          //side: BorderSide(color: Colors.white)
-        ),
-        child: InkWell(
-          onTap: () {
-            setState(() {
-              analyse.pair = pair;
-            });
-          },
-          child: Center(
-            child: FittedBox(
-              child: Text(
-                pair.toString().split('.')[1],
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+      pairWidgets.add(Container(
+        //height: height/3-15,
+        child: Card(
+          color: choseColor(pair),
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(30)),
+            //side: BorderSide(color: Colors.white)
+          ),
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                analyse.pair = pair;
+              });
+            },
+            child: Center(
+              child: FittedBox(
+                child: Text(
+                  pair.toString().split('.')[1],
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
+                ),
               ),
             ),
           ),
@@ -84,11 +90,23 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
   Widget build(BuildContext context) {
     analyse = Provider.of<Analyse>(context);
 
+
+
     return Column(
       children: <Widget>[
         Flexible(
           flex: 4,
-          child: GridView(
+          child:  LayoutBuilder(
+
+            builder:(ctx,constraints)=> ResponsiveGridList(
+                desiredItemWidth: (constraints.maxHeight/3)-5,
+                minSpacing: 5,
+                squareCells: true,
+                children: buildPairs(constraints),
+            ),
+          ),
+
+          /*GridView(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 15,
                 childAspectRatio: 2 / 2,
@@ -97,8 +115,9 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
               ),
               children: <Widget>[
                 ...buildPairs(),
-              ]),
+              ]),*/
         ),
+
         Flexible(
           child: LayoutBuilder(
             builder: (ctx, constraints) => analyse.link != ""
@@ -240,17 +259,10 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                       color: Theme.of(context).primaryColor,
                     ),
                   ),
-                  // Container(
-                  //  width: constraints.maxWidth*0.1,
-                  //),
                 ],
               ),
             ),
           ),
-        ),
-        Flexible(
-          child: SizedBox(),
-          fit: FlexFit.loose,
         ),
       ],
     );

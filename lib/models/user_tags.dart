@@ -7,7 +7,7 @@ class UserTags with ChangeNotifier {
   fs.Firestore store;
   String userId;
 
-  List<String> _tags = [  //delete wenn inti steht
+  List _tags = [  //delete wenn inti steht
     "Priceaction",
     "Sequenzen",
     "TP",
@@ -36,19 +36,18 @@ class UserTags with ChangeNotifier {
     ];
     store = firestore();
     print("init");
-    fs.CollectionReference ref = store.collection("User");
+    fs.CollectionReference ref = store.collection("Users");
     ref.doc(userId).set({"user_tags":_tags});
    // notifyListeners();
   }
 
-  List<String> getTags(){
+  List getTags(){
     return _tags;
   }
 
-
   void add(String tag){
     store = firestore();
-    fs.CollectionReference ref = store.collection("User");
+    fs.CollectionReference ref = store.collection("Users");
     ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayUnion([tag])}).then((_){
       _tags.add(tag);
       notifyListeners();
@@ -56,8 +55,9 @@ class UserTags with ChangeNotifier {
   }
 
   void delete(String tag){
+    print("delete getriggert");
     store = firestore();
-    fs.CollectionReference ref = store.collection("User");
+    fs.CollectionReference ref = store.collection("Users");
     ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayRemove([tag])}).then((_){
       _tags.remove(tag);
       notifyListeners();
@@ -66,7 +66,7 @@ class UserTags with ChangeNotifier {
 
   void loadTags(userId)async{
     store = firestore();
-    fs.CollectionReference ref = store.collection("User");
+    fs.CollectionReference ref = store.collection("Users");
     var user_data = await ref.doc(userId).get();
     _tags=user_data.data()["user_tags"];
     notifyListeners();

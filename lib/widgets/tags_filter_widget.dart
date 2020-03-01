@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/tag.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'dart:math';
 import '../models/user_tags.dart';
 import 'tags_screen.dart';
@@ -45,14 +45,16 @@ class TagsFilterWidget extends StatelessWidget {
                 }
               },
               removeButton:
-              ItemTagsRemoveButton(), // OR null,
-              onRemoved: () {
+              ItemTagsRemoveButton(
+                onRemoved: () {
                   _tags.removeAt(index);
                   if(filterTags.contains(_tags[index])){
                     filterTags.remove(_tags[index]);
                     update(filterTags);
                   }
-              },
+                  return true;
+                },
+              ), // OR null,
             );
           },
         ),

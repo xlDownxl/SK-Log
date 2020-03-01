@@ -21,17 +21,13 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
 
   @override
   Widget build(BuildContext context) {
-
     var analysen=Provider.of<Analysen>(context,listen: false);
     var user=Provider.of<AppUser>(context,listen: false);
 
     Widget buildEntry(tag,mode){
       return Container(
-
         child: FlatButton(
           onPressed: (){
-
-
             widget.changeMode(mode);
             widget.reset();
             },
@@ -59,7 +55,6 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
               colors: [
                 Colors.cyan,
                 Colors.indigo,
-
               ])),
       padding: const EdgeInsets.only(top:20.0,left: 10,right: 10,bottom: 20),
       child: Column(
@@ -76,22 +71,19 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
           SizedBox(height: 10,),
           InkWell(
             onTap: (){
-              //Provider.of<Pair>(context,listen: false).pair=null;
               Navigator.pushNamed(context, AnalyseScreen.routeName);
               },
             child: CircleAvatar(
               radius: 30,
               backgroundColor: Theme.of(context).primaryColor,
-
                 child: Center(child: Icon(Icons.add,color: Colors.white,size: 50,)),
-              //decoration: BoxDecoration(borderRadius: BorderRadius.circular(30)),
             ),
           ),
           Expanded(child: SizedBox(),),
           InkWell(
             onTap: (){
               FirebaseAuth.instance.signOut();
-              analysen.reset();  
+              analysen.reset();
               user.reset();
               Navigator.pushReplacementNamed(context, LoginScreen.routeName);
               },
