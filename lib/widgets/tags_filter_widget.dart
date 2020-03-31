@@ -5,11 +5,16 @@ import '../models/user_tags.dart';
 import 'tags_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/analyse.dart';
-class TagsFilterWidget extends StatelessWidget {
+class TagsFilterWidget extends StatefulWidget {
   final List<String> filterTags;
   final Function update;
   TagsFilterWidget(this.filterTags,this.update);
 
+  @override
+  _TagsFilterWidgetState createState() => _TagsFilterWidgetState();
+}
+
+class _TagsFilterWidgetState extends State<TagsFilterWidget> {
   @override
   Widget build(BuildContext context) {
 
@@ -34,27 +39,29 @@ class TagsFilterWidget extends StatelessWidget {
                 min(14, max((25 - _tags.length), 21))
                     .toDouble(),
               ),
-              active: filterTags.contains(_tags[index]),
+              active: widget.filterTags.contains(_tags[index]),
               onPressed: (item){
-                if(filterTags.contains(item.title)){
-                  filterTags.remove(item.title);
-                  update(filterTags);
+                if(widget.filterTags.contains(item.title)){
+                  widget.filterTags.remove(item.title);
+                  widget.update(widget.filterTags);
                 }else{
-                  filterTags.add(item.title);
-                  update(filterTags);
+                  widget.filterTags.add(item.title);
+                  widget.update(widget.filterTags);
                 }
               },
-              removeButton:
+             /* removeButton:
               ItemTagsRemoveButton(
                 onRemoved: () {
+                  setState(() {
                   _tags.removeAt(index);
-                  if(filterTags.contains(_tags[index])){
-                    filterTags.remove(_tags[index]);
-                    update(filterTags);
+                  if(widget.filterTags.contains(_tags[index])){
+                    widget.filterTags.remove(_tags[index]);
+                    widget.update(widget.filterTags);
                   }
+                  });
                   return true;
                 },
-              ), // OR null,
+              ),*/ // OR null,
             );
           },
         ),

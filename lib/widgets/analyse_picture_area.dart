@@ -97,10 +97,9 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
         Flexible(
           flex: 4,
           child:  LayoutBuilder(
-
             builder:(ctx,constraints)=> ResponsiveGridList(
-                desiredItemWidth: (constraints.maxHeight/3)-5,
-                minSpacing: 5,
+                desiredItemWidth: (constraints.maxWidth)/13,
+                minSpacing: 0,
                 squareCells: true,
                 children: buildPairs(constraints),
             ),

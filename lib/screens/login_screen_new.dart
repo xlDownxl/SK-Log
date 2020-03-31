@@ -7,6 +7,10 @@ import 'package:flutter_login/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
 import '../widgets/LoginScreenWidgets/logo.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:math';
 
 class LoginScreenNew extends StatefulWidget{
   static const routeName = "/login_new";
@@ -95,9 +99,11 @@ class _LoginPageState extends State<LoginScreenNew> {
 
   Future<String> _recoverPassword(String name) async {
     print('Name: $name');
-    return Future.delayed(Duration(seconds: 1)).then((_) {
-      return "Not implemented yet";
-    });
+    return FirebaseAuth.instance.sendPasswordResetEmail(email: name).then((_){
+      return null;
+    }).catchError((error) => error.code);
+
+
   }
 
 
@@ -119,35 +125,105 @@ class _LoginPageState extends State<LoginScreenNew> {
     });
   }
 
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget buildLink(String description, Function onClick){
+    return InkWell(
+      onHover: (hover){}, //TODO mach variable für shadow hinter der ganzen row
+      child: Row(
+        children: <Widget>[
+          Flexible(child: LayoutBuilder(builder:(ctx,constraints)=> Icon(MdiIcons.telegram,color: Colors.white,size: min(constraints.maxWidth,constraints.maxHeight),)),
+          flex: 1,),
+          Flexible(child: SizedBox(width: 20,)),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 10,
+            child: Container(
+
+              child: AutoSizeText(
+                description,
+                style: TextStyle(
+                  fontSize: 40,fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),),
+            ),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      ),
+      onTap: (){
+        onClick();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
       body: Container(
-        color: Colors.blue[100],
+
+        decoration: BoxDecoration(image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage("assets/bg-01.jpg")
+        )),
         child: Row(children: <Widget>[
           Flexible(
             fit: FlexFit.tight,
-            flex: 4,
-            child: Column(children: <Widget>[
-            Expanded(child: Container(child: Logo(),),),
-            Expanded(child: Container(child:
-              Text("Welcome to SK!Log",style: TextStyle(
-                fontSize: 30,fontWeight: FontWeight.bold,
-              ),)
-              ,),),
-            Expanded(child: Container(child: Text("To request an account, just text us"),),),
-            Expanded(child: Container(child: Text("Telegram: @xlDownxl"),),),
-            Expanded(child: Container(child:
-            InkWell(child:
-            CircleAvatar(
-              radius: 16,
-              child: Image.asset("assets/telegram.png"),
+            flex: 5,
+            child: Container(
+              padding: MediaQuery.of(context).size.width>1000?EdgeInsets.all(80):EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                 // Expanded(child: Container(child: Logo(),),),
+                  Flexible(child: Container(child:
+                  Center(
+                    child: AutoSizeText("Wilkommen zu SK!LOG \n",
+                      //textAlign: TextAlign.right,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 42,fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),),
+                  ),
+                  ),),
+                  Flexible(flex: 2,
+                    child: Container(child:
+                  AutoSizeText(
+                      "Dem Dokumentationstool für den Langfristigen Erfolg im Trading.",
+                    //minFontSize: 20,
+
+                    maxLines: 3,
+                  style: TextStyle(
+                  fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),),
+                  ),),
+                 // SizedBox(height: 20,),
+                  Flexible(child: Center(child: Logo(),),),
+
+              SizedBox(height: 20,),
+                  Flexible(
+                    child: buildLink("Tritt der Community bei", (){_launchURL("https://t.me/SKTRoom");}),
+                  ),
+                  Flexible(
+                    child: buildLink("Beantrage einen SK!Log Account", (){_launchURL("https://t.me/xlDownxl");}),
+                  ),
+                  Flexible(
+                    child: buildLink("Technische Fragen", (){_launchURL("https://t.me/xlDownxl");}),
+                  ),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+              ),
             ),),
-            ),),
-          ],
-          crossAxisAlignment: CrossAxisAlignment.center,
-          ),),
 
           Flexible(
             fit: FlexFit.tight,
@@ -155,7 +231,8 @@ class _LoginPageState extends State<LoginScreenNew> {
             child:FlutterLogin(   //TODO email und passwort validator in flutter_login wieder aktivieren
             //messages: LoginMessages(loginButton: "LEL"),
             title: '',
-            //logo: 'assets/images/Download.jpeg',
+            //theme: LoginTheme(accentColor: Colors.transparent,pageColorLight: Colors.transparent),
+            //logo: 'assets/SKLogo_Web.png',
             onLogin: _login,
             onSignup: _register,
             onSubmitAnimationCompleted: () {

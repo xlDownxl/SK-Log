@@ -15,7 +15,7 @@ class ListElement extends StatelessWidget {
     StringBuffer builder = StringBuffer();
     for (String value in tags) {
       builder.write(value);
-      builder.write(",");
+      builder.write(", ");
     }
     var result = builder.toString();
 
@@ -39,6 +39,7 @@ class ListElement extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Flexible(
+                flex: 2,
                 child: Center(
                     child: Text(
                   analyse.title,
@@ -48,6 +49,7 @@ class ListElement extends StatelessWidget {
                 fit: FlexFit.tight,
               ),
               Flexible(
+                flex: 1,
                 child: Center(
                     child: Text(
                   analyse.pair.toString().split('.')[1],
@@ -56,10 +58,20 @@ class ListElement extends StatelessWidget {
                 fit: FlexFit.tight,
               ),
               Flexible(
+                flex: 1,
+                child: Center(
+                    child: Text(
+                      "${analyse.date.day}.${analyse.date.month}.${analyse.date.year}",
+                      style: TextStyle(fontSize: fSize),
+                    )),
+                fit: FlexFit.tight,
+              ),
+              Flexible(
+                flex: 3,
                 child: Center(
                   child: AutoSizeText(
                     writeTags(analyse.activeTags),
-                    maxLines: 3,
+                    maxLines: 2,
                     style: TextStyle(color: Colors.blueGrey, fontSize: fSize),
                   ),
                 ),

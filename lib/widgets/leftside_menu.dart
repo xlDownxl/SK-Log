@@ -8,6 +8,8 @@ import 'tags_screen.dart';
 import '../models/dummy.dart';
 import '../models/analysen.dart';
 import '../models/user.dart';
+import '../screens/login_screen_new.dart';
+
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
   final Function reset;
@@ -85,7 +87,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
               FirebaseAuth.instance.signOut();
               analysen.reset();
               user.reset();
-              Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+              Navigator.pushReplacementNamed(context, LoginScreenNew.routeName);
               },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

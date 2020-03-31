@@ -135,7 +135,7 @@ class Analysen with ChangeNotifier {
   }
 
   void update(Analyse analyse) {
-    print("update");
+
     fs.Firestore store = firestore();
     var ref = store.collection("Users").doc(userId).collection("analysen");
     ref.doc(analyse.id).update(data: {

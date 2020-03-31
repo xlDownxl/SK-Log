@@ -38,6 +38,7 @@ class _EntryListState extends State<EntryList> {
         child: Row(
           children: <Widget>[
             Flexible(
+              flex: 2,
               child: Center(
                   child: Text(
                 "Analyse Title",
@@ -46,6 +47,7 @@ class _EntryListState extends State<EntryList> {
               fit: FlexFit.tight,
             ),
             Flexible(
+              flex: 1,
               child: Center(
                   child: Text("Paar",
                       style: TextStyle(
@@ -53,6 +55,15 @@ class _EntryListState extends State<EntryList> {
               fit: FlexFit.tight,
             ),
             Flexible(
+              flex: 1,
+              child: Center(
+                  child: Text("Datum",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20))),
+              fit: FlexFit.tight,
+            ),
+            Flexible(
+              flex: 3,
               child: Center(
                   child: Text("Tags",
                       style: TextStyle(
@@ -93,7 +104,7 @@ class _EntryListState extends State<EntryList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          widget.buildSearchField ? buildSearchfield() : Container(),
+          widget.buildSearchField ? buildSearchfield() : SizedBox(height: 20,),
           buildHeadline(),
           SizedBox(
             height: 10,
