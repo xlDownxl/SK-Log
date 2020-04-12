@@ -6,9 +6,14 @@ import '../models/user_tags.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
+import '../widgets/LoginScreenWidgets/logo.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:math';
 
-class LoginScreen extends StatefulWidget{
-  static const routeName = "/login";
+class LoginScreenNew extends StatefulWidget{
+  static const routeName = "/login_new";
 
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -16,7 +21,7 @@ class LoginScreen extends StatefulWidget{
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
-class _LoginPageState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginScreenNew> {
   var fbUser;
   var init = true;
 
@@ -31,18 +36,16 @@ class _LoginPageState extends State<LoginScreen> {
     );
     switch (code) {
       case "ERROR_INVALID_EMAIL":
-        return "Invalid Email";
+        return "Ungültige Email";
       case "ERROR_USER_NOT_FOUND":
-        return "User note found";
-      case "ERROR_INVALID_EMAIL":
-        return "Invalid Email";
+        return "User existiert nicht";
       case "ERROR_WRONG_PASSWORD":
-        return "Wrong Passord";
+        return "Überprüfe dein Passwort";
       case "success":
         return null;
       default:
         print(code);
-        return "Invalid Inputs";
+        return "Ungültige Eingaben";
     }
   }
 
@@ -78,25 +81,27 @@ class _LoginPageState extends State<LoginScreen> {
     print(code);
     switch (code) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
-        return "Email already taken";
+        return "Email schon vergeben";
       case "ERROR_INVALID_EMAIL":
-        return "Invalid Email";
+        return "Ungültige Email";
       case "ERROR_WEAK_PASSWORD":
-        return "Password should be min. 6 Char.";
+        return "Passwort sollte min. 6 Zeichen haben";
       case "success":
         return null;
       default:
         print(code);
-        return "Invalid Input";
+        return "Falsche Eingaben";
     }
   }
 
 
   Future<String> _recoverPassword(String name) async {
     print('Name: $name');
-    return Future.delayed(Duration(seconds: 1)).then((_) {
-      return "Not implemented yet";
-    });
+    return FirebaseAuth.instance.sendPasswordResetEmail(email: name).then((_){
+      return null;
+    }).catchError((error) => error.code);
+
+
   }
 
 
@@ -118,22 +123,147 @@ class _LoginPageState extends State<LoginScreen> {
     });
   }
 
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget buildLink(String description, Function onClick){
+    return InkWell(
+      onHover: (hover){}, //TODO mach variable für shadow hinter der ganzen row
+      child: Row(
+        children: <Widget>[
+          Flexible(child: LayoutBuilder(builder:(ctx,constraints)=> Icon(MdiIcons.telegram,color: Colors.white,size: min(constraints.maxWidth,constraints.maxHeight),)),
+          flex: 1,),
+          Flexible(child: SizedBox(width: 20,)),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 10,
+            child: Container(
+
+              child: AutoSizeText(
+                description,
+                style: TextStyle(
+                  fontSize: 40,fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),),
+            ),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      ),
+      onTap: (){
+        onClick();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(   //TODO email und passwort validator in flutter_login wieder aktivieren
-      //messages: LoginMessages(loginButton: "LEL"),
-      title: 'SK!Log',
-      //logo: 'assets/images/Download.jpeg',
-      onLogin: _login,
-      onSignup: _register,
-      onSubmitAnimationCompleted: () {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (ctx) => HomeScreen(),
-          ),
-        );
-      },
-      onRecoverPassword: _recoverPassword,
+
+    return Scaffold(
+      body: Container(
+
+        decoration: BoxDecoration(image: DecorationImage(
+            fit: BoxFit.fill,
+            image: AssetImage("assets/bg-01.jpg")
+        )),
+        child: Row(children: <Widget>[
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 5,
+            child: Container(
+              padding: MediaQuery.of(context).size.width>1000?EdgeInsets.all(80):EdgeInsets.all(20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                 // Expanded(child: Container(child: Logo(),),),
+                  Flexible(child: Container(child:
+                  Center(
+                    child: AutoSizeText("Wilkommen zu SK!LOG \n",
+                      //textAlign: TextAlign.right,
+                      maxLines: 3,
+                      style: TextStyle(
+                        fontSize: 42,fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),),
+                  ),
+                  ),),
+                  Flexible(
+                    flex: 1,
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: AutoSizeText(
+                      "Dem Dokumentationstool für den",
+                    //minFontSize: 20,
+
+                    maxLines: 3,
+                  style: TextStyle(
+                  fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),),
+                    ),),
+                  Flexible(flex: 1,
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: AutoSizeText(
+                        "Langfristigen Erfolg im Trading.",
+
+
+                        maxLines: 3,
+                        style: TextStyle(
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),),
+                    ),),
+                 // SizedBox(height: 20,),
+                  Flexible(
+                    flex: 2,
+                    child: Center(child: Logo(),),
+                  ),
+
+              SizedBox(height: 20,),
+                  Flexible(
+                    child: buildLink("Tritt der Community bei", (){_launchURL("https://t.me/SKTRoom");}),
+                  ),
+                  Flexible(
+                    child: buildLink("Beantrage einen SK!Log Account", (){_launchURL("https://t.me/xlDownxl");}),
+                  ),
+                  Flexible(
+                    child: buildLink("Technische Fragen", (){_launchURL("https://t.me/xlDownxl");}),
+                  ),
+            ],
+            crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            ),),
+
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 6,
+            child:FlutterLogin(   //TODO email und passwort validator in flutter_login wieder aktivieren
+            title: '',
+            theme: LoginTheme(accentColor: Colors.transparent,pageColorLight: Colors.transparent,pageColorDark: Colors.transparent,),
+            messages: LoginMessages(signupButton: "Registrieren",forgotPasswordButton: "Passwort vergessen?",passwordHint: "Passwort",goBackButton: "Zurück",recoverPasswordIntro: "Setze dein Passwort hier zurück",recoverPasswordDescription:"Du erhälst eine Email zum zurücksetzen deines Passwortes.",recoverPasswordButton: "Zurücksetzen",confirmPasswordHint: "Passwort bestätigen"),
+            onLogin: _login,
+            onSignup: _register,
+            onSubmitAnimationCompleted: () {
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (ctx) => HomeScreen(),
+                ),
+              );
+            },
+            onRecoverPassword: _recoverPassword,
+          ),),
+        ],
+        ),
+      ),
     );
+
   }
 }

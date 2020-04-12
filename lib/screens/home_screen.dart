@@ -9,6 +9,9 @@ import 'package:provider/provider.dart';
 import '../models/dummy.dart';
 import '../models/analysen.dart';
 import '../models/user_tags.dart';
+
+import 'package:showcaseview/showcaseview.dart';
+
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
   @override
@@ -19,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<PairsState> pairsPage = GlobalKey<PairsState>();
   final GlobalKey<TagScreenState> tagsPage = GlobalKey<TagScreenState>();
 
-
+  bool dark=true;
   int mode = 0;
 
   void changeMode(val) {
@@ -63,21 +66,29 @@ class _HomeScreenState extends State<HomeScreen> {
       TagScreen(key: tagsPage),
     ];
 
+
+
     return Scaffold(
       appBar: appBar,
-      body: Container(
-        height: deviceHeight,
-        width: deviceWidth,
-        child: Row(children: [
-          Container(
-            width: deviceWidth * 0.25,
-            child: LeftsideMenu(changeMode, reset),
+      body: ShowCaseWidget(
+
+        builder: Builder(
+
+          builder:(ctx)=> Container(
+            height: deviceHeight,
+            width: deviceWidth,
+            child: Row(children: [
+            Container(
+              width: deviceWidth * 0.25,
+              child: LeftsideMenu(changeMode, reset),
+            ),
+            Container(
+              width: deviceWidth * 0.75,
+              child: rightSide[mode],
+            ),
+              ]),
           ),
-          Container(
-            width: deviceWidth * 0.75,
-            child: rightSide[mode],
-          ),
-        ]),
+        ),
       ),
     );
   }
