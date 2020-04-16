@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:flutter_login/flutter_login.dart';
 
 
 class AppUser with ChangeNotifier {
@@ -16,69 +16,80 @@ class AppUser with ChangeNotifier {
     fbUser=null;
   }
 
-
-/*
-  void setUsername(String username) async {
-    await Firestore.instance.collection("User_Data").document(id).updateData({"username": username}).then((_) async {
-      await Firestore.instance.collection("Users").document("Usernames").setData({id:username}).then((_){
-        this.username = username;
-        notifyListeners();
-      });
-    }).catchError((error) => print(error));
-  }
-
-  Future resetUser() {
-    return FirebaseAuth.instance.signOut().then((result) {
-      this.username = null;
-      this.email = null;
-      this.id = null;
-    });
-  }
-
-  Future getUserFromDB()async{
-    fbUser = await FirebaseAuth.instance.currentUser();
-    id = fbUser.uid;
-
-    image = await FirebaseStorage.instance.ref().child("User_Data").child(id).child("profile_pic").getDownloadURL();
-
-    return Firestore.instance.collection("User_Data").document(fbUser.uid).get().then((user){
-      email = user.data["email"] ??"";
-      username = user.data["username"] ??"";
-      notifyListeners();
-    });
-  }
-
-  Future loginUser(data) async{
-    await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: data.name, password: data.password)
-        .then((_) async {
-      getUserFromDB();
-    }).catchError((error) => error.code);
-  }
-
-  Future setupUserInFirebase(boardPost) async {
-    var user = await FirebaseAuth.instance.currentUser();
-    email = user.email;
-    id = user.uid;
-
-    return Firestore.instance.collection("User_Data").document(user.uid).setData({
-      "email": user.email,
-      "id": user.uid,
-    }).then((_){
-      return boardPost
-          .connectToFirebase(user.uid);
-    });
-  }
-
-  Future registerUser(data,boardPost) async{
-    await FirebaseAuth.instance
+  Future _registerUser(data,analysen,userTags) {
+    return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
         email: data.name, password: data.password)
-        .then((_) async {
-      //Provider.of<User>(context, listen: false).isNew = true;
-      await setupUserInFirebase(boardPost);
+        .then((user) async {
+     analysen.loadWithId(user.user.uid,true);
+     userTags.init(user.user.uid);
+     email=user.user.email;
+     id=user.user.uid;
       return "success";
     }).catchError((error) => error.code);
   }
-*/
+
+  Future<String> register(LoginData data,analysen,userTags) async {
+    var code = await _registerUser(data,analysen,userTags);
+    print(code);
+    switch (code) {
+      case "ERROR_EMAIL_ALREADY_IN_USE":
+        return "Email schon vergeben";
+      case "ERROR_INVALID_EMAIL":
+        return "Ungültige Email";
+      case "ERROR_WEAK_PASSWORD":
+        return "Passwort sollte min. 6 Zeichen haben";
+      case "success":
+        return null;
+      default:
+        print(code);
+        return "Falsche Eingaben";
+    }
+  }
+
+
+  Future<String> recoverPassword(String name) async {
+    return FirebaseAuth.instance.sendPasswordResetEmail(email: name).then((_){
+      return null;
+    }).catchError((error) => error.code);
+  }
+
+  Future<String> login(LoginData data,analysen,userTags) async {
+    var code = await Future.any(
+      [
+        _loginUser(data,analysen,userTags),
+        Future.delayed(
+          const Duration(seconds: 8),
+        ),
+      ],
+    );
+    switch (code) {
+      case "ERROR_INVALID_EMAIL":
+        return "Ungültige Email";
+      case "ERROR_USER_NOT_FOUND":
+        return "User existiert nicht";
+      case "ERROR_WRONG_PASSWORD":
+        return "Überprüfe dein Passwort";
+      case "success":
+        return null;
+      default:
+        print(code);
+        return "Ungültige Eingaben";
+    }
+  }
+
+  Future<String> _loginUser(data,analysen,userTags) async {
+
+    //TODO if user not in database -> create him
+    return FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: data.name, password: data.password)
+        .then((user) async {
+      analysen.loadWithId(user.user.uid,false);
+      userTags.loadTags(user.user.uid);
+      email=user.user.email;
+      id=user.user.uid;
+      return "success";
+    }).catchError((error) => error.code);
+  }
+
 }
