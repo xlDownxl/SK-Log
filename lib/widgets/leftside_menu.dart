@@ -8,7 +8,7 @@ import '../models/dummy.dart';
 import '../models/analysen.dart';
 import '../models/user.dart';
 import '../screens/login_screen.dart';
-import 'package:flutter_spotlight/flutter_spotlight.dart';
+
 import 'package:showcaseview/showcaseview.dart';
 import 'dart:math';
 class LeftsideMenu extends StatefulWidget {
