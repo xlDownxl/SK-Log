@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_tags/tag.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import '../models/user_tags.dart';
@@ -11,8 +11,6 @@ class TagsWidget extends StatefulWidget {
 }
 
 class _TagsWidgetState extends State<TagsWidget> {
-
-
   @override
   Widget build(BuildContext context) {
     var analyse = Provider.of<Analyse>(context);
@@ -41,7 +39,6 @@ class _TagsWidgetState extends State<TagsWidget> {
             itemCount: _tags.length,
             itemBuilder: (int index) {
               return ItemTags(
-
                 elevation: 3,
                 key: Key(index.toString()),
                 index: index,
@@ -59,13 +56,15 @@ class _TagsWidgetState extends State<TagsWidget> {
                   }
                 },
 
-                removeButton: ItemTagsRemoveButton(onRemoved: () {
-                  setState(() {
-                    userTags.delete(_tags[index]); // does this really remove or do i need to init usertags alone
-                  });
-                  return true;
-                },), // OR null,
-
+                removeButton: ItemTagsRemoveButton(
+                    /*onRemoved: () {
+                    setState(() {
+                      userTags.delete(_tags[
+                          index]); // does this really remove or do i need to init usertags alone
+                    });
+                    return true;
+                  },*/
+                    ), // OR null,
               );
             },
           ),

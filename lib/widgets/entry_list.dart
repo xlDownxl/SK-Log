@@ -98,13 +98,17 @@ class _EntryListState extends State<EntryList> {
       );
     }
 
-    //print(analysen.analysen.length);
+    print(analysen.analysen.length);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
-          widget.buildSearchField ? buildSearchfield() : SizedBox(height: 20,),
+          widget.buildSearchField
+              ? buildSearchfield()
+              : SizedBox(
+                  height: 20,
+                ),
           buildHeadline(),
           SizedBox(
             height: 10,

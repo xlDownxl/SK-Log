@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/flutter_tags.dart';
+import 'package:flutter_tags/tag.dart';
 import 'dart:math';
 import '../models/user_tags.dart';
 import 'tags_screen.dart';
 import 'package:provider/provider.dart';
 import '../models/analyse.dart';
+
 class TagsFilterWidget extends StatefulWidget {
   final List<String> filterTags;
   final Function update;
-  TagsFilterWidget(this.filterTags,this.update);
+  TagsFilterWidget(this.filterTags, this.update);
 
   @override
   _TagsFilterWidgetState createState() => _TagsFilterWidgetState();
@@ -17,7 +18,6 @@ class TagsFilterWidget extends StatefulWidget {
 class _TagsFilterWidgetState extends State<TagsFilterWidget> {
   @override
   Widget build(BuildContext context) {
-
     var userTags = Provider.of<UserTags>(context);
     var _tags = userTags.getTags(); // TODO tags als provider
 
@@ -35,21 +35,19 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
               index: index,
               title: _tags[index],
               textStyle: TextStyle(
-                fontSize:
-                min(14, max((25 - _tags.length), 21))
-                    .toDouble(),
+                fontSize: min(14, max((25 - _tags.length), 21)).toDouble(),
               ),
               active: widget.filterTags.contains(_tags[index]),
-              onPressed: (item){
-                if(widget.filterTags.contains(item.title)){
+              onPressed: (item) {
+                if (widget.filterTags.contains(item.title)) {
                   widget.filterTags.remove(item.title);
                   widget.update(widget.filterTags);
-                }else{
+                } else {
                   widget.filterTags.add(item.title);
                   widget.update(widget.filterTags);
                 }
               },
-             /* removeButton:
+              /* removeButton:
               ItemTagsRemoveButton(
                 onRemoved: () {
                   setState(() {
