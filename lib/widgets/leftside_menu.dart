@@ -29,10 +29,10 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([
-              _one,
-            ]));
+   // WidgetsBinding.instance
+     //   .addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([
+       //       _one,
+         //   ]));
   }
 
   @override
@@ -123,7 +123,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
                       overlayColor: Colors.black,
                       overlayOpacity: 0.5,
                       child: RawMaterialButton(
-                        onPressed: () {},//TODO push
+                        onPressed: () {Navigator.pushReplacementNamed(context, AnalyseScreen.routeName);},//TODO push
                         child: Container(
                           width: constraints.maxWidth/3,
                           height: constraints.maxHeight/2,
