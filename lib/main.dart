@@ -11,6 +11,8 @@ import 'models/user_tags.dart';
 import 'screens/login_screen.dart';
 import 'package:firebase/firebase.dart';
 import 'package:firebase/firestore.dart' as fs;
+import 'screens/login_screen.dart';
+
 void main() {
   initializeApp(
       apiKey: "AIzaSyBGzeNqKSgLXQtmvX1AO7SVkSwVQ2WRVCw",
@@ -28,7 +30,6 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
-
 
 final ThemeData kLightGalleryTheme = _buildLightTheme();
 final ThemeData kDarkGalleryTheme = _buildDarkTheme();
@@ -93,7 +94,6 @@ ThemeData _buildLightTheme() {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -111,12 +111,11 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         title: 'SK!Log',
         theme: _buildLightTheme(),
-        home: LoginScreenNew(),
+        home: LoginScreen(),
         routes: {
-
           HomeScreen.routeName: (ctx) => HomeScreen(),
           AnalyseScreen.routeName: (ctx) => AnalyseScreen(),
-          LoginScreenNew.routeName: (ctx) => LoginScreenNew(),
+          LoginScreen.routeName: (ctx) => LoginScreen(),
         },
       ),
     );
