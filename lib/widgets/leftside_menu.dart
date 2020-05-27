@@ -24,16 +24,16 @@ class LeftsideMenu extends StatefulWidget {
 
 class _LeftsideMenuState extends State<LeftsideMenu> {
   GlobalKey _one = GlobalKey();
-  GlobalKey _two = GlobalKey();
-  GlobalKey _three = GlobalKey();
+  //GlobalKey _two = GlobalKey();
+  //GlobalKey _three = GlobalKey();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
+    /* WidgetsBinding.instance
         .addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([
               _one,
-            ]));
+            ]));*/
   }
 
   @override

@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginScreen> {
     subscription = _auth.onAuthStateChanged.listen((data) {
       //TODO show loading icon until this is loaded
       if (data != null) {
-        print("eingeloggt umd macht laodwithid");
         Provider.of<Analysen>(context, listen: false)
             .loadWithId(data.uid, false);
         Provider.of<UserTags>(context, listen: false).loadTags(data.uid);
