@@ -11,6 +11,7 @@ import '../screens/login_screen.dart';
 
 import 'package:showcaseview/showcaseview.dart';
 import 'dart:math';
+
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
   final Function reset;
@@ -29,16 +30,16 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
   @override
   void initState() {
     super.initState();
-   // WidgetsBinding.instance
-     //   .addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([
-       //       _one,
-         //   ]));
+    // WidgetsBinding.instance
+    //   .addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([
+    //       _one,
+    //   ]));
   }
 
   @override
   Widget build(BuildContext context) {
-    var analysen = Provider.of<Analysen>(context, listen: false);
-    var user = Provider.of<AppUser>(context, listen: false);
+    //var analysen = Provider.of<Analysen>(context, listen: false);
+    //var user = Provider.of<AppUser>(context, listen: false);
 
     Widget buildEntry(tag, mode) {
       return LayoutBuilder(
@@ -113,23 +114,27 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
               ),
               Flexible(
                 child: LayoutBuilder(
-                  builder: (ctx, constraints) =>  SizedBox(
+                  builder: (ctx, constraints) => SizedBox(
                     //width: constraints.maxWidth/2.2,
                     //height: constraints.maxHeight/1.5,
 
                     child: Showcase(
                       key: _one,
-                      description: "Klicke hier um eine neue Analyse zu erstellen",
+                      description:
+                          "Klicke hier um eine neue Analyse zu erstellen",
                       overlayColor: Colors.black,
                       overlayOpacity: 0.5,
                       child: RawMaterialButton(
-                        onPressed: () {Navigator.pushReplacementNamed(context, AnalyseScreen.routeName);},//TODO push
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, AnalyseScreen.routeName);
+                        }, //TODO push
                         child: Container(
-                          width: constraints.maxWidth/3,
-                          height: constraints.maxHeight/2,
+                          width: constraints.maxWidth / 3,
+                          height: constraints.maxHeight / 2,
                           child: Icon(
                             Icons.add,
-                            size:constraints.maxHeight/2,
+                            size: constraints.maxHeight / 2,
                             color: Colors.white,
                             //size:50,
                           ),
@@ -155,8 +160,8 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
           child: InkWell(
             onTap: () {
               FirebaseAuth.instance.signOut();
-              analysen.reset();
-              user.reset();
+              //analysen.reset();
+              //user.reset();
               Navigator.pushReplacementNamed(context, LoginScreenNew.routeName);
             },
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [

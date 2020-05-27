@@ -24,11 +24,12 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 class _LoginPageState extends State<LoginScreenNew> {
   AppUser user;
   var init = true;
+  var sub;
 
   @override
   void initState() {
     super.initState();
-    _auth.onAuthStateChanged.listen((data) {
+    sub = _auth.onAuthStateChanged.listen((data) {
       if (data != null) {
         Provider.of<Analysen>(context, listen: false)
             .loadWithId(data.uid, false);
@@ -40,6 +41,8 @@ class _LoginPageState extends State<LoginScreenNew> {
             builder: (ctx) => HomeScreen(),
           ),
         );
+      } else {
+        sub.cancel();
       }
     });
   }
@@ -114,13 +117,11 @@ class _LoginPageState extends State<LoginScreenNew> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-
                     Flexible(
                       child: Container(
                         child: Center(
                           child: AutoSizeText(
                             "Wilkommen zu SK!LOG \n",
-
                             maxLines: 3,
                             style: TextStyle(
                               fontSize: 42,
@@ -137,7 +138,6 @@ class _LoginPageState extends State<LoginScreenNew> {
                         alignment: Alignment.bottomCenter,
                         child: AutoSizeText(
                           "Dem Dokumentationstool für den",
-
                           maxLines: 3,
                           style: TextStyle(
                             fontSize: 40,
