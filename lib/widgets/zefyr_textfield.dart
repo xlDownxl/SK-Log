@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zefyr/zefyr.dart';
-import 'package:quill_delta/quill_delta.dart';
+//import 'package:zefyr/zefyr.dart';
+//import 'package:quill_delta/quill_delta.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 import '../models/analyse.dart';
@@ -15,20 +15,20 @@ class ZefyrTextField extends StatefulWidget {
 }
 
 class ZefyrTextFieldState extends State<ZefyrTextField> {
-  NotusDocument document;
-  ZefyrController _controller;
+  //NotusDocument document;
+  //ZefyrController _controller;
   FocusNode _focusNode;
   Analyse analyse;
 
   void safeDocument() {
     if (widget.field == "description") {
-      analyse.description = json.encode(document.toJson());
+      //analyse.description = json.encode(document.toJson());
     } else {
-      analyse.learning = json.encode(document.toJson());
+      //analyse.learning = json.encode(document.toJson());
     }
   }
 
-  NotusDocument _loadDocument(Analyse analyse) {
+  /*NotusDocument _loadDocument(Analyse analyse) {
     if (widget.field == "description") {
       if (analyse.description == null) {
         final Delta delta = Delta()..insert("Beschreibung\n");
@@ -63,7 +63,7 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
     _focusNode = FocusNode();
     super.initState();
   }
-
+*/
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -71,14 +71,15 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10)),
 
-      child: ZefyrScaffold(
+      child: Container()
+      /*ZefyrScaffold(
         child: ZefyrEditor(
           padding: EdgeInsets.all(16),
           controller: _controller,
           focusNode: _focusNode,
           
         ),
-      ),
+      ),*/
     );
   }
 }

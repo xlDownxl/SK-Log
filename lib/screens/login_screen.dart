@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../models/user_tags.dart';
-import 'package:flutter_login/flutter_login.dart';
+import '../flutterLogin/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
 import '../widgets/LoginScreenWidgets/logo.dart';

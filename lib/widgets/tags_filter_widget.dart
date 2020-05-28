@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/tag.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'dart:math';
 import '../models/user_tags.dart';
 import 'tags_screen.dart';
