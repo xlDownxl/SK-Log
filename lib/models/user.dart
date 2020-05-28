@@ -27,7 +27,7 @@ class AppUser with ChangeNotifier {
     }).catchError((error) => error.code);
   }
 
-  Future<String> register(LoginData data, analysen, userTags) async {
+  Future<String> register( data, analysen, userTags) async {
     var code = await _registerUser(data, analysen, userTags);
     print(code);
     switch (code) {
