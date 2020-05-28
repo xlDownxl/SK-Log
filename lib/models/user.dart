@@ -14,7 +14,7 @@ class AppUser with ChangeNotifier {
     fbUser = null;
   }
 
-  Future _registerUser(data, analysen, userTags) {
+  Future _registerUser(LoginData data, analysen, userTags) {
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
@@ -27,7 +27,7 @@ class AppUser with ChangeNotifier {
     }).catchError((error) => error.code);
   }
 
-  Future<String> register( data, analysen, userTags) async {
+  Future<String> register(LoginData data, analysen, userTags) async {
     var code = await _registerUser(data, analysen, userTags);
     print(code);
     switch (code) {
