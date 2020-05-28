@@ -556,16 +556,17 @@ class _FlutterLoginState extends State<FlutterLogin>
       ],
       child: Scaffold(
         // resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
         body: Stack(
           children: <Widget>[
-            GradientBox(
+            /*GradientBox(
               colors: [
                 loginTheme.pageColorLight ?? theme.primaryColor,
                 loginTheme.pageColorDark ?? theme.primaryColorDark,
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
-            ),
+            ),*/
             SingleChildScrollView(
               child: Theme(
                 data: theme,

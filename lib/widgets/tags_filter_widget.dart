@@ -47,19 +47,19 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
                   widget.update(widget.filterTags);
                 }
               },
-              /* removeButton:
-              ItemTagsRemoveButton(
-                onRemoved: () {
-                  setState(() {
+              onRemoved: () {
+                setState(() {
                   _tags.removeAt(index);
                   if(widget.filterTags.contains(_tags[index])){
                     widget.filterTags.remove(_tags[index]);
                     widget.update(widget.filterTags);
                   }
-                  });
-                  return true;
-                },
-              ),*/ // OR null,
+                });
+                return true;
+              },
+               removeButton:
+              ItemTagsRemoveButton(
+              ),// OR null,
             );
           },
         ),

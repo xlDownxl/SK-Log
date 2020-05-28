@@ -207,13 +207,7 @@ class _LoginPageState extends State<LoginScreen> {
                     fit: FlexFit.tight,
                     flex: 6,
                     child: FlutterLogin(
-                      //TODO email und passwort validator in flutter_login wieder aktivieren
                       title: '',
-                      theme: LoginTheme(
-                        accentColor: Colors.transparent,
-                        pageColorLight: Colors.transparent,
-                        pageColorDark: Colors.transparent,
-                      ),
                       messages: LoginMessages(
                           signupButton: "Registrieren",
                           forgotPasswordButton: "Passwort vergessen?",
