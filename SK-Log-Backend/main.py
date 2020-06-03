@@ -6,7 +6,9 @@ import boto3
 from PIL import Image
 import requests
 from io import BytesIO
+import os
 
+os.environ['AWS_DEFAULT_REGION'] = 'eu-west-1'
 
 # %%
 def get_response(documentName):
@@ -51,8 +53,14 @@ def pipeline(link):
 
 # %%
 
-s3 = boto3.resource('s3')
-client = boto3.client('textract')
+session = boto3.Session(
+    aws_access_key_id='AKIAT5LRZETLC2MUOBFN',
+    aws_secret_access_key='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',
+)
+
+
+s3 = session.resource('s3')
+client = session.client('textract')
 #print(pipeline("https://www.tradingview.com/x/37K2HpUZ/"))
 
 
@@ -80,4 +88,12 @@ def api_id():
     
     return pair
 
-app.run()
+if __name__ == '__main__':
+    # This is used when running locally only. When deploying to Google App
+    # Engine, a webserver process such as Gunicorn will serve the app. This
+    # can be configured by adding an `entrypoint` to app.yaml.
+    # Flask's development server will automatically serve static files in
+    # the "static" directory. See:
+    # http://flask.pocoo.org/docs/1.0/quickstart/#static-files. Once deployed,
+    # App Engine itself will serve those files as configured in app.yaml.
+    app.run(host='127.0.0.1', port=8080, debug=True)
