@@ -615,7 +615,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       ),
     );
   }
-
+  
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: true);
@@ -640,9 +640,26 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                _buildNameField(textFieldWidth, messages, auth),
+                RawKeyboardListener(child: _buildNameField(textFieldWidth, messages, auth),
+                focusNode: FocusNode(),
+                onKey: (RawKeyEvent event){
+                  if (event.runtimeType.toString() == "RawKeyDownEvent"  &&
+                      (event.data.keyLabel == "Tab"))//Enter Key ID from keyboard
+                      {
+                        FocusScope.of(context).requestFocus(_passwordFocusNode);
+                    }
+                },),
                 SizedBox(height: 20),
-                _buildPasswordField(textFieldWidth, messages, auth),
+                RawKeyboardListener(child: _buildPasswordField(textFieldWidth, messages, auth),
+                focusNode: FocusNode(),
+                  onKey: (RawKeyEvent event){
+                    if (event.runtimeType.toString() == "RawKeyDownEvent"  &&
+                        (event.data.keyLabel == "Tab"))//Enter Key ID from keyboard
+                        {
+                      FocusScope.of(context).requestFocus(_confirmPasswordFocusNode);
+                    }
+                  },
+                ),
                 SizedBox(height: 10),
               ],
             ),
