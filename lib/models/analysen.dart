@@ -16,6 +16,10 @@ class Analysen with ChangeNotifier {
 
   Analysen(){}
 
+  void notify(){
+    notifyListeners();
+  }
+
   void reset(){
     analysen = [];
     allAnalysen = [];

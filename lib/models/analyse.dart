@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:enum_to_string/enum_to_string.dart';
 
 class Analyse with ChangeNotifier {
   String id;
@@ -22,6 +25,31 @@ class Analyse with ChangeNotifier {
     title = "Analysis $id";
     activeTags = [];
     title = "Analyse Nr. 1";
+  }
+
+  Future getPair(tv_url,analysen) async {
+    var url="https://sk-log.appspot.com/getpair?id="+tv_url;
+    return http.get(url).then((response){
+      if (response.statusCode!=200){
+
+      }
+      else{
+        var res = json.decode(response.body);
+        print(res);
+        this.pair=EnumToString.fromString(PairEnum.values, res["pair"]);
+        notifyListeners();
+        analysen.notify();
+        //analyseListParent.notifyListeners();
+      }
+    }).catchError((error){
+      print(error);
+    });
+
+  }
+
+  Future setLink(link,analysen){
+    this.link=link;
+    return getPair(link,analysen);
   }
 
   Analyse.fromMap(Map snapshot,docID) {

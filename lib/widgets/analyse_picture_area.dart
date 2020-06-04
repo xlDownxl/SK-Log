@@ -4,6 +4,7 @@ import '../models/analyse.dart';
 import '../models/pair_enum.dart';
 import '../models/pair_list.dart';
 import 'package:responsive_grid/responsive_grid.dart';
+import '../models/analysen.dart';
 
 class AnalysePictureArea extends StatefulWidget {
   final bool showError;
@@ -17,6 +18,7 @@ class AnalysePictureArea extends StatefulWidget {
 class _AnalysePictureAreaState extends State<AnalysePictureArea> {
   var textEditingController;
   Analyse analyse;
+  bool loading=false;
 
   void presentDatePicker(context) {
     showDatePicker(
@@ -90,32 +92,8 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
   Widget build(BuildContext context) {
     analyse = Provider.of<Analyse>(context);
 
-
-
     return Column(
       children: <Widget>[
-        Flexible(
-          flex: 4,
-          child:  LayoutBuilder(
-            builder:(ctx,constraints)=> ResponsiveGridList(
-                desiredItemWidth: (constraints.maxWidth)/13,
-                minSpacing: 0,
-                squareCells: true,
-                children: buildPairs(constraints),
-            ),
-          ),
-
-          /*GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 15,
-                childAspectRatio: 2 / 2,
-                crossAxisSpacing: 2,
-                mainAxisSpacing: 2,
-              ),
-              children: <Widget>[
-                ...buildPairs(),
-              ]),*/
-        ),
 
         Flexible(
           child: LayoutBuilder(
@@ -140,6 +118,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
           fit: FlexFit.tight,
           flex: 16,
         ),
+        Flexible(child: Container(),),
         Flexible(
           flex: 4,
           child: Container(
@@ -147,7 +126,17 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
               builder: (ctx, constraints) => Row(
                 children: <Widget>[
                   Container(
-                    width: constraints.maxWidth * 0.1,
+                    width: constraints.maxWidth * 0.2,
+                    child:         LayoutBuilder(
+                        builder:(ctx,constraints)=> Container(
+                          child: analyse.link==""?Text(
+                              ""
+                          ):
+                          loading?CircularProgressIndicator():Text(
+                              analyse.pair.toString().split('.')[1]
+                          ),
+                        )
+                    ),
                   ),
                   Container(
                     child: FittedBox(
@@ -173,20 +162,9 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                       ),
                       onChanged: (val) {
                         if (val.contains("tradingview")) {
-                          setState(() {
-                            analyse.link =
-                                val; //TODO tradingview link validator
-                          });
-                        } else {
-                          setState(() {
-                            analyse.link = "";
-                          });
-                        }
-                      },
-                      onFieldSubmitted: (val) {
-                        if (val.contains("tradingview")) {
-                          setState(() {
-                            analyse.link = val;
+                          loading=true;
+                          analyse.setLink(val,Provider.of<Analysen>(context,listen: false)).then((err){
+                              loading=false;
                           });
                         } else {
                           setState(() {
@@ -197,10 +175,10 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                       controller: textEditingController,
                       initialValue: analyse.link,
                     ),
-                    width: constraints.maxWidth * 0.4,
+                    width: constraints.maxWidth * 0.35,
                   ),
                   SizedBox(
-                    width: constraints.maxWidth * 0.1,
+                    width: constraints.maxWidth * 0.05,
                   ),
                   Container(
                     width: constraints.maxWidth * 0.2,

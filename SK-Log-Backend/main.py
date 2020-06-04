@@ -54,13 +54,16 @@ def pipeline(link):
 # %%
 
 session = boto3.Session(
-    aws_access_key_id='AKIAT5LRZETLC2MUOBFN',
-    aws_secret_access_key='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',
+    region_name="eu-west-1",
+    aws_access_key_id='AKIAT5LRZETLK5CXF4Y7',
+    aws_secret_access_key='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',
 )
 
 
-s3 = session.resource('s3')
-client = session.client('textract')
+s3 = session.resource('s3', aws_access_key_id='AKIAT5LRZETLK5CXF4Y7',
+    aws_secret_access_key='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',)
+client = session.client('textract', aws_access_key_id=',AKIAT5LRZETLK5CXF4Y7',
+    aws_secret_access_key='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',)
 #print(pipeline("https://www.tradingview.com/x/37K2HpUZ/"))
 
 
@@ -85,8 +88,12 @@ def api_id():
     else:
         return "Error: No id field provided. Please specify an id."
     pair=pipeline(image_url)
+
+    response = flask.jsonify({"pair":pair})
+    response.headers.set('Access-Control-Allow-Origin', '*')
+    response.headers.set('Access-Control-Allow-Methods', 'GET, POST')
     
-    return pair
+    return response
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App

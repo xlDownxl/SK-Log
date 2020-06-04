@@ -152,12 +152,12 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
               builder: (ctx, constr) => Row(
                 children: <Widget>[
                   Container(
-                    width: constr.maxWidth * 0.5,
+                    width: constr.maxWidth * 0.4,
                     padding: EdgeInsets.symmetric(horizontal: 25),
                     child: AnalyseInputArea(descriptionKey, learningKey),
                   ),
                   Container(
-                    width: constr.maxWidth * 0.5,
+                    width: constr.maxWidth * 0.6,
                     child: AnalysePictureArea(error),
                   )
                 ],

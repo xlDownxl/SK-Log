@@ -98,7 +98,6 @@ class _EntryListState extends State<EntryList> {
       );
     }
 
-    print(analysen.analysen.length);
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
       child: Column(
