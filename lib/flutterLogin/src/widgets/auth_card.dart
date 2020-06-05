@@ -18,7 +18,7 @@ import '../dart_helper.dart';
 import '../matrix.dart';
 import '../paddings.dart';
 import '../widget_helper.dart';
-
+import 'package:url_launcher/url_launcher.dart';
 class AuthCard extends StatefulWidget {
   AuthCard({
     Key key,
@@ -168,7 +168,7 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
     final cardSize = getWidgetSize(_cardKey);
     // add .25 to make sure the scaling will cover the whole screen
     final widthRatio =
-        deviceSize.width / cardSize.height + (isLogin ? .25 : .65);
+        deviceSize.width / cardSize.height +  .25 ;
     final heightRatio = deviceSize.height / cardSize.width + .25;
 
     _cardSize2AnimationX =
@@ -177,8 +177,13 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       parent: _routeTransitionController,
       curve: Interval(.72727272, 1, curve: Curves.easeInOutCubic),
     ));
+
+    //print("width ratio: "+ widthRatio.toString());
+    //print("cardsizescaleEnd ratio: "+ cardSizeScaleEnd.toString());
+    //print("quotient: "+ (widthRatio / cardSizeScaleEnd).toString());
+
     _cardSize2AnimationY =
-        Tween<double>(begin: 1.0, end: widthRatio / cardSizeScaleEnd)
+        Tween<double>(begin: 1.0, end: 10000) //TODO fix this 1000 with whatever
             .animate(CurvedAnimation(
       parent: _routeTransitionController,
       curve: Interval(.72727272, 1, curve: Curves.easeInOutCubic),
@@ -615,7 +620,9 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       ),
     );
   }
-  
+
+
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: true);

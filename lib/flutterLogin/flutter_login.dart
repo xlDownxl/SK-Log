@@ -24,6 +24,18 @@ export 'src/providers/login_messages.dart';
 export 'src/providers/login_theme.dart';
 import 'src/constants.dart';
 
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import '../models/user.dart';
+import '../models/user_tags.dart';
+import '../flutterLogin/flutter_login.dart';
+import '../widgets/LoginScreenWidgets/logo.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:auto_size_text/auto_size_text.dart';
+import 'dart:math';
+
 class _AnimationTimeDilationDropdown extends StatelessWidget {
   _AnimationTimeDilationDropdown({
     @required this.onChanged,
@@ -527,6 +539,58 @@ class _FlutterLoginState extends State<FlutterLogin>
     );
   }
 
+
+  _launchURL(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  Widget buildLink(String description, Function onClick) {
+    return InkWell(
+      onHover: (hover) {}, //TODO mach variable für shadow hinter der ganzen row
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            child: LayoutBuilder(
+                builder: (ctx, constraints) => Icon(
+                  MdiIcons.telegram,
+                  color: Colors.white,
+                  size: min(constraints.maxWidth, constraints.maxHeight),
+                )),
+            flex: 1,
+          ),
+          Flexible(
+              child: SizedBox(
+                width: 20,
+              )),
+          Flexible(
+            fit: FlexFit.tight,
+            flex: 10,
+            child: Container(
+              child: AutoSizeText(
+                description,
+                style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      ),
+      onTap: () {
+        onClick();
+      },
+    );
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     final loginTheme = widget.theme ?? LoginTheme();
@@ -540,6 +604,95 @@ class _FlutterLoginState extends State<FlutterLogin>
         widget.emailValidator ?? FlutterLogin.defaultEmailValidator;
     final passwordValidator =
         widget.passwordValidator ?? FlutterLogin.defaultPasswordValidator;
+
+
+    var infoWidget= Flexible(
+      child: Container(
+
+        padding: MediaQuery.of(context).size.width > 1000
+            ? EdgeInsets.all(80)
+            : EdgeInsets.all(20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: <Widget>[
+            Flexible(
+              child: Container(
+                child: Center(
+                  child: AutoSizeText(
+                    "Wilkommen zu SK!LOG \n",
+                    maxLines: 3,
+                    style: TextStyle(
+                      fontSize: 42,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: AutoSizeText(
+                  "Dem Dokumentationstool für den",
+                  maxLines: 3,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: AutoSizeText(
+                  "Langfristigen Erfolg im Trading.",
+                  maxLines: 3,
+                  style: TextStyle(
+                    fontSize: 40,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            // SizedBox(height: 20,),
+            Flexible(
+              flex: 2,
+              child: Center(
+                child: Logo(),
+              ),
+            ),
+
+            SizedBox(
+              height: 20,
+            ),
+            Flexible(
+              child: buildLink("Tritt der Community bei", () {
+                _launchURL("https://t.me/SKTRoom");
+              }),
+            ),
+            Flexible(
+              child:
+              buildLink("Beantrage einen SK!Log Account", () {
+                _launchURL("https://t.me/xlDownxl");
+              }),
+            ),
+            Flexible(
+              child: buildLink("Technische Fragen", () {
+                _launchURL("https://t.me/xlDownxl");
+              }),
+            ),
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+      ),
+    );
+
 
     return MultiProvider(
       providers: [
@@ -567,29 +720,34 @@ class _FlutterLoginState extends State<FlutterLogin>
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),*/
-            SingleChildScrollView(
-              child: Theme(
-                data: theme,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: <Widget>[
-                    Positioned(
-                      child: AuthCard(
-                        key: authCardKey,
-                        padding: EdgeInsets.only(top: cardTopPosition),
-                        loadingController: _loadingController,
-                        emailValidator: emailValidator,
-                        passwordValidator: passwordValidator,
-                        onSubmit: _reverseHeaderAnimation,
-                        onSubmitCompleted: widget.onSubmitAnimationCompleted,
-                      ),
+            Theme(
+              data: theme,
+              child: Row(
+                children: <Widget>[
+                  infoWidget,
+                  Flexible(
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: <Widget>[
+                        Positioned(
+                          child: AuthCard(
+                            key: authCardKey,
+                            padding: EdgeInsets.only(top: cardTopPosition),
+                            loadingController: _loadingController,
+                            emailValidator: emailValidator,
+                            passwordValidator: passwordValidator,
+                            onSubmit: _reverseHeaderAnimation,
+                            onSubmitCompleted: widget.onSubmitAnimationCompleted,
+                          ),
+                        ),
+                        Positioned(
+                          top: cardTopPosition - headerHeight - headerMargin,
+                          child: _buildHeader(headerHeight, loginTheme),
+                        ),
+                      ],
                     ),
-                    Positioned(
-                      top: cardTopPosition - headerHeight - headerMargin,
-                      child: _buildHeader(headerHeight, loginTheme),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             if (!kReleaseMode && widget.showDebugButtons)
