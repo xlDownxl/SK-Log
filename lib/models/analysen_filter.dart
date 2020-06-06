@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
 import 'pair_enum.dart';
-import 'pair_list.dart';
-import '../widgets/tags_screen.dart';
 
 class AnalyseFilter {
   PairEnum pair;
@@ -20,7 +17,6 @@ class AnalyseFilter {
     isSearch = false;
     this.pair = pair;
     isShowAll = false;
-    //print(this.pair);
   }
   AnalyseFilter.tagFilter(List<String> filterList) {
     isPair = false;
@@ -38,7 +34,6 @@ class AnalyseFilter {
   }
 
   void addSearch(word) {
-    print("filter");
     isSearch = true;
     this.word = word;
     print("filter" + word);

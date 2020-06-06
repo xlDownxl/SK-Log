@@ -1,11 +1,9 @@
 import 'pair_enum.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:enum_to_string/enum_to_string.dart';
+
 
 class Analyse with ChangeNotifier {
   String id;

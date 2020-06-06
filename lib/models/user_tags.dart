@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase/firestore.dart' as fs;
 import 'package:firebase/firebase.dart';
 
 class UserTags with ChangeNotifier {
   fs.Firestore store;
   String userId;
-
-  List _tags = [  //delete wenn inti steht
-    "Priceaction",
-    "Sequenzen",
-    "TP",
-    "SL",
-    "Überschneidungsbereiche",
-    "Sequenzpuzzle",
-    "Trademanagement",
-    "Risikomanagement",
-    "Hedging"
-  ];
-
-  UserTags(this.userId);
+  var _tags=[];
 
   void init(id){
+    print(id);
     this.userId=id;
     _tags = [
       "Priceaction",
@@ -55,7 +42,6 @@ class UserTags with ChangeNotifier {
   }
 
   void delete(String tag){
-    print("delete getriggert");
     store = firestore();
     fs.CollectionReference ref = store.collection("Users");
     ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayRemove([tag])}).then((_){
@@ -64,11 +50,13 @@ class UserTags with ChangeNotifier {
     });
   }
 
-  void loadTags(userId)async{
+  void loadTags(id)async{
+    this.userId=id;
     store = firestore();
     fs.CollectionReference ref = store.collection("Users");
     var user_data = await ref.doc(userId).get();
     _tags=user_data.data()["user_tags"];
+    print(_tags);
     notifyListeners();
   }
 }

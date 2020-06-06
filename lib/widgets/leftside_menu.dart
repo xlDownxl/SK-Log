@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import '../screens/analyse_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
-import 'pairs.dart';
-import 'tags_screen.dart';
-import '../models/dummy.dart';
-import '../models/analysen.dart';
-import '../models/user.dart';
 import '../screens/login_screen.dart';
-
+import '../models/analysen.dart';
 import 'package:showcaseview/showcaseview.dart';
-import 'dart:math';
+import 'package:provider/provider.dart';
+import '../models/user.dart';
 
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
@@ -38,8 +33,8 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
 
   @override
   Widget build(BuildContext context) {
-    //var analysen = Provider.of<Analysen>(context, listen: false);
-    //var user = Provider.of<AppUser>(context, listen: false);
+    var analysen = Provider.of<Analysen>(context, listen: false);
+    var user = Provider.of<AppUser>(context, listen: false);
 
     Widget buildEntry(tag, mode) {
       return LayoutBuilder(
@@ -159,8 +154,8 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
           child: InkWell(
             onTap: () {
               FirebaseAuth.instance.signOut();
-              //analysen.reset();
-              //user.reset();
+              analysen.reset();
+              user.reset();
               Navigator.pushReplacementNamed(context, LoginScreen.routeName);
             },
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [

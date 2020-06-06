@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'analyse.dart';
 import 'pair_enum.dart';
 import 'analysen_filter.dart';
@@ -13,8 +12,7 @@ class Analysen with ChangeNotifier {
   fs.Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
-
-  Analysen(){}
+  Analysen();
 
   void notify(){
     notifyListeners();

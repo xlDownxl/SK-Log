@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class PairButton extends StatefulWidget {
-  var radioValue;
+  final radioValue;
   PairButton(this.radioValue);
 
   @override

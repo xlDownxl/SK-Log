@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/analyse.dart';
-import '../models/pair_enum.dart';
 import '../models/pair_list.dart';
-import 'package:responsive_grid/responsive_grid.dart';
 import '../models/analysen.dart';
 
 class AnalysePictureArea extends StatefulWidget {

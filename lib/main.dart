@@ -1,17 +1,12 @@
 import 'package:flutter/material.dart';
-
 import 'screens/home_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'models/user.dart';
 import 'screens/analyse_screen.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
 import 'screens/login_screen.dart';
 import 'package:firebase/firebase.dart';
-import 'package:firebase/firestore.dart' as fs;
-import 'screens/login_screen.dart';
 
 void main() {
   initializeApp(
@@ -102,7 +97,7 @@ class _MyAppState extends State<MyApp> {
           create: (ctx) => Analysen(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => UserTags("userid"), //TODO
+          create: (ctx) => UserTags(), //TODO
         ),
         ChangeNotifierProvider(
           create: (ctx) => AppUser(),

@@ -6,11 +6,6 @@ import '../models/user_tags.dart';
 import '../flutterLogin/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
-import '../widgets/LoginScreenWidgets/logo.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:auto_size_text/auto_size_text.dart';
-import 'dart:math';
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login_new";
@@ -31,8 +26,6 @@ class _LoginPageState extends State<LoginScreen> {
   void initState() {
     super.initState();
     subscription = _auth.onAuthStateChanged.listen((data) {
-      //TODO show loading icon until this is loaded
-
       if (data != null) {
         Provider.of<Analysen>(context, listen: false)
             .loadWithId(data.uid, false);
@@ -48,20 +41,14 @@ class _LoginPageState extends State<LoginScreen> {
         setState(() {
           showLoadingIndicator = false;
         });
-
         subscription.cancel();
       }
     });
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     user = Provider.of<AppUser>(context);
-
-
 
     return Scaffold(
       body: Container(

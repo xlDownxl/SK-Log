@@ -6,10 +6,7 @@ import '../widgets/pairs.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import '../models/analysen_filter.dart';
 import 'package:provider/provider.dart';
-import '../models/dummy.dart';
 import '../models/analysen.dart';
-import '../models/user_tags.dart';
-
 import 'package:showcaseview/showcaseview.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
       pairsPage.currentState.resetPair(); //TODO fix when not existing
     }
     Provider.of<Analysen>(context, listen: false).setFilter(AnalyseFilter.showAll());
-    print("filter auf null");
   }
 
   @override

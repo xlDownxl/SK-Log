@@ -18,7 +18,7 @@ import '../dart_helper.dart';
 import '../matrix.dart';
 import '../paddings.dart';
 import '../widget_helper.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 class AuthCard extends StatefulWidget {
   AuthCard({
     Key key,

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tags/tag.dart';
 import 'dart:math';
 import '../models/user_tags.dart';
-import 'tags_screen.dart';
 import 'package:provider/provider.dart';
-import '../models/analyse.dart';
 
 class TagsFilterWidget extends StatefulWidget {
   final List<String> filterTags;

@@ -6,8 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analyse.dart';
 import '../widgets/zefyr_textfield.dart';
-import '../screens/home_screen.dart';
-import '../models/analysen.dart';
+
 
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";

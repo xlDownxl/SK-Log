@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../flutterLogin/flutter_login.dart';
-
+import '../models/user_tags.dart';
 class AppUser with ChangeNotifier {
   //String username;
   String email;
@@ -75,12 +75,11 @@ class AppUser with ChangeNotifier {
     }
   }
 
-  Future<String> _loginUser(LoginData data, analysen, userTags) async {
+  Future<String> _loginUser(LoginData data, analysen, UserTags userTags) async {
     //TODO if user not in database -> create him
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
         .then((user) async {
-      print("manuelles login load with id");
       analysen.loadWithId(user.user.uid, false);
       userTags.loadTags(user.user.uid);
       email = user.user.email;

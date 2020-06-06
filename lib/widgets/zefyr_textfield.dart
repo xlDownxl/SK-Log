@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 //import 'package:zefyr/zefyr.dart';
 //import 'package:quill_delta/quill_delta.dart';
-import 'dart:convert';
-import 'package:provider/provider.dart';
 import '../models/analyse.dart';
 
 class ZefyrTextField extends StatefulWidget {

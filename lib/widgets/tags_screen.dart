@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import '../models/user_tags.dart';
 import '../widgets/entry_list.dart';
 import '../models/analysen_filter.dart';
-import 'tags_widget.dart';
 import 'package:provider/provider.dart';
 import 'tags_filter_widget.dart';
 import '../models/analysen.dart';

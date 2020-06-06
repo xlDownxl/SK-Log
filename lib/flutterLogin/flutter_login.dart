@@ -18,23 +18,15 @@ import 'src/regex.dart';
 import 'src/widgets/auth_card.dart';
 import 'src/widgets/fade_in.dart';
 import 'src/widgets/hero_text.dart';
-import 'src/widgets/gradient_box.dart';
 export 'src/models/login_data.dart';
 export 'src/providers/login_messages.dart';
 export 'src/providers/login_theme.dart';
 import 'src/constants.dart';
-
-import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:provider/provider.dart';
-import '../models/user.dart';
-import '../models/user_tags.dart';
 import '../flutterLogin/flutter_login.dart';
 import '../widgets/LoginScreenWidgets/logo.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_size_text/auto_size_text.dart';
-import 'dart:math';
 
 class _AnimationTimeDilationDropdown extends StatelessWidget {
   _AnimationTimeDilationDropdown({

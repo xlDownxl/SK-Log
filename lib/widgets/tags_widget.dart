@@ -55,16 +55,13 @@ class _TagsWidgetState extends State<TagsWidget> {
                     analyse.activeTags.add(item.title);
                   }
                 },
-
-                removeButton: ItemTagsRemoveButton(
-                    /*onRemoved: () {
-                    setState(() {
-                      userTags.delete(_tags[
-                          index]); // does this really remove or do i need to init usertags alone
-                    });
-                    return true;
-                  },*/
-                    ), // OR null,
+                onRemoved: () {
+                  setState(() {
+                    userTags.delete(
+                        _tags[index]); // does this really remove or do i need to init usertags alone
+                  });
+                },
+                removeButton: ItemTagsRemoveButton(), // OR null,
               );
             },
           ),

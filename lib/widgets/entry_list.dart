@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'list_element.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
-import '../models/analyse.dart';
 import '../models/analysen_filter.dart';
 
 class EntryList extends StatefulWidget {

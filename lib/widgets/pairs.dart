@@ -3,7 +3,6 @@ import '../models/pair_list.dart';
 import 'package:provider/provider.dart';
 import 'entry_list.dart';
 import '../models/analysen_filter.dart';
-import '../models/pair_enum.dart';
 import '../models/analysen.dart';
 
 class Pairs extends StatefulWidget {
