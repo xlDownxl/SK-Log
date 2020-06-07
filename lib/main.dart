@@ -89,6 +89,8 @@ ThemeData _buildLightTheme() {
 }
 
 class _MyAppState extends State<MyApp> {
+  var analysen=Analysen();
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(

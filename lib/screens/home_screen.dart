@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/widgets/leftside_menu.dart';
+import '../widgets/leftside_menu.dart';
 import '../widgets/entry_list.dart';
 import '../widgets/tags_screen.dart';
 import '../widgets/pairs.dart';
@@ -8,6 +8,7 @@ import '../models/analysen_filter.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import 'package:showcaseview/showcaseview.dart';
+import '../models/user.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
