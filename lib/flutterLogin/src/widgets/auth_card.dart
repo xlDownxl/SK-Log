@@ -18,6 +18,7 @@ import '../dart_helper.dart';
 import '../matrix.dart';
 import '../paddings.dart';
 import '../widget_helper.dart';
+import 'package:flutter/services.dart';
 
 class AuthCard extends StatefulWidget {
   AuthCard({
@@ -625,6 +626,8 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    bool _tempKeyPressedOnce1 = false;
+    bool _tempKeyPressedOnce2 = false;
     final auth = Provider.of<Auth>(context, listen: true);
     final isLogin = auth.isLogin;
     final messages = Provider.of<LoginMessages>(context, listen: false);
@@ -650,20 +653,28 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
                 RawKeyboardListener(child: _buildNameField(textFieldWidth, messages, auth),
                 focusNode: FocusNode(),
                 onKey: (RawKeyEvent event){
-                  if (event.runtimeType.toString() == "RawKeyDownEvent"  &&
-                      (event.data.keyLabel == "Tab"))//Enter Key ID from keyboard
-                      {
-                        FocusScope.of(context).requestFocus(_passwordFocusNode);
+                  if (event.logicalKey == LogicalKeyboardKey.tab){
+                    if (!_tempKeyPressedOnce1) {
+                      _tempKeyPressedOnce1 = true;
+                      FocusScope.of(context).requestFocus(_passwordFocusNode);
                     }
+                    else{
+                      _tempKeyPressedOnce1 = false;
+                    }
+                  }
                 },),
                 SizedBox(height: 20),
                 RawKeyboardListener(child: _buildPasswordField(textFieldWidth, messages, auth),
                 focusNode: FocusNode(),
                   onKey: (RawKeyEvent event){
-                    if (event.runtimeType.toString() == "RawKeyDownEvent"  &&
-                        (event.data.keyLabel == "Tab"))//Enter Key ID from keyboard
-                        {
-                      FocusScope.of(context).requestFocus(_confirmPasswordFocusNode);
+                    if (event.logicalKey == LogicalKeyboardKey.tab ){
+                      if (!_tempKeyPressedOnce1) {
+                        _tempKeyPressedOnce1 = true;
+                        FocusScope.of(context).requestFocus(_confirmPasswordFocusNode);
+                      }
+                      else{
+                        _tempKeyPressedOnce1 = false;
+                      }
                     }
                   },
                 ),
