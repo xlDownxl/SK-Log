@@ -120,19 +120,15 @@ class Analysen with ChangeNotifier {
     ref.add({
       "id": ref.id,
       "title": analyse.title,
+      "link": analyse.link,
       "tags": analyse.activeTags,
       "description": analyse.description,
       "learning": analyse.learning,
       "pair": EnumToString.parse(analyse.pair),
       "date": analyse.date.millisecondsSinceEpoch,
     });
-    print(analysen.length);
-    print(allAnalysen.length);
-    print(analyse);
 
     allAnalysen.add(analyse); //nur ein pointer: analysen liste wird auch geaddet
-    print(analysen.length);
-    print(allAnalysen.length);
     notifyListeners();
   }
 
@@ -144,6 +140,7 @@ class Analysen with ChangeNotifier {
       "id": ref.id,
       "title": analyse.title,
       "tags": analyse.activeTags,
+      "link": analyse.link,
       "description": analyse.description,
       "learning": analyse.learning,
       "pair": EnumToString.parse(analyse.pair),

@@ -24,6 +24,7 @@ class Analyse with ChangeNotifier {
     activeTags = [];
     title = "Analyse Nr. 1";
   }
+  var resPair;
 
   Future getPair(tv_url,analysen) async {
     var url="https://sk-log.appspot.com/getpair?id="+tv_url;
@@ -33,8 +34,22 @@ class Analyse with ChangeNotifier {
       }
       else{
         var res = json.decode(response.body);
-        print(res);
-        this.pair=EnumToString.fromString(PairEnum.values, res["pair"]);
+        resPair=res["pair"];
+        if(resPair.contains("GRXEUR")){
+          this.pair=PairEnum.DAX;
+          print("dax");
+        }else if(resPair=="US30USD"){
+          this.pair=PairEnum.DOW;
+          print("dow");
+        } else{
+
+            this.pair = EnumToString.fromString(PairEnum.values, resPair);
+            if(this.pair==null) {
+              print("others");
+              this.pair = PairEnum.OTHERS;
+            }
+        }
+
         notifyListeners();
         analysen.notify();
         //analyseListParent.notifyListeners();

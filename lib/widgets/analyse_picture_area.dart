@@ -38,42 +38,6 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
     });
   }
 
-  List<Widget> buildPairs(constraints) {
-    var height=constraints.maxHeight;
-    var width=constraints.maxWidth;
-    var pairs = PairList.pairs;
-    List<Widget> pairWidgets = [];
-    pairs.forEach((pair) {
-      pairWidgets.add(Container(
-        //height: height/3-15,
-        child: Card(
-          color: choseColor(pair),
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(30)),
-            //side: BorderSide(color: Colors.white)
-          ),
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                analyse.pair = pair;
-              });
-            },
-            child: Center(
-              child: FittedBox(
-                child: Text(
-                  pair.toString().split('.')[1],
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 10),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ));
-    });
-    return pairWidgets;
-  }
-
   Color choseColor(pair) {
     if (analyse.pair == pair)
       return Theme.of(context).accentColor;
