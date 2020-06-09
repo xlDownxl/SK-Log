@@ -78,27 +78,49 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                   ),
           ),
           fit: FlexFit.tight,
-          flex: 16,
+          flex: 26,
         ),
         Flexible(child: Container(),),
         Flexible(
-          flex: 4,
+          flex: 7,
           child: Container(
             child: LayoutBuilder(
               builder: (ctx, constraints) => Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: constraints.maxWidth * 0.2,
+                    width: constraints.maxWidth * 0.05,
+                  ),
+                  Container(
+                    width: constraints.maxWidth * 0.1,
                     child:         LayoutBuilder(
                         builder:(ctx,constraints)=> Container(
+                          //width: constraints.maxWidth,
+                          height: constraints.maxWidth,
                           child: analyse.link==""?Text(
                               ""
                           ):
-                          loading?CircularProgressIndicator():Text(
-                              analyse.pair.toString().split('.')[1]
+                          loading?CircularProgressIndicator():
+                          Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(width: 2),
+                              shape: BoxShape.circle,
+
+                              color: Theme.of(context).accentColor,
+                            ),
+                            child: Center(
+                              child: Text(
+                                  analyse.pair.toString().split('.')[1],
+                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),
+                              ),
+                            ),
+
                           ),
                         )
                     ),
+                  ),
+                  Container(
+                    width: constraints.maxWidth * 0.05,
                   ),
                   Container(
                     child: FittedBox(

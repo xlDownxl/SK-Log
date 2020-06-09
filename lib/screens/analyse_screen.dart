@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/pair_enum.dart';
 import '../widgets/analyse_input_area.dart';
 import '../widgets/analyse_picture_area.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -49,11 +50,9 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   }
 
   void safe() {
-    if (analyse.pair == null) {
-      setState(() {
-        error = true;
-      });
-    } else {
+    if(analyse.pair==null){
+      analyse.pair=PairEnum.OTHERS;
+    }
       descriptionKey.currentState.safeDocument();
       learningKey.currentState.safeDocument();
       if (id == null) {
@@ -63,7 +62,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
         Provider.of<Analysen>(context, listen: false).update(analyse);
       }
       Navigator.pop(context);
-    }
   }
 
   bool error = false;

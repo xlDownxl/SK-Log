@@ -642,7 +642,7 @@ class _FlutterLoginState extends State<FlutterLogin>
               child: Align(
                 alignment: Alignment.topCenter,
                 child: AutoSizeText(
-                  "Langfristigen Erfolg im Trading.",
+                  "langfristigen Erfolg im Trading.",
                   maxLines: 3,
                   style: TextStyle(
                     fontSize: 40,
