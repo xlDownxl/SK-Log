@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/pair_enum.dart';
 import '../widgets/analyse_input_area.dart';
 import '../widgets/analyse_picture_area.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -7,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analyse.dart';
 import '../widgets/zefyr_textfield.dart';
-
+import '../models/user_pairs.dart';
 
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";
@@ -51,7 +50,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
 
   void safe() {
     if(analyse.pair==null){
-      analyse.pair=PairEnum.OTHERS;
+      analyse.pair="Others";
     }
       descriptionKey.currentState.safeDocument();
       learningKey.currentState.safeDocument();

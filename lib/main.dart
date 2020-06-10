@@ -7,6 +7,7 @@ import 'models/analysen.dart';
 import 'models/user_tags.dart';
 import 'screens/login_screen.dart';
 import 'package:firebase/firebase.dart';
+import 'models/user_pairs.dart';
 
 void main() {
   initializeApp(
@@ -89,7 +90,6 @@ ThemeData _buildLightTheme() {
 }
 
 class _MyAppState extends State<MyApp> {
-  var analysen=Analysen();
 
   @override
   Widget build(BuildContext context) {

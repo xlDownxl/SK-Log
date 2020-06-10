@@ -1,7 +1,5 @@
-import 'pair_enum.dart';
-
 class AnalyseFilter {
-  PairEnum pair;
+  String pair;
   List<String> tags = [];
   DateTime time;
   String word;
@@ -11,7 +9,7 @@ class AnalyseFilter {
   bool isSearch;
   bool isShowAll;
 
-  AnalyseFilter.pairFilter(PairEnum pair) {
+  AnalyseFilter.pairFilter(String pair) {
     isPair = true;
     isTag = false;
     isSearch = false;
@@ -36,6 +34,5 @@ class AnalyseFilter {
   void addSearch(word) {
     isSearch = true;
     this.word = word;
-    print("filter" + word);
   }
 }

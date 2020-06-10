@@ -2,6 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../flutterLogin/flutter_login.dart';
 import '../models/user_tags.dart';
+import 'user_pairs.dart';
+import 'analysen.dart';
+
+
 class AppUser with ChangeNotifier {
   //String username;
   String email;
@@ -14,7 +18,7 @@ class AppUser with ChangeNotifier {
     fbUser = null;
   }
 
-  Future _registerUser(LoginData data, analysen, userTags) {
+  Future _registerUser(LoginData data, analysen, userTags,) {
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
@@ -51,10 +55,10 @@ class AppUser with ChangeNotifier {
     }).catchError((error) => error.code);
   }
 
-  Future<String> login(LoginData data, analysen, userTags) async {
+  Future<String> login(LoginData data, analysen, userTags,) async {
     var code = await Future.any(
       [
-        _loginUser(data, analysen, userTags),
+        _loginUser(data, analysen, userTags,),
         Future.delayed(
           const Duration(seconds: 8),
         ),
@@ -75,7 +79,7 @@ class AppUser with ChangeNotifier {
     }
   }
 
-  Future<String> _loginUser(LoginData data, analysen, UserTags userTags) async {
+  Future<String> _loginUser(LoginData data,Analysen analysen, UserTags userTags) async {
     //TODO if user not in database -> create him
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)

@@ -52,7 +52,7 @@ class ListElement extends StatelessWidget {
                 flex: 1,
                 child: Center(
                     child: Text(
-                  analyse.pair.toString().split('.')[1],
+                  analyse.pair,
                   style: TextStyle(fontSize: fSize),
                 )),
                 fit: FlexFit.tight,

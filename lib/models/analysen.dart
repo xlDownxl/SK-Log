@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'analyse.dart';
-import 'pair_enum.dart';
 import 'analysen_filter.dart';
 import 'package:firebase/firebase.dart';
 import 'package:firebase/firestore.dart' as fs;
-import 'package:enum_to_string/enum_to_string.dart';
+import 'user_pairs.dart';
 
 class Analysen with ChangeNotifier {
   List<Analyse> analysen = [];
@@ -12,6 +11,10 @@ class Analysen with ChangeNotifier {
   fs.Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
+  UserPairs userPairs=UserPairs();
+
+  var analyse_pair_map={};
+
   Analysen();
 
   void notify(){
@@ -30,10 +33,10 @@ class Analysen with ChangeNotifier {
     this.userId=id;
     store = firestore();
     fs.CollectionReference ref = store.collection("Users");
-
     ref.doc(userId).collection("analysen").get().then((snapshot) {
       snapshot.forEach((document) {
         allAnalysen.add(Analyse.fromMap(document.data(),document.id));
+        userPairs.add(document.data()["pair"]);
       });
     }).then((_) {
       analysen = allAnalysen;
@@ -124,16 +127,18 @@ class Analysen with ChangeNotifier {
       "tags": analyse.activeTags,
       "description": analyse.description,
       "learning": analyse.learning,
-      "pair": EnumToString.parse(analyse.pair),
+      "pair": analyse.pair,
       "date": analyse.date.millisecondsSinceEpoch,
     });
 
     allAnalysen.add(analyse); //nur ein pointer: analysen liste wird auch geaddet
+    userPairs.add(analyse.pair);
     notifyListeners();
   }
 
-  void update(Analyse analyse) {
 
+  //dict über listen benutzen wegen runtime
+  void update(Analyse analyse) {
     fs.Firestore store = firestore();
     var ref = store.collection("Users").doc(userId).collection("analysen");
     ref.doc(analyse.id).update(data: {
@@ -143,7 +148,7 @@ class Analysen with ChangeNotifier {
       "link": analyse.link,
       "description": analyse.description,
       "learning": analyse.learning,
-      "pair": EnumToString.parse(analyse.pair),
+      "pair": analyse.pair,
       "date": analyse.date.millisecondsSinceEpoch,
     });
 
@@ -182,7 +187,7 @@ class Analysen with ChangeNotifier {
     dummy.link = "https://www.tradingview.com/x/KgXTpAye/";
     dummy.activeTags = ["Sequenzen", "SL"];
     dummy.title = "Analyse 1";
-    dummy.pair = PairEnum.AUDJPY;
+    dummy.pair = "AUDJPY";
     dummy.owner = "me";
     dummy.date = DateTime.now();
     analysen.add(dummy);
@@ -191,7 +196,7 @@ class Analysen with ChangeNotifier {
     dummy.link = "https://www.tradingview.com/x/KgXTpAye/";
     dummy.activeTags = ["Priceaction"];
     dummy.title = "Analyse 2";
-    dummy.pair = PairEnum.AUDCHF;
+    dummy.pair = "AUDCHF";
     dummy.owner = "me";
     dummy.date = DateTime.now();
     analysen.add(dummy);
@@ -199,7 +204,7 @@ class Analysen with ChangeNotifier {
     dummy.id = "id3";
     dummy.link = "https://www.tradingview.com/x/KgXTpAye/";
     dummy.title = "Analyse 3";
-    dummy.pair = PairEnum.GBPJPY;
+    dummy.pair = "GBPJPY";
     dummy.activeTags = ["TP"];
     dummy.owner = "me";
     dummy.date = DateTime.now();

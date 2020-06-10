@@ -22,7 +22,6 @@ class UserTags with ChangeNotifier {
       "Hedging",
     ];
     store = firestore();
-    print("init");
     fs.CollectionReference ref = store.collection("Users");
     ref.doc(userId).set({"user_tags":_tags});
    // notifyListeners();

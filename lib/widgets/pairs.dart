@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../models/pair_list.dart';
 import 'package:provider/provider.dart';
 import 'entry_list.dart';
 import '../models/analysen_filter.dart';
 import '../models/analysen.dart';
+import '../models/user_pairs.dart';
 
 class Pairs extends StatefulWidget {
   Pairs({Key key}) : super(key: key);
@@ -12,12 +12,15 @@ class Pairs extends StatefulWidget {
   PairsState createState() => PairsState();
 }
 
+
+//TODO nen button in eine ecke einbauen => refresh, der die paare die man nicht mehr hat löscht
+
 class PairsState extends State<Pairs> {
-  var filterPair;
+  String filterPair;
   Analysen analysen;
 
   List buildPairs() {
-    var pairs = PairList.pairs;
+    var pairs = Provider.of<Analysen>(context,listen: false).userPairs.getPairs(); //listen = false?
     var pairWidgets = [];
     pairs.forEach((pair) {
       pairWidgets.add(Card(
@@ -28,7 +31,7 @@ class PairsState extends State<Pairs> {
         child: InkWell(
           child: Center(
             child: Text(
-              pair.toString().split('.')[1],
+              pair,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),

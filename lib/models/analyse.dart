@@ -1,4 +1,3 @@
-import 'pair_enum.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:enum_to_string/enum_to_string.dart';
@@ -11,7 +10,7 @@ class Analyse with ChangeNotifier {
   var description;
   String title;
   String learning;
-  PairEnum pair;
+  String pair;
   String owner;
   var activeTags;
   DateTime date;
@@ -30,29 +29,17 @@ class Analyse with ChangeNotifier {
     var url="https://sk-log.appspot.com/getpair?id="+tv_url;
     return http.get(url).then((response){
       if (response.statusCode!=200){
-
+          print("error in text recognition");
       }
       else{
         var res = json.decode(response.body);
         resPair=res["pair"];
-        if(resPair.contains("GRXEUR")){
-          this.pair=PairEnum.DAX;
-          print("dax");
-        }else if(resPair=="US30USD"){
-          this.pair=PairEnum.DOW;
-          print("dow");
-        } else{
-
-            this.pair = EnumToString.fromString(PairEnum.values, resPair);
-            if(this.pair==null) {
-              print("others");
-              this.pair = PairEnum.OTHERS;
-            }
-        }
-
+        this.pair = resPair;
+        /*if(this.pair==null) { should not happen like this
+          this.pair = "Others";
+        }*/
         notifyListeners();
         analysen.notify();
-        //analyseListParent.notifyListeners();
       }
     }).catchError((error){
       print(error);
@@ -72,7 +59,7 @@ class Analyse with ChangeNotifier {
     activeTags = snapshot['tags'] ?? [];
     learning = snapshot['learning'] ?? "";
     description = snapshot['description'] ?? "";
-    pair = EnumToString.fromString(PairEnum.values, snapshot['pair']) ?? null;
+    pair = snapshot['pair'] ?? null;
     owner = snapshot["owner"] ?? "not implemented";
     date = DateTime.fromMillisecondsSinceEpoch(snapshot["date"]);
   }
@@ -82,7 +69,7 @@ class Analyse with ChangeNotifier {
     link = "https://www.tradingview.com/x/L8uGb5au/";
     id = DateTime.now().toString();
     title = "Analysis $id";
-    pair = PairEnum.AUDCAD;
+    pair = "AUDCAD";
     owner = "sdfsdf";
     activeTags = [];
     //learning="Das habe ich gelernt";

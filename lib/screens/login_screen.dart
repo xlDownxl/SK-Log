@@ -6,7 +6,7 @@ import '../models/user_tags.dart';
 import '../flutterLogin/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
-
+import '../models/user_pairs.dart';
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login_new";
 
@@ -74,13 +74,16 @@ class _LoginPageState extends State<LoginScreen> {
                 return user.login(
                     data,
                     Provider.of<Analysen>(context, listen: false),
-                    Provider.of<UserTags>(context, listen: false));
+                    Provider.of<UserTags>(context, listen: false),
+                );
               },
               onSignup: (data) {
                 return user.register(
                     data,
                     Provider.of<Analysen>(context, listen: false),
-                    Provider.of<UserTags>(context, listen: false));
+                    Provider.of<UserTags>(context, listen: false),
+
+                );
               },
               onRecoverPassword: user.recoverPassword,
               onSubmitAnimationCompleted: () {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/analyse.dart';
-import '../models/pair_list.dart';
 import '../models/analysen.dart';
 
 class AnalysePictureArea extends StatefulWidget {
@@ -110,7 +109,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                             ),
                             child: Center(
                               child: Text(
-                                  analyse.pair.toString().split('.')[1],
+                                  analyse.pair,
                                 style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),
                               ),
                             ),
