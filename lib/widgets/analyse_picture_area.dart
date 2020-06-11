@@ -67,7 +67,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                 : Container(
                     child: Center(
                       child: Text(
-                        "Enter your TradingView Link below",
+                        "Copy und Paste deinen Tradingview Link in den unteren Kasten",
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -88,10 +88,10 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: constraints.maxWidth * 0.05,
+                    width: constraints.maxWidth * 0.02,
                   ),
                   Container(
-                    width: constraints.maxWidth * 0.1,
+                    width: constraints.maxWidth * 0.08,
                     child:         LayoutBuilder(
                         builder:(ctx,constraints)=> Container(
                           //width: constraints.maxWidth,
@@ -108,9 +108,11 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                               color: Theme.of(context).accentColor,
                             ),
                             child: Center(
-                              child: Text(
-                                  analyse.pair,
-                                style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),
+                              child: FittedBox(
+                                child: Text(
+                                    analyse.pair,
+                                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 22),
+                                ),
                               ),
                             ),
 
@@ -128,7 +130,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     )),
-                    width: constraints.maxWidth * 0.1,
+                    width: constraints.maxWidth * 0.15,
                   ),
                   SizedBox(
                     width: 10,
@@ -183,11 +185,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                                 color: Colors.white,
                               ),
                             ),
-                            Flexible(
-                              child: SizedBox(
-                                width: 5,
-                              ),
-                            ),
+
                             Flexible(
                               flex: 25,
                               child: FittedBox(
@@ -203,13 +201,8 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18.0),
+                                      fontSize: 20.0),
                                 ),
-                              ),
-                            ),
-                            Flexible(
-                              child: SizedBox(
-                                width: 5,
                               ),
                             ),
                           ],

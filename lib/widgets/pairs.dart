@@ -25,14 +25,17 @@ class PairsState extends State<Pairs> {
     pairs.forEach((pair) {
       pairWidgets.add(Card(
         elevation: 2,
+        color: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30)),
             side: BorderSide(color: Colors.white)),
         child: InkWell(
           child: Center(
-            child: Text(
-              pair,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            child: FittedBox(
+              child: Text(
+                pair,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+              ),
             ),
           ),
           onTap: () {

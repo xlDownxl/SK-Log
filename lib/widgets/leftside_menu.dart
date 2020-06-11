@@ -159,17 +159,22 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
               Navigator.pushReplacementNamed(context, LoginScreen.routeName);
             },
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Icon(
-                Icons.input,
-                color: Colors.white,
+              Flexible(
+                child: Icon(
+                  Icons.input,
+                  color: Colors.white,
+                ),
               ),
               SizedBox(
                 width: 10,
               ),
-              Text(
-                "Log Out",
-                style: TextStyle(fontSize: 20, color: Colors.white),
-              )
+          Flexible(
+              child:FittedBox(
+                child: Text(
+                  "Log Out",
+                  style: TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),),
             ]),
           ),
         ),

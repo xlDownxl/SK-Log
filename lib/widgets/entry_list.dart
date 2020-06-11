@@ -39,36 +39,44 @@ class _EntryListState extends State<EntryList> {
             Flexible(
               flex: 2,
               child: Center(
-                  child: Text(
+                  child: FittedBox(
+                    child: Text(
                 "Analyse Title",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              )),
+              ),
+                  )),
               fit: FlexFit.tight,
             ),
             Flexible(
               flex: 1,
               child: Center(
-                  child: Text("Paar",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20))),
+                  child: FittedBox(
+                    child: Text("Paar",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+                  )),
               fit: FlexFit.tight,
             ),
             Flexible(
               flex: 1,
               child: Center(
-                  child: Text("Datum",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 20))),
+                  child: FittedBox(
+                    child: Text("Datum",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20)),
+                  )),
               fit: FlexFit.tight,
             ),
             Flexible(
               flex: 3,
               child: Center(
-                  child: Text("Tags",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ))),
+                  child: FittedBox(
+                    child: Text("Tags",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        )),
+                  )),
               fit: FlexFit.tight,
             ),
           ],

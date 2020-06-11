@@ -41,31 +41,38 @@ class ListElement extends StatelessWidget {
               Flexible(
                 flex: 2,
                 child: Center(
-                    child: Text(
+                    child: FittedBox(
+                        child:Text(
                   analyse.title,
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: fSize),
-                )),
+                )),),
                 fit: FlexFit.tight,
               ),
+              SizedBox(width: 10,),
               Flexible(
                 flex: 1,
                 child: Center(
-                    child: Text(
+                    child: FittedBox(
+                      child: Text(
                   analyse.pair,
                   style: TextStyle(fontSize: fSize),
-                )),
-                fit: FlexFit.tight,
-              ),
-              Flexible(
-                flex: 1,
-                child: Center(
-                    child: Text(
-                      "${analyse.date.day}.${analyse.date.month}.${analyse.date.year}",
-                      style: TextStyle(fontSize: fSize),
+                ),
                     )),
                 fit: FlexFit.tight,
               ),
+              SizedBox(width: 10,),
+              Flexible(
+                flex: 1,
+                child: Center(
+                    child: FittedBox(
+                        child:Text(
+                      "${analyse.date.day}.${analyse.date.month}.${analyse.date.year}",
+                      style: TextStyle(fontSize: fSize),
+                    )),),
+                fit: FlexFit.tight,
+              ),
+              SizedBox(width: 10,),
               Flexible(
                 flex: 3,
                 child: Center(
