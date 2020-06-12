@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:showcaseview/showcase_widget.dart';
+import '../showcaseview/showcase_widget.dart';
 import 'list_element.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analysen_filter.dart';
-import 'package:showcaseview/showcaseview.dart';
+import '../showcaseview/showcaseview.dart';
 
 class EntryList extends StatefulWidget {
   final AnalyseFilter filter;

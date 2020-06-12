@@ -3,7 +3,7 @@ import '../screens/analyse_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/login_screen.dart';
 import '../models/analysen.dart';
-import 'package:showcaseview/showcaseview.dart';
+import '../showcaseview/showcaseview.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
 

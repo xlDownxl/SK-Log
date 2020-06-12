@@ -47,7 +47,7 @@ dependencies:
   enum_to_string: ^1.0.8
   material_design_icons_flutter: 3.4.4995
   url_launcher: ^5.4.2
-  showcaseview: ^0.1.5
+  #showcaseview: ^0.1.5
 
 
 

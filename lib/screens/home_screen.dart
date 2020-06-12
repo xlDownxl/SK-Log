@@ -7,7 +7,7 @@ import 'package:gradient_app_bar/gradient_app_bar.dart';
 import '../models/analysen_filter.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
-import 'package:showcaseview/showcaseview.dart';
+import '../showcaseview/showcaseview.dart';
 import '../models/user.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -49,9 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-
       if(Provider.of<AppUser>(context,listen: false).isNew) {
-
         WidgetsBinding.instance
             .addPostFrameCallback((_) =>
             ShowCaseWidget.of(leftSideMenu.currentContext).startShowCase([
@@ -61,7 +59,6 @@ class _HomeScreenState extends State<HomeScreen> {
               analysenFieldKey,
             ]));
       }
-
     super.initState();
   }
 
