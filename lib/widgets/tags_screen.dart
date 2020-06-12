@@ -15,8 +15,6 @@ class TagScreenState extends State<TagScreen> {
   List<String> filters = [];
 
   void update(newList) {
-    print("newList");
-    print(newList);
     Provider.of<Analysen>(context, listen: false)
         .setFilter(AnalyseFilter.tagFilter(newList));
   }

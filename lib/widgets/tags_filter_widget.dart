@@ -17,7 +17,7 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
   @override
   Widget build(BuildContext context) {
     var userTags = Provider.of<UserTags>(context);
-    var _tags = userTags.getTags(); // TODO tags als provider
+    var _tags = userTags.getTags();
 
     return SingleChildScrollView(
       child: Container(
@@ -30,6 +30,7 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
             return ItemTags(
               elevation: 3,
               key: Key(index.toString()),
+              border: Border.all(width: 1),
               index: index,
               title: _tags[index],
               textStyle: TextStyle(
