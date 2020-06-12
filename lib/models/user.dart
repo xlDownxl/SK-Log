@@ -11,11 +11,13 @@ class AppUser with ChangeNotifier {
   String email;
   String id;
   FirebaseUser fbUser;
+  bool isNew=false;
 
   void reset() {
     email = null;
     id = null;
     fbUser = null;
+    isNew=false;
   }
 
   Future _registerUser(LoginData data, analysen, userTags,) {
@@ -27,13 +29,13 @@ class AppUser with ChangeNotifier {
       userTags.init(user.user.uid);
       email = user.user.email;
       id = user.user.uid;
+      isNew=true;
       return "success";
     }).catchError((error) => error.code);
   }
 
   Future<String> register( data, analysen, userTags) async {
     var code = await _registerUser(data, analysen, userTags);
-    print(code);
     switch (code) {
       case "ERROR_EMAIL_ALREADY_IN_USE":
         return "Email schon vergeben";
@@ -44,7 +46,6 @@ class AppUser with ChangeNotifier {
       case "success":
         return null;
       default:
-        print(code);
         return "Falsche Eingaben";
     }
   }

@@ -1,20 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:showcaseview/showcase_widget.dart';
 import 'list_element.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analysen_filter.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class EntryList extends StatefulWidget {
   final AnalyseFilter filter;
   final bool buildSearchField;
+  final Key analysenKey;
+  final Key searchFieldKey;
 
-  EntryList(this.filter, this.buildSearchField);
+  EntryList(key,this.filter, this.buildSearchField,this.analysenKey,this.searchFieldKey): super(key: key);
 
   @override
-  _EntryListState createState() => _EntryListState();
+  EntryListState createState() => EntryListState();
 }
 
-class _EntryListState extends State<EntryList> {
+class EntryListState extends State<EntryList> {
+  GlobalKey _one = GlobalKey();
   var filteredList;
   Analysen analysen;
   AnalyseFilter filter;
@@ -85,20 +90,27 @@ class _EntryListState extends State<EntryList> {
     }
 
     Widget buildSearchfield() {
-      return LayoutBuilder(
-        builder: (_, constraint) => Container(
-          //decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.tealAccent)),
-          margin: EdgeInsets.only(bottom: 5),
-          width: constraint.maxWidth * 0.25,
-          child: TextFormField(
-            onChanged: (value) {
-              analysen.addSearch(value);
-            },
-            controller: editingController,
-            decoration: InputDecoration(
-              border: InputBorder.none,
-              labelText: "Suche eine Analyse",
-              prefixIcon: Icon(Icons.search),
+      return Showcase(
+        key: widget.searchFieldKey,
+        description:
+        "Suche hier nach Namen von Analysen",
+        overlayColor: Colors.black,
+        overlayOpacity: 0.5,
+        child: LayoutBuilder(
+          builder: (_, constraint) => Container(
+            //decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.tealAccent)),
+            margin: EdgeInsets.only(bottom: 5),
+            width: constraint.maxWidth * 0.25,
+            child: TextFormField(
+              onChanged: (value) {
+                analysen.addSearch(value);
+              },
+              controller: editingController,
+              decoration: InputDecoration(
+                border: InputBorder.none,
+                labelText: "Suche eine Analyse",
+                prefixIcon: Icon(Icons.search),
+              ),
             ),
           ),
         ),
@@ -120,14 +132,20 @@ class _EntryListState extends State<EntryList> {
             height: 10,
           ),
           Expanded(
-            child: Container(
+            child: Showcase(
+          key: widget.analysenKey,
+    description:
+    "Hier siehst du alle deine Analysen",
+    overlayColor: Colors.black,
+    overlayOpacity: 0.5,
+    child:Container(
               child: ListView.builder(
                 itemBuilder: (ctx, index) =>
                     ListElement(analysen.analysen[index]),
                 itemCount: analysen.analysen.length,
               ),
             ),
-          ),
+          ),),
         ],
       ),
     );

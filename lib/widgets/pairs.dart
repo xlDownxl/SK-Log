@@ -79,6 +79,6 @@ class PairsState extends State<Pairs> {
             ),
             padding: EdgeInsets.all(20),
           )
-        : EntryList(AnalyseFilter.pairFilter(filterPair), false);
+        : EntryList(GlobalKey,AnalyseFilter.pairFilter(filterPair), false,null,null);
   }
 }

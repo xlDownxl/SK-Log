@@ -8,16 +8,19 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 
 class LeftsideMenu extends StatefulWidget {
+
   final Function changeMode;
   final Function reset;
+  final Key plusButtonKey;
+  final Key logOutButtonKey;
 
-  LeftsideMenu(this.changeMode, this.reset);
+  LeftsideMenu(key,this.changeMode, this.reset,this.plusButtonKey,this.logOutButtonKey): super(key: key);
 
   @override
-  _LeftsideMenuState createState() => _LeftsideMenuState();
+  LeftsideMenuState createState() => LeftsideMenuState();
 }
 
-class _LeftsideMenuState extends State<LeftsideMenu> {
+class LeftsideMenuState extends State<LeftsideMenu> {
   GlobalKey _one = GlobalKey();
   //GlobalKey _two = GlobalKey();
   //GlobalKey _three = GlobalKey();
@@ -25,10 +28,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
   @override
   void initState() {
     super.initState();
-    /* WidgetsBinding.instance
-        .addPostFrameCallback((_) => ShowCaseWidget.of(context).startShowCase([
-              _one,
-            ]));*/
+
   }
 
   @override
@@ -110,11 +110,8 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
               Flexible(
                 child: LayoutBuilder(
                   builder: (ctx, constraints) => SizedBox(
-                    //width: constraints.maxWidth/2.2,
-                    //height: constraints.maxHeight/1.5,
-
                     child: Showcase(
-                      key: _one,
+                      key: widget.plusButtonKey,
                       description:
                           "Klicke hier um eine neue Analyse zu erstellen",
                       overlayColor: Colors.black,
@@ -151,7 +148,13 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
         ),
         Flexible(
           flex: 1,
-          child: InkWell(
+          child: Showcase(
+            key: widget.logOutButtonKey,
+            description:
+            "Klicke hier um dich auszuloggen",
+            overlayColor: Colors.black,
+            overlayOpacity: 0.5,
+            child:InkWell(
             onTap: () {
               FirebaseAuth.instance.signOut();
               analysen.reset();
@@ -176,7 +179,7 @@ class _LeftsideMenuState extends State<LeftsideMenu> {
                 ),
               ),),
             ]),
-          ),
+          ),),
         ),
       ]),
     );

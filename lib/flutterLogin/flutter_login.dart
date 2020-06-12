@@ -611,7 +611,7 @@ class _FlutterLoginState extends State<FlutterLogin>
               child: Container(
                 child: Center(
                   child: AutoSizeText(
-                    "Wilkommen zu SK!LOG \n",
+                    "Willkommen zu SK!LOG \n",
                     maxLines: 3,
                     style: TextStyle(
                       fontSize: 42,
