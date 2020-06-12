@@ -28,13 +28,16 @@ class PairsState extends State<Pairs> {
         color: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(30)),
-            side: BorderSide(color: Colors.white)),
+        ),
         child: InkWell(
-          child: Center(
-            child: FittedBox(
-              child: Text(
-                pair,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 5),
+            child: Center(
+              child: FittedBox(
+                child: Text(
+                  pair,
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
               ),
             ),
           ),
@@ -63,8 +66,9 @@ class PairsState extends State<Pairs> {
     return filterPair == null
         ? Container(
             child: GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 8,
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                //crossAxisCount: 8,
+                maxCrossAxisExtent: 130,
                 childAspectRatio: 2 / 2,
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
