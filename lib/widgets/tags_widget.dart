@@ -15,7 +15,7 @@ class _TagsWidgetState extends State<TagsWidget> {
   Widget build(BuildContext context) {
     var analyse = Provider.of<Analyse>(context);
     var userTags = Provider.of<UserTags>(context);
-    var _tags = userTags.getTags(); // TODO tags als provider
+    var _tags = userTags.getTags();
 
     return Padding(
       padding: EdgeInsets.only(top: 3),
@@ -29,9 +29,7 @@ class _TagsWidgetState extends State<TagsWidget> {
               hintText: "Füge einen Tag hinzu", //TODO größe nach unten anpassen
               textStyle: TextStyle(fontSize: 15),
               onSubmitted: (String str) {
-                // Add item to the data source.
                 setState(() {
-                  // required
                   userTags.add(str);
                 });
               },
@@ -42,6 +40,7 @@ class _TagsWidgetState extends State<TagsWidget> {
                 elevation: 3,
                 key: Key(index.toString()),
                 index: index,
+                border: Border.all(width: 1),
                 title: _tags[index],
                 textStyle: TextStyle(
                   fontSize: min(14, max((25 - _tags.length), 21)).toDouble(),
@@ -49,7 +48,6 @@ class _TagsWidgetState extends State<TagsWidget> {
                 active: analyse.activeTags.contains(_tags[index]),
                 onPressed: (item) {
                   if (!item.active) {
-                    // is executed after the active change is executed
                     analyse.activeTags.remove(item.title);
                   } else {
                     analyse.activeTags.add(item.title);
