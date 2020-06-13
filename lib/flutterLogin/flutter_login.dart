@@ -275,14 +275,14 @@ class FlutterLogin extends StatefulWidget {
 
   static final FormFieldValidator<String> defaultEmailValidator = (value) {
     if (value.isEmpty || !Regex.email.hasMatch(value)) {
-      return 'Invalid email!';
+      return 'Ungültige Email!';
     }
     return null;
   };
 
   static final FormFieldValidator<String> defaultPasswordValidator = (value) {
-    if (value.isEmpty || value.length <= 2) {
-      return 'Password is too short!';
+    if (value.isEmpty || value.length < 6) {
+      return 'Password ist zu kurz!';
     }
     return null;
   };
