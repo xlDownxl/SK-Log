@@ -5,7 +5,6 @@ import '../models/user_tags.dart';
 import 'user_pairs.dart';
 import 'analysen.dart';
 
-
 class AppUser with ChangeNotifier {
   //String username;
   String email;
@@ -37,12 +36,12 @@ class AppUser with ChangeNotifier {
   Future<String> register( data, analysen, userTags) async {
     var code = await _registerUser(data, analysen, userTags);
     switch (code) {
-      case "ERROR_EMAIL_ALREADY_IN_USE":
-        return "Email schon vergeben";
-      case "ERROR_INVALID_EMAIL":
+      case "auth/email-already-in-use":
+        return "Diese Email ist schon vergeben";
+      case "auth/invalid-email":
         return "Ungültige Email";
-      case "ERROR_WEAK_PASSWORD":
-        return "Passwort sollte min. 6 Zeichen haben";
+      case "auth/weak-password":
+        return "Passwort sollte mindestens 6 Zeichen haben";
       case "success":
         return null;
       default:
@@ -66,16 +65,13 @@ class AppUser with ChangeNotifier {
       ],
     );
     switch (code) {
-      case "ERROR_INVALID_EMAIL":
-        return "Ungültige Email";
-      case "ERROR_USER_NOT_FOUND":
-        return "User existiert nicht";
-      case "ERROR_WRONG_PASSWORD":
+      case "auth/user-not-found":
+        return "Benutzer existiert nicht";
+      case "auth/wrong-password":
         return "Überprüfe dein Passwort";
       case "success":
         return null;
       default:
-        print(code);
         return "Ungültige Eingaben";
     }
   }
