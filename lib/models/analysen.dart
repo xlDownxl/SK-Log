@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'analyse.dart';
 import 'analysen_filter.dart';
-import 'package:firebase/firebase.dart';
-import 'package:firebase/firestore.dart' as fs;
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_pairs.dart';
 
 class Analysen with ChangeNotifier {
   List<Analyse> analysen = [];
   List<Analyse> allAnalysen = [];
-  fs.Firestore store;
+  Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
   UserPairs userPairs=UserPairs();
@@ -31,12 +30,12 @@ class Analysen with ChangeNotifier {
   void loadWithId(String id, bool isNew){
     //TODO isnew=true implementation
     this.userId=id;
-    store = firestore();
-    fs.CollectionReference ref = store.collection("Users");
-    ref.doc(userId).collection("analysen").get().then((snapshot) {
-      snapshot.forEach((document) {
-        allAnalysen.add(Analyse.fromMap(document.data(),document.id));
-        userPairs.add(document.data()["pair"]);
+
+    //fs.CollectionReference ref = fs.Firestore.instance.collection("Users");
+    Firestore.instance.collection("Users").document(userId).collection("analysen").getDocuments().then((snapshot) {
+      snapshot.documents.forEach((document) {
+        allAnalysen.add(Analyse.fromMap(document.data,document.documentID));
+        userPairs.add(document.data["pair"]);
       });
     }).then((_) {
       analysen = allAnalysen;
@@ -104,9 +103,8 @@ class Analysen with ChangeNotifier {
   }
 
   void delete(id) {
-    fs.Firestore store = firestore();
-    var ref = store.collection("Users").doc(userId).collection("analysen");
-    ref.doc(id).delete().then((_){
+    var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
+    ref.document(id).delete().then((_){
      analysen.removeWhere((analyse) {
         return analyse.id == id;
       });
@@ -118,8 +116,7 @@ class Analysen with ChangeNotifier {
   } //TODO catcherror
 
   void add(Analyse analyse) {
-    fs.Firestore store = firestore();
-    var ref = store.collection("Users").doc(userId).collection("analysen");
+    var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.add({
       "id": ref.id,
       "title": analyse.title,
@@ -139,9 +136,8 @@ class Analysen with ChangeNotifier {
 
   //dict über listen benutzen wegen runtime
   void update(Analyse analyse) {
-    fs.Firestore store = firestore();
-    var ref = store.collection("Users").doc(userId).collection("analysen");
-    ref.doc(analyse.id).update(data: {
+    var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
+    ref.document(analyse.id).updateData({
       "id": ref.id,
       "title": analyse.title,
       "tags": analyse.activeTags,

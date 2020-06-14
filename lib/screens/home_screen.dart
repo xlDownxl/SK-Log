@@ -49,7 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    print("init homescreen");
       if(Provider.of<AppUser>(context,listen: false).isNew) {
+        print("isNew");
         WidgetsBinding.instance
             .addPostFrameCallback((_) =>
             ShowCaseWidget.of(leftSideMenu.currentContext).startShowCase([

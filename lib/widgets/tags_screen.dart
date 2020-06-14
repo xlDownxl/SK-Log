@@ -32,7 +32,7 @@ class TagScreenState extends State<TagScreen> {
             ),
             Container(
               height: constr.maxHeight * 0.85,
-              child: EntryList(GlobalKey,AnalyseFilter.tagFilter(filters), false,null,null),
+              child: EntryList(GlobalKey(),AnalyseFilter.tagFilter(filters), false,GlobalKey(),GlobalKey()),
             ),
           ],
         ),

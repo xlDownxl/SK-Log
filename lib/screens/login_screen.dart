@@ -6,7 +6,7 @@ import '../models/user_tags.dart';
 import '../flutterLogin/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
-import '../models/user_pairs.dart';
+
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login_new";
 
@@ -20,12 +20,12 @@ class _LoginPageState extends State<LoginScreen> {
   AppUser user;
   var init = true;
   var subscription;
-  bool showLoadingIndicator = true;
+  bool showLoadingIndicator = false;
 
   @override
   void initState() {
     super.initState();
-    subscription = _auth.onAuthStateChanged.listen((data) {
+   /* subscription = _auth.onAuthStateChanged.listen((data) {
       if (data != null) {
         Provider.of<Analysen>(context, listen: false)
             .loadWithId(data.uid, false);
@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginScreen> {
         });
         subscription.cancel();
       }
-    });
+    });*/
   }
 
   @override

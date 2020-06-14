@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase/firestore.dart' as fs;
-import 'package:firebase/firebase.dart';
 
 class UserPairs {
   var _pairs=[];

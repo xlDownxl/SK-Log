@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase/firestore.dart' as fs;
-import 'package:firebase/firebase.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserTags with ChangeNotifier {
-  fs.Firestore store;
+  Firestore store=Firestore.instance;
   String userId;
   var _tags=[];
 
@@ -21,9 +20,8 @@ class UserTags with ChangeNotifier {
       "Risikomanagement",
       "Hedging",
     ];
-    store = firestore();
-    fs.CollectionReference ref = store.collection("Users");
-    ref.doc(userId).set({"user_tags":_tags});
+
+    store.collection("Users").document(userId).setData({"user_tags":_tags});
    // notifyListeners();
   }
 
@@ -32,29 +30,26 @@ class UserTags with ChangeNotifier {
   }
 
   void add(String tag){
-    store = firestore();
-    fs.CollectionReference ref = store.collection("Users");
-    ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayUnion([tag])}).then((_){
+  /*  store.collection("Users").document(userId).update(data: {'user_tags': Firestore.instance.FieldValue.arrayUnion([tag])}).then((_){
       _tags.add(tag);
       notifyListeners();
-    });
+    });*/ //TODO
   }
 
   void delete(String tag){
-    store = firestore();
-    fs.CollectionReference ref = store.collection("Users");
-    ref.doc(userId).update(data: {'user_tags': fs.FieldValue.arrayRemove([tag])}).then((_){
+
+ /* store.collection("Users").document(userId).updateData(data: {'user_tags': fs.FieldValue.arrayRemove([tag])}).then((_){
       _tags.remove(tag);
       notifyListeners();
-    });
+    });*/
   }
 
   void loadTags(id)async{
     this.userId=id;
-    store = firestore();
-    fs.CollectionReference ref = store.collection("Users");
-    var user_data = await ref.doc(userId).get();
-    _tags=user_data.data()["user_tags"];
+
+
+    var user_data = await store.collection("Users").document(userId).get();
+    _tags=user_data.data["user_tags"];
     print(_tags);
     notifyListeners();
   }
