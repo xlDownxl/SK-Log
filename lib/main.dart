@@ -7,7 +7,6 @@ import 'models/analysen.dart';
 import 'models/user_tags.dart';
 import 'screens/login_screen.dart';
 import 'package:firebase/firebase.dart';
-import 'models/user_pairs.dart';
 
 void main() {
   initializeApp(
