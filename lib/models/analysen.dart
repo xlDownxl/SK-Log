@@ -3,6 +3,7 @@ import 'analyse.dart';
 import 'analysen_filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_pairs.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 class Analysen with ChangeNotifier {
   List<Analyse> analysen = [];
@@ -11,8 +12,6 @@ class Analysen with ChangeNotifier {
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
   UserPairs userPairs=UserPairs();
-
-  var analyse_pair_map={};
 
   Analysen();
 

@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -6,6 +7,7 @@ import '../models/user_tags.dart';
 import '../flutterLogin/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
+
 
 class LoginScreen extends StatefulWidget {
   static const routeName = "/login_new";
@@ -25,7 +27,8 @@ class _LoginPageState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
-   /* subscription = _auth.onAuthStateChanged.listen((data) {
+
+   subscription = _auth.onAuthStateChanged.listen((data) {
       if (data != null) {
         Provider.of<Analysen>(context, listen: false)
             .loadWithId(data.uid, false);
@@ -43,7 +46,7 @@ class _LoginPageState extends State<LoginScreen> {
         });
         subscription.cancel();
       }
-    });*/
+    });
   }
 
   @override
