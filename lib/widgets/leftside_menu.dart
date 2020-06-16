@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import '../screens/analyse_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/login_screen.dart';
 import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
+import '../screens/analyse_screen.dart';
 
 class LeftsideMenu extends StatefulWidget {
-
   final Function changeMode;
   final Function reset;
   final Key plusButtonKey;
@@ -21,15 +20,6 @@ class LeftsideMenu extends StatefulWidget {
 }
 
 class LeftsideMenuState extends State<LeftsideMenu> {
-  GlobalKey _one = GlobalKey();
-  //GlobalKey _two = GlobalKey();
-  //GlobalKey _three = GlobalKey();
-
-  @override
-  void initState() {
-    super.initState();
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,39 +110,16 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                       overlayColor: Colors.black,
                       overlayOpacity: 0.5,
                       child: Container(
-
                         decoration: BoxDecoration(shape: BoxShape.circle,color: Theme.of(context).primaryColor,),
-
-
-                        child: LayoutBuilder(
-                          builder:(ctx,constr)=> Text(String.fromCharCode(icon.codePoint),
-                              style: TextStyle(fontSize: constr.maxHeight*9/11, fontFamily: icon.fontFamily, package: icon.fontPackage,color: Colors.white)
+                        child: InkWell(
+                          onTap:  (){Navigator.pushNamed(context, AnalyseScreen.routeName);},
+                          child: LayoutBuilder(
+                            builder:(ctx,constr)=> Text(String.fromCharCode(icon.codePoint),
+                                style: TextStyle(fontSize: constr.maxHeight*9/11, fontFamily: icon.fontFamily, package: icon.fontPackage,color: Colors.white)
+                            ),
                           ),
                         ),
                       ),
-
-
-
-                      /* RawMaterialButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, AnalyseScreen.routeName);
-                        }, //TODO push
-                        child: Container(
-                          width: constraints.maxWidth / 3,
-                          height: constraints.maxHeight / 2,
-                          child: Icon(
-                            Icons.add,
-                            size: constraints.maxHeight / 2,
-                            color: Colors.white,
-                            //size:50,
-                          ),
-                        ),
-
-                        shape: CircleBorder(),
-                        elevation: 2.0,
-                        fillColor: Theme.of(context).primaryColor,
-                        padding: const EdgeInsets.all(15.0),
-                      ),*/
                     ),
                   ),
                 ),
