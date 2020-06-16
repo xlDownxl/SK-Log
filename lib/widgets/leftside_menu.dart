@@ -56,6 +56,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
         ),
       );
     }
+    final IconData icon = Icons.add;
 
     return Container(
       //color: Theme.of(context).primaryColor,
@@ -108,15 +109,31 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                 height: 10,
               ),
               Flexible(
-                child: LayoutBuilder(
-                  builder: (ctx, constraints) => SizedBox(
-                    child: Showcase(
+                fit: FlexFit.tight,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: LayoutBuilder(
+                    builder: (ctx, constraints) => Showcase(
                       key: widget.plusButtonKey,
                       description:
                           "Klicke hier um eine neue Analyse zu erstellen",
                       overlayColor: Colors.black,
                       overlayOpacity: 0.5,
-                      child: RawMaterialButton(
+                      child: Container(
+
+                        decoration: BoxDecoration(shape: BoxShape.circle,color: Theme.of(context).primaryColor,),
+
+
+                        child: LayoutBuilder(
+                          builder:(ctx,constr)=> Text(String.fromCharCode(icon.codePoint),
+                              style: TextStyle(fontSize: constr.maxHeight*9/11, fontFamily: icon.fontFamily, package: icon.fontPackage,color: Colors.white)
+                          ),
+                        ),
+                      ),
+
+
+
+                      /* RawMaterialButton(
                         onPressed: () {
                           Navigator.pushNamed(context, AnalyseScreen.routeName);
                         }, //TODO push
@@ -135,7 +152,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                         elevation: 2.0,
                         fillColor: Theme.of(context).primaryColor,
                         padding: const EdgeInsets.all(15.0),
-                      ),
+                      ),*/
                     ),
                   ),
                 ),
