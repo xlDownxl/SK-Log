@@ -28,9 +28,9 @@ class Analysen with ChangeNotifier {
 
   void loadWithId(String id, bool isNew){
     //TODO isnew=true implementation
+    if (!isNew){
     this.userId=id;
 
-    //fs.CollectionReference ref = fs.Firestore.instance.collection("Users");
     Firestore.instance.collection("Users").document(userId).collection("analysen").getDocuments().then((snapshot) {
       snapshot.documents.forEach((document) {
         allAnalysen.add(Analyse.fromMap(document.data,document.documentID));
@@ -40,6 +40,13 @@ class Analysen with ChangeNotifier {
       analysen = allAnalysen;
       notifyListeners();
     });
+    }
+    else{
+
+      /*add(Analyse.fromExample());
+      analysen=allAnalysen;
+      notifyListeners();*/
+    }
   }
 
   bool equalsIgnoreCase(String string1, String string2) {
@@ -127,6 +134,7 @@ class Analysen with ChangeNotifier {
       "date": analyse.date.millisecondsSinceEpoch,
     });
 
+    analyse.id=ref.id;
     allAnalysen.add(analyse); //nur ein pointer: analysen liste wird auch geaddet
     userPairs.add(analyse.pair);
     notifyListeners();
@@ -147,7 +155,7 @@ class Analysen with ChangeNotifier {
       "date": analyse.date.millisecondsSinceEpoch,
     });
 
-    allAnalysen.removeWhere((anal){
+    allAnalysen.removeWhere((anal){ //TODO think about the way how the list behavious and change this so the analysis really gets updated and not deleted and readded
       return anal.id==analyse.id;
     });
     allAnalysen.add(analyse);

@@ -12,7 +12,9 @@ class EntryList extends StatefulWidget {
   final Key analysenKey;
   final Key searchFieldKey;
 
-  EntryList(key,this.filter, this.buildSearchField,this.analysenKey,this.searchFieldKey): super(key: key);
+  EntryList(key, this.filter, this.buildSearchField, this.analysenKey,
+      this.searchFieldKey)
+      : super(key: key);
 
   @override
   EntryListState createState() => EntryListState();
@@ -45,43 +47,43 @@ class EntryListState extends State<EntryList> {
               flex: 2,
               child: Center(
                   child: FittedBox(
-                    child: Text(
-                "Analyse Title",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-                  )),
+                child: Text(
+                  "Analyse Title",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                ),
+              )),
               fit: FlexFit.tight,
             ),
             Flexible(
               flex: 1,
               child: Center(
                   child: FittedBox(
-                    child: Text("Paar",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
-                  )),
+                child: Text("Paar",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              )),
               fit: FlexFit.tight,
             ),
             Flexible(
               flex: 1,
               child: Center(
                   child: FittedBox(
-                    child: Text("Datum",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20)),
-                  )),
+                child: Text("Datum",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+              )),
               fit: FlexFit.tight,
             ),
             Flexible(
               flex: 3,
               child: Center(
                   child: FittedBox(
-                    child: Text("Tags",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        )),
-                  )),
+                child: Text("Tags",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    )),
+              )),
               fit: FlexFit.tight,
             ),
           ],
@@ -92,8 +94,7 @@ class EntryListState extends State<EntryList> {
     Widget buildSearchfield() {
       return Showcase(
         key: widget.searchFieldKey,
-        description:
-        "Suche hier nach Namen von Analysen",
+        description: "Suche hier nach Namen von Analysen",
         overlayColor: Colors.black,
         overlayOpacity: 0.5,
         child: LayoutBuilder(
@@ -119,34 +120,34 @@ class EntryListState extends State<EntryList> {
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: <Widget>[
-          widget.buildSearchField
-              ? buildSearchfield()
-              : SizedBox(
-                  height: 20,
+      child: Showcase(
+        key: widget.analysenKey,
+        description: "Hier kannst du alle deine angelegten Analysen verwalten",
+        overlayColor: Colors.black,
+        overlayOpacity: 0.5,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: <Widget>[
+            widget.buildSearchField
+                ? buildSearchfield()
+                : SizedBox(
+                    height: 20,
+                  ),
+            buildHeadline(),
+            SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: Container(
+                child: ListView.builder(
+                  itemBuilder: (ctx, index) =>
+                      ListElement(analysen.analysen[index]),
+                  itemCount: analysen.analysen.length,
                 ),
-          buildHeadline(),
-          SizedBox(
-            height: 10,
-          ),
-          Expanded(
-            child: Showcase(
-          key: widget.analysenKey,
-    description:
-    "Hier siehst du alle deine Analysen",
-    overlayColor: Colors.black,
-    overlayOpacity: 0.5,
-    child:Container(
-              child: ListView.builder(
-                itemBuilder: (ctx, index) =>
-                    ListElement(analysen.analysen[index]),
-                itemCount: analysen.analysen.length,
               ),
             ),
-          ),),
-        ],
+          ],
+        ),
       ),
     );
   }

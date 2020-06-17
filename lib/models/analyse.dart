@@ -13,6 +13,7 @@ class Analyse with ChangeNotifier {
   String owner;
   var activeTags;
   DateTime date;
+  var resPair;
 
   Analyse() {
     date = DateTime.now();
@@ -22,7 +23,7 @@ class Analyse with ChangeNotifier {
     activeTags = [];
     title = "Analyse Nr. 1";
   }
-  var resPair;
+
 
   Future getPair(tv_url,analysen) async {
     var url="https://sk-log.appspot.com/getpair?id="+tv_url;
@@ -65,14 +66,14 @@ class Analyse with ChangeNotifier {
 
   Analyse.fromExample() {
     date = DateTime.now();
-    link = "https://www.tradingview.com/x/L8uGb5au/";
+    link = "https://www.tradingview.com/x/HGfcBpTV/";
     id = DateTime.now().toString();
-    title = "Analysis $id";
-    pair = "AUDCAD";
-    owner = "sdfsdf";
+    title = "667er SL Öl";
+    pair = "OIL";
+    owner = "me";
     activeTags = [];
-    //learning="Das habe ich gelernt";
-    //description="Das ist der Chart";
+    description='[{"insert":"Verkaufsbereich in Öl"},{"insert":"\n","attributes":{"heading":2}},{"insert":"Habe das Ding durchgetradet, aber bin mit der letzten Order am 618er, welche das 667er überdeckt hat rausgeflogen."},{"insert":"\n","attributes":{"heading":3}}]';
+    learning='[{"insert":"Das 667 ist das attraktivste Level, wenn 618er Trade das 667er überlappt muss ich SL reduzieren und neuen Trade am 667er platzieren.\n"}]';
   }
 
   String toString() {

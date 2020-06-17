@@ -32,7 +32,7 @@ dependencies:
   responsive_grid: ^1.1.1
   firebase_core: ^0.4.0+9
   firebase_auth: 0.15.4
-  cloud_firestore: ^0.13.2 #has to be 11, doesnt work with current 13
+  cloud_firestore: ^0.13.6 #has to be 11, doesnt work with current 13
   auto_size_text: ^2.1.0
   flutter_tags: ^0.4.5
   rflutter_alert: ^1.0.3

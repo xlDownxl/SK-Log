@@ -30,24 +30,22 @@ class UserTags with ChangeNotifier {
   }
 
   void add(String tag){
-  /*  store.collection("Users").document(userId).update(data: {'user_tags': Firestore.instance.FieldValue.arrayUnion([tag])}).then((_){
+    store.collection("Users").document(userId).updateData({'user_tags': FieldValue.arrayUnion([tag])}).then((_){
       _tags.add(tag);
       notifyListeners();
-    });*/ //TODO
+    });
   }
 
   void delete(String tag){
 
- /* store.collection("Users").document(userId).updateData(data: {'user_tags': fs.FieldValue.arrayRemove([tag])}).then((_){
+  store.collection("Users").document(userId).updateData({'user_tags': FieldValue.arrayRemove([tag])}).then((_){
       _tags.remove(tag);
       notifyListeners();
-    });*/
+    });
   }
 
   void loadTags(id)async{
     this.userId=id;
-
-
     var user_data = await store.collection("Users").document(userId).get();
     _tags=user_data.data["user_tags"];
     print(_tags);
