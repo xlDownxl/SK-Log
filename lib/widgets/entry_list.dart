@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analysen_filter.dart';
 import '../showcaseview/showcaseview.dart';
+import '../models/ascending.dart';
 
 class EntryList extends StatefulWidget {
   final AnalyseFilter filter;
@@ -35,6 +36,7 @@ class EntryListState extends State<EntryList> {
 
   @override
   Widget build(BuildContext context) {
+    var asc=Provider.of<Ascending>(context);
     analysen = Provider.of<Analysen>(context);
     Widget buildHeadline() {
       return Container(
@@ -66,12 +68,34 @@ class EntryListState extends State<EntryList> {
             ),
             Flexible(
               flex: 1,
-              child: Center(
-                  child: FittedBox(
-                child: Text("Datum",
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              )),
+              child: Row(
+                children: <Widget>[
+                  Center(
+                      child: FittedBox(
+                    child: Text("Datum",
+                        style:
+                            TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  ),),
+                  asc.asc?IconButton(
+                    icon:Icon(Icons.arrow_downward),
+
+                    onPressed: (){
+                      analysen.reverse();
+                      setState(() {
+                        Provider.of<Ascending>(context,listen: false).asc=false;
+                      });
+                    },
+                  ):IconButton(
+                    icon:Icon(Icons.arrow_upward),
+                    onPressed: (){
+                      analysen.reverse();
+                      setState(() {
+                        Provider.of<Ascending>(context,listen: false).asc=true;
+                      });
+                    },
+                  ),
+                ],
+              ),
               fit: FlexFit.tight,
             ),
             Flexible(
@@ -118,14 +142,12 @@ class EntryListState extends State<EntryList> {
       );
     }
 
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-      child: Showcase(
-        key: widget.analysenKey,
-        description: "Hier kannst du alle deine angelegten Analysen verwalten",
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        child: Column(
+    return /*Showcase(
+      key: widget.analysenKey,
+      description: "Hier kannst du alle deine angelegten Analysen verwalten",
+      child: */Container(
+      padding: EdgeInsets.only(left: 50,right: 50, bottom: 15,top: 10),
+      child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
             widget.buildSearchField
@@ -148,7 +170,7 @@ class EntryListState extends State<EntryList> {
             ),
           ],
         ),
-      ),
+      //),
     );
   }
 }

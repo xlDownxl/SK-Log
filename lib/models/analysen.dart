@@ -31,7 +31,7 @@ class Analysen with ChangeNotifier {
     if (!isNew){
     this.userId=id;
 
-    Firestore.instance.collection("Users").document(userId).collection("analysen").getDocuments().then((snapshot) {
+    Firestore.instance.collection("Users").document(userId).collection("analysen").orderBy("date",descending: true).getDocuments().then((snapshot) {
       snapshot.documents.forEach((document) {
         allAnalysen.add(Analyse.fromMap(document.data,document.documentID));
         userPairs.add(document.data["pair"]);
@@ -51,6 +51,12 @@ class Analysen with ChangeNotifier {
 
   bool equalsIgnoreCase(String string1, String string2) {
     return string1?.toLowerCase().contains(string2?.toLowerCase());
+  }
+
+  void reverse(){
+    allAnalysen=allAnalysen.reversed.toList();
+    analysen=analysen.reversed.toList();
+    notifyListeners();
   }
 
   void addSearch(String value) {
@@ -121,7 +127,7 @@ class Analysen with ChangeNotifier {
     });
   } //TODO catcherror
 
-  void add(Analyse analyse) {
+  void add(Analyse analyse,bool ascending) {
     var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.add({
       "id": ref.id,
@@ -135,7 +141,13 @@ class Analysen with ChangeNotifier {
     });
 
     analyse.id=ref.id;
-    allAnalysen.add(analyse); //nur ein pointer: analysen liste wird auch geaddet
+    if(!ascending){
+      allAnalysen.insert(0,analyse);
+    }
+    else{
+      allAnalysen.add(analyse);
+    }
+    //allAnalysen.insert(0,analyse); //nur ein pointer: analysen liste wird auch geaddet
     userPairs.add(analyse.pair);
     notifyListeners();
   }

@@ -7,6 +7,7 @@ import '../models/analysen.dart';
 import '../models/analyse.dart';
 import '../widgets/zefyr_textfield.dart';
 import '../models/user_pairs.dart';
+import '../models/ascending.dart';
 
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";
@@ -55,7 +56,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       descriptionKey.currentState.safeDocument();
       learningKey.currentState.safeDocument();
       if (id == null) {
-        Provider.of<Analysen>(context, listen: false).add(analyse);
+        Provider.of<Analysen>(context, listen: false).add(analyse,Provider.of<Ascending>(context,listen: false).asc);
       }
       else{
         Provider.of<Analysen>(context, listen: false).update(analyse);

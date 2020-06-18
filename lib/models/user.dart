@@ -19,7 +19,7 @@ class AppUser with ChangeNotifier {
     isNew=false;
   }
 
-  Future _registerUser(LoginData data, analysen, userTags,) {
+  Future _registerUser(LoginData data, Analysen analysen, userTags,) {
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
@@ -35,6 +35,7 @@ class AppUser with ChangeNotifier {
 
   Future<String> register( data, analysen, userTags) async {
     var code = await _registerUser(data, analysen, userTags);
+    print(code);
     switch (code) {
       case "auth/email-already-in-use":
         return "Diese Email ist schon vergeben";
@@ -42,9 +43,12 @@ class AppUser with ChangeNotifier {
         return "Ungültige Email";
       case "auth/weak-password":
         return "Passwort sollte mindestens 6 Zeichen haben";
+      case "auth/accountexistsalready"://TODO
+        return "Passwort sollte mindestens 6 Zeichen haben";
       case "success":
         return null;
       default:
+        print(code);
         return "Falsche Eingaben";
     }
   }

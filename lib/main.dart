@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
 import 'screens/login_screen.dart';
-
+import 'models/ascending.dart';
 void main() {
 
   runApp(MyApp());
@@ -93,6 +93,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (ctx) => AppUser(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Ascending(false),
         ),
       ],
       child: MaterialApp(
