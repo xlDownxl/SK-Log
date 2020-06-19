@@ -102,9 +102,9 @@ class Analysen with ChangeNotifier {
     }
 
     if (filter.isSearch) {
-      analysen = analysen.where((analyse) {
+      /*analysen = analysen.where((analyse) {
         return equalsIgnoreCase(analyse.title, filter.word);
-      }).toList();
+      }).toList();*/
     }
 
     notifyListeners();
