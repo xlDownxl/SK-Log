@@ -78,9 +78,7 @@ class EntryListState extends State<EntryList> {
                   ),),
                   asc.asc?IconButton(
                     icon:Icon(Icons.arrow_downward),
-
                     onPressed: (){
-                      analysen.reverse();
                       setState(() {
                         Provider.of<Ascending>(context,listen: false).asc=false;
                       });
@@ -88,7 +86,6 @@ class EntryListState extends State<EntryList> {
                   ):IconButton(
                     icon:Icon(Icons.arrow_upward),
                     onPressed: (){
-                      analysen.reverse();
                       setState(() {
                         Provider.of<Ascending>(context,listen: false).asc=true;
                       });
@@ -163,7 +160,7 @@ class EntryListState extends State<EntryList> {
               child: Container(
                 child: ListView.builder(
                   itemBuilder: (ctx, index) =>
-                      ListElement(analysen.analysen.keys.toList()[index]),
+                      ListElement(asc.asc?analysen.analysen.keys.toList()[index]:analysen.analysen.keys.toList().reversed.toList()[index]),
                   itemCount: analysen.analysen.length,
                 ),
               ),

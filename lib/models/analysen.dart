@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
 import 'analyse.dart';
 import 'analysen_filter.dart';
@@ -6,8 +8,8 @@ import 'user_pairs.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class Analysen with ChangeNotifier {
-  Map<String,Analyse> analysen = {};
-  Map<String,Analyse> allAnalysen = {};
+  LinkedHashMap<String,Analyse> analysen = LinkedHashMap();
+  Map<String,Analyse> allAnalysen = LinkedHashMap();
   Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
@@ -20,7 +22,7 @@ class Analysen with ChangeNotifier {
   }
 
   void reset(){
-    analysen = {};
+    analysen = LinkedHashMap();
     allAnalysen = {};
     userId="";
     filter = AnalyseFilter.showAll();
@@ -31,7 +33,7 @@ class Analysen with ChangeNotifier {
     if (!isNew){
     this.userId=id;
 
-    Firestore.instance.collection("Users").document(userId).collection("analysen").orderBy("date",descending: true).getDocuments().then((snapshot) {
+    Firestore.instance.collection("Users").document(userId).collection("analysen").orderBy("date",descending: false).getDocuments().then((snapshot) {
       snapshot.documents.forEach((document) {
         allAnalysen[document.documentID]=(Analyse.fromMap(document.data,document.documentID));
         userPairs.add(document.data["pair"]);
@@ -42,21 +44,11 @@ class Analysen with ChangeNotifier {
     });
     }
     else{
-
-      /*add(Analyse.fromExample());
-      analysen=allAnalysen;
-      notifyListeners();*/
     }
   }
 
   bool equalsIgnoreCase(String string1, String string2) {
     return string1?.toLowerCase().contains(string2?.toLowerCase());
-  }
-
-  void reverse(){
-    //allAnalysen=allAnalysen.reversed.toList();
-    //analysen=analysen.reversed.toList();
-    notifyListeners();
   }
 
   void addSearch(String value) {
@@ -75,7 +67,7 @@ class Analysen with ChangeNotifier {
       //TODO für die zukunft: für die entry list nur die 3 infos laden, nur beim drauf klicken den rest nachladen
 
       if (filter.isPair) {
-        analysen={};
+        analysen=LinkedHashMap();
         allAnalysen.values.forEach((analyse){
           if (analyse.pair== filter.pair){
             analysen[analyse.id]=analyse;
@@ -84,7 +76,7 @@ class Analysen with ChangeNotifier {
 
       } else if (filter.isTag) {
         if (filter.tags.isNotEmpty) {
-          analysen={};
+          analysen=LinkedHashMap();
           allAnalysen.values.forEach((analyse) {
             if(
               filter.tags.every((tag) {
@@ -102,11 +94,13 @@ class Analysen with ChangeNotifier {
     }
 
     if (filter.isSearch) {
-      /*analysen = analysen.where((analyse) {
-        return equalsIgnoreCase(analyse.title, filter.word);
-      }).toList();*/
+      analysen=LinkedHashMap();
+      analysen.values.forEach((analyse) {
+        if(equalsIgnoreCase(analyse.title, filter.word)){
+          analysen[analyse.id]=analyse;
+        }
+      });
     }
-
     notifyListeners();
   }
 
@@ -127,12 +121,10 @@ class Analysen with ChangeNotifier {
   void delete(id) {
     var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.document(id).delete().then((_){
-   /*  analysen.removeWhere((analyse) {
-        return analyse.id == id;
-      });
-     allAnalysen.removeWhere((analyse) {
-       return analyse.id == id;
-     });*/
+
+     allAnalysen.removeWhere((key,analyse) {  //TODO check if both analysen+allanalysen deleted werden
+       return key == id;
+     });
      notifyListeners();
     });
   } //TODO catcherror
@@ -162,8 +154,6 @@ class Analysen with ChangeNotifier {
     notifyListeners();
   }
 
-
-  //dict über listen benutzen wegen runtime
   void update(Analyse analyse) {
     var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.document(analyse.id).updateData({
@@ -178,10 +168,8 @@ class Analysen with ChangeNotifier {
     });
 
 
-   /* allAnalysen.removeWhere((anal){ //TODO think about the way how the list behavious and change this so the analysis really gets updated and not deleted and readded
-      return anal.id==analyse.id;
-    });
-    allAnalysen.add(analyse);*/
+    allAnalysen[analyse.id]= analyse;
+    //analysen[analyse.id]= analyse; //TODO without this can there be errors?
     notifyListeners();
   }
 
