@@ -6,8 +6,8 @@ import 'user_pairs.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class Analysen with ChangeNotifier {
-  List<Analyse> analysen = [];
-  List<Analyse> allAnalysen = [];
+  Map<String,Analyse> analysen = {};
+  Map<String,Analyse> allAnalysen = {};
   Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
@@ -20,8 +20,8 @@ class Analysen with ChangeNotifier {
   }
 
   void reset(){
-    analysen = [];
-    allAnalysen = [];
+    analysen = {};
+    allAnalysen = {};
     userId="";
     filter = AnalyseFilter.showAll();
   }
@@ -33,7 +33,7 @@ class Analysen with ChangeNotifier {
 
     Firestore.instance.collection("Users").document(userId).collection("analysen").orderBy("date",descending: true).getDocuments().then((snapshot) {
       snapshot.documents.forEach((document) {
-        allAnalysen.add(Analyse.fromMap(document.data,document.documentID));
+        allAnalysen[document.documentID]=(Analyse.fromMap(document.data,document.documentID));
         userPairs.add(document.data["pair"]);
       });
     }).then((_) {
@@ -54,8 +54,8 @@ class Analysen with ChangeNotifier {
   }
 
   void reverse(){
-    allAnalysen=allAnalysen.reversed.toList();
-    analysen=analysen.reversed.toList();
+    //allAnalysen=allAnalysen.reversed.toList();
+    //analysen=analysen.reversed.toList();
     notifyListeners();
   }
 
@@ -75,16 +75,26 @@ class Analysen with ChangeNotifier {
       //TODO für die zukunft: für die entry list nur die 3 infos laden, nur beim drauf klicken den rest nachladen
 
       if (filter.isPair) {
-        analysen = allAnalysen.where((analyse) {
-          return analyse.pair == filter.pair;
-        }).toList();
+        analysen={};
+        allAnalysen.values.forEach((analyse){
+          if (analyse.pair== filter.pair){
+            analysen[analyse.id]=analyse;
+          }
+        });
+
       } else if (filter.isTag) {
         if (filter.tags.isNotEmpty) {
-          analysen = allAnalysen.where((analyse) {
-            return filter.tags.every((tag) {
-              return analyse.activeTags.contains(tag);
-            });
-          }).toList();
+          analysen={};
+          allAnalysen.values.forEach((analyse) {
+            if(
+              filter.tags.every((tag) {
+               return analyse.activeTags.contains(tag);
+              })
+            )
+            {
+              analysen[analyse.id]=analyse;
+            }
+          });
         } else {
           analysen = allAnalysen;
         }
@@ -108,7 +118,7 @@ class Analysen with ChangeNotifier {
 
   String toString() {
     String result = "";
-    analysen.forEach((analyse) {
+    analysen.values.forEach((analyse) {
       result += analyse.toString();
     });
     return result;
@@ -117,12 +127,12 @@ class Analysen with ChangeNotifier {
   void delete(id) {
     var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.document(id).delete().then((_){
-     analysen.removeWhere((analyse) {
+   /*  analysen.removeWhere((analyse) {
         return analyse.id == id;
       });
      allAnalysen.removeWhere((analyse) {
        return analyse.id == id;
-     });
+     });*/
      notifyListeners();
     });
   } //TODO catcherror
@@ -142,12 +152,12 @@ class Analysen with ChangeNotifier {
 
     analyse.id=ref.id;
     if(!ascending){
-      allAnalysen.insert(0,analyse);
+      allAnalysen[analyse.id]=analyse;
     }
     else{
-      allAnalysen.add(analyse);
+      allAnalysen[analyse.id]=analyse; //TODO sort
     }
-    //allAnalysen.insert(0,analyse); //nur ein pointer: analysen liste wird auch geaddet
+
     userPairs.add(analyse.pair);
     notifyListeners();
   }
@@ -167,18 +177,15 @@ class Analysen with ChangeNotifier {
       "date": analyse.date.millisecondsSinceEpoch,
     });
 
-    allAnalysen.removeWhere((anal){ //TODO think about the way how the list behavious and change this so the analysis really gets updated and not deleted and readded
+
+   /* allAnalysen.removeWhere((anal){ //TODO think about the way how the list behavious and change this so the analysis really gets updated and not deleted and readded
       return anal.id==analyse.id;
     });
-    allAnalysen.add(analyse);
+    allAnalysen.add(analyse);*/
     notifyListeners();
   }
 
-  List<Analyse> getTags(List<String> tags) {
-    return analysen;
-  }
-
-  List<Analyse> getAllSorted() {
+  Map<String,Analyse> getAllSorted() {
     return analysen;
   }
 
@@ -191,12 +198,10 @@ class Analysen with ChangeNotifier {
   }
 
   Analyse getAnalyse(String id) {
-    return allAnalysen.firstWhere((analyse) {
-      return analyse.id == id;
-    });
+    return allAnalysen[id];
   }
 
-  Analysen.getDummy() {
+ /* Analysen.getDummy() {
     var dummy = Analyse();
     dummy.id = "id1";
     dummy.link = "https://www.tradingview.com/x/KgXTpAye/";
@@ -224,5 +229,5 @@ class Analysen with ChangeNotifier {
     dummy.owner = "me";
     dummy.date = DateTime.now();
     analysen.add(dummy);
-  }
+  }*/
 }

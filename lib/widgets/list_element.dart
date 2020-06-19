@@ -3,27 +3,27 @@ import '../screens/analyse_screen.dart';
 import '../models/analyse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
+import 'package:provider/provider.dart';
+import '../models/analysen.dart';
 class ListElement extends StatelessWidget {
-  final Analyse analyse;
-  ListElement(this.analyse);
-
-
+  final String analyseId;
+  ListElement(this.analyseId);
   double fSize = 20;
 
   String writeTags(tags) {
-
     StringBuffer builder = StringBuffer();
     for (String value in tags) {
       builder.write(value);
       builder.write(", ");
     }
     var result = builder.toString();
-
     return result.substring(0, max(result.length - 1,0));
   }
 
+
   @override
   Widget build(BuildContext context) {
+    Analyse analyse = Provider.of<Analysen>(context).analysen[analyseId];
 
     return Card(
       shape: RoundedRectangleBorder(

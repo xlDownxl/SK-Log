@@ -163,7 +163,7 @@ class EntryListState extends State<EntryList> {
               child: Container(
                 child: ListView.builder(
                   itemBuilder: (ctx, index) =>
-                      ListElement(analysen.analysen[index]),
+                      ListElement(analysen.analysen.keys.toList()[index]),
                   itemCount: analysen.analysen.length,
                 ),
               ),
