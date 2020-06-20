@@ -2,10 +2,17 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+class Links{
+  String first;
+  String second;
+  String third;
+
+  Links();
+}
 
 class Analyse with ChangeNotifier {
   String id;
-  List<String> links;
+  List<dynamic> links;
   var description;
   String title;
   String learning;
@@ -17,7 +24,7 @@ class Analyse with ChangeNotifier {
 
   Analyse() {
     date = DateTime.now();
-    links = [""];
+    links = ["","",""];
     id = DateTime.now().toString();
     title = "Analysis $id";
     activeTags = [];
@@ -26,7 +33,9 @@ class Analyse with ChangeNotifier {
 
 
   Future getPair(tv_url,analysen) async {
+    print(tv_url);
     var url="https://sk-log.appspot.com/getpair?id="+tv_url;
+    print(url);
     return http.get(url).then((response){
       if (response.statusCode!=200){
           print("error in text recognition");
@@ -42,20 +51,21 @@ class Analyse with ChangeNotifier {
         analysen.notify();
       }
     }).catchError((error){
+      this.pair = "Others";
       print(error);
     });
 
   }
 
-  Future setLink(link,analysen){
-    this.links=link;
+  Future setLink(String link,analysen){
+    this.links[0]=link;
     return getPair(link,analysen);
   }
 
   Analyse.fromMap(Map snapshot,docID) {
     id = docID;
     title = snapshot['title'] ?? '';
-    links = snapshot['link'] ?? '';
+    links = snapshot['link'] ?? ["","",""];
     activeTags = snapshot['tags'] ?? [];
     learning = snapshot['learning'] ?? "";
     description = snapshot['description'] ?? "";
@@ -66,7 +76,7 @@ class Analyse with ChangeNotifier {
 
   Analyse.fromExample() {
     date = DateTime.now();
-    links = ["https://www.tradingview.com/x/HGfcBpTV/"];
+    links = ["https://www.tradingview.com/x/HGfcBpTV/","",""];
     id = DateTime.now().toString();
     title = "667er SL Öl";
     pair = "OIL";
