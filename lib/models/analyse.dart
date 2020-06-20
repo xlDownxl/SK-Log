@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class Analyse with ChangeNotifier {
   String id;
-  String link;
+  List<String> links;
   var description;
   String title;
   String learning;
@@ -17,7 +17,7 @@ class Analyse with ChangeNotifier {
 
   Analyse() {
     date = DateTime.now();
-    link = "";
+    links = [""];
     id = DateTime.now().toString();
     title = "Analysis $id";
     activeTags = [];
@@ -48,14 +48,14 @@ class Analyse with ChangeNotifier {
   }
 
   Future setLink(link,analysen){
-    this.link=link;
+    this.links=link;
     return getPair(link,analysen);
   }
 
   Analyse.fromMap(Map snapshot,docID) {
     id = docID;
     title = snapshot['title'] ?? '';
-    link = snapshot['link'] ?? '';
+    links = snapshot['link'] ?? '';
     activeTags = snapshot['tags'] ?? [];
     learning = snapshot['learning'] ?? "";
     description = snapshot['description'] ?? "";
@@ -66,7 +66,7 @@ class Analyse with ChangeNotifier {
 
   Analyse.fromExample() {
     date = DateTime.now();
-    link = "https://www.tradingview.com/x/HGfcBpTV/";
+    links = ["https://www.tradingview.com/x/HGfcBpTV/"];
     id = DateTime.now().toString();
     title = "667er SL Öl";
     pair = "OIL";
@@ -77,6 +77,6 @@ class Analyse with ChangeNotifier {
   }
 
   String toString() {
-    return "ID: $id, Titel: $title, Pair: $pair, Tags: $activeTags, description: $description, learning: $learning, date: $date, link: $link";
+    return "ID: $id, Titel: $title, Pair: $pair, Tags: $activeTags, description: $description, learning: $learning, date: $date, link: $links";
   }
 }

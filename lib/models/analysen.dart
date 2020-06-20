@@ -134,7 +134,7 @@ class Analysen with ChangeNotifier {
     ref.add({
       "id": ref.id,
       "title": analyse.title,
-      "link": analyse.link,
+      "link": analyse.links,
       "tags": analyse.activeTags,
       "description": analyse.description,
       "learning": analyse.learning,
@@ -160,7 +160,7 @@ class Analysen with ChangeNotifier {
       "id": ref.id,
       "title": analyse.title,
       "tags": analyse.activeTags,
-      "link": analyse.link,
+      "link": analyse.links,
       "description": analyse.description,
       "learning": analyse.learning,
       "pair": analyse.pair,
