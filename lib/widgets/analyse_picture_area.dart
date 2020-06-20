@@ -15,9 +15,22 @@ class AnalysePictureArea extends StatefulWidget {
 class _AnalysePictureAreaState extends State<AnalysePictureArea> {
   var textEditingController;
   Analyse analyse;
+
   bool loading = false;
   bool showTwo = false;
   bool showThree = false;
+
+  @override
+  void initState() {
+    analyse = Provider.of<Analyse>(context, listen: false);
+    if (analyse.links[1] != "") {
+      showTwo = true;
+    }
+    if (analyse.links[2] != "") {
+      showThree = true;
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +40,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
         builder: (ctx, constraints) => Container(
               //width: constraints.maxWidth,
               height: constraints.maxWidth,
-              child: analyse.links == ""
+              child: analyse.links[0] == ""
                   ? Text("")
                   : loading
                       ? CircularProgressIndicator()
@@ -49,32 +62,43 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                         ),
             ));
 
-    Widget linkField = TextFormField(
-      decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: "Link",
-          labelStyle: TextStyle(fontSize: 20)),
-      style: TextStyle(
-        fontSize: 14.0,
-        color: Colors.black,
-      ),
-      onChanged: (val) {
-        if (val.contains("tradingview")) {
-          loading = true;
-          analyse
-              .setLink(val, Provider.of<Analysen>(context, listen: false))
-              .then((err) {
-            loading = false;
-          });
-        } else {
-          setState(() {
-            analyse.links[0] = "";
-          });
-        }
-      },
-      controller: textEditingController,
-      initialValue: analyse.links[0],
-    );
+    Widget linkField(int index) {
+      return TextFormField(
+        decoration: InputDecoration(
+            border: OutlineInputBorder(),
+            labelText: "Link",
+            labelStyle: TextStyle(fontSize: 20)),
+        style: TextStyle(
+          fontSize: 14.0,
+          color: Colors.black,
+        ),
+        onChanged: index == 0
+            ? (val) {
+                if (val.contains("tradingview")) {
+                  loading = true;
+                  analyse
+                      .setLink(
+                          val, Provider.of<Analysen>(context, listen: false))
+                      .then((err) {
+                    loading = false;
+                  });
+                } else {
+                  setState(() {
+                    analyse.links[0] = "";
+                  });
+                }
+              }
+            : index == 1
+                ? (val) {
+                    analyse.links[1] = val;
+                  }
+                : (val) {
+                    analyse.links[2] = val;
+                  },
+        controller: textEditingController,
+        initialValue: analyse.links[index] != "" ? analyse.links[index] : "",
+      );
+    }
 
     Widget chartLinkDescription = FittedBox(
         child: Text(
@@ -127,7 +151,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                           SizedBox(
                             width: 10,
                           ),
-                          Flexible(child: linkField),
+                          Flexible(child: linkField(0)),
                           IconButton(
                             icon: Icon(Icons.add),
                             onPressed: () {
@@ -152,12 +176,13 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Flexible(child: linkField),
+                                  Flexible(child: linkField(1)),
                                   IconButton(
                                       icon: Icon(Icons.delete),
                                       onPressed: () {
                                         setState(() {
                                           showTwo = false;
+                                          analyse.links[1] = "";
                                         });
                                       }),
                                 ])))
@@ -171,12 +196,13 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Flexible(child: linkField),
+                                Flexible(child: linkField(2)),
                                 IconButton(
                                     icon: Icon(Icons.delete),
                                     onPressed: () {
                                       setState(() {
                                         showThree = false;
+                                        analyse.links[2] = "";
                                       });
                                     }),
                               ]),
