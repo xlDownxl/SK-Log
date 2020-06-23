@@ -50,6 +50,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                             shape: BoxShape.circle,
                             color: Theme.of(context).accentColor,
                           ),
+                          padding: EdgeInsets.all(5),
                           child: !loading?Center(
                             child: FittedBox(
                               child: analyse.links[0] == ""
@@ -193,19 +194,21 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
               children: <Widget>[
                 Flexible(
                   fit: FlexFit.tight,
-                  flex: 4,
+                  flex: 40,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Flexible(
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(children: [
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
                             Flexible(child: chartLinkDescription),
                             SizedBox(
                               width: 10,
                             ),
-                            Flexible(child: linkField(0)),
+                            Flexible(child: linkField(0),fit: FlexFit.tight,flex: 3,),
                             IconButton(
                               icon: Icon(Icons.add),
                               onPressed: () {
@@ -225,12 +228,14 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                           ? Flexible(
                               child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 10),
-                                  child: Row(children: [
+                                  child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
                                     Flexible(child: chartLinkDescription),
                                     SizedBox(
                                       width: 10,
                                     ),
-                                    Flexible(child: linkField(1)),
+                                    Flexible(child: linkField(1),fit: FlexFit.tight,flex: 3,),
                                     IconButton(
                                         icon: Icon(Icons.delete),
                                         onPressed: () {
@@ -245,12 +250,14 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                           ? Flexible(
                               child: Container(
                                 padding: EdgeInsets.symmetric(vertical: 10),
-                                child: Row(children: [
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
                                   Flexible(child: chartLinkDescription),
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Flexible(child: linkField(2)),
+                                  Flexible(child: linkField(2),fit: FlexFit.tight,flex: 3,),
                                   IconButton(
                                       icon: Icon(Icons.delete),
                                       onPressed: () {
@@ -266,19 +273,16 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                     ],
                   ),
                 ),
-                SizedBox(
-                  width: 20,
-                ),
+                Flexible(child: Container(),),
                 Flexible(
+                  flex: 9,
                   fit: FlexFit.tight,
 
                     child: Container(
                   child: pairShowing,
-                  padding: EdgeInsets.all( 20),
+                  padding: EdgeInsets.all( 10),
                 )),
-                SizedBox(
-                  width: 60,
-                ),
+               Flexible(child: Container(),),
               ],
             ),
           ),

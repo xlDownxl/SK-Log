@@ -68,30 +68,36 @@ class EntryListState extends State<EntryList> {
             ),
             Flexible(
               flex: 1,
-              child: Row(
-                children: <Widget>[
-                  Center(
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Flexible(
                       child: FittedBox(
-                    child: Text("Datum",
+                        child: Text("Datum",
                         style:
                             TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                  ),),
-                  asc.asc?IconButton(
-                    icon:Icon(Icons.arrow_downward),
-                    onPressed: (){
-                      setState(() {
-                        Provider.of<Ascending>(context,listen: false).asc=false;
-                      });
-                    },
-                  ):IconButton(
-                    icon:Icon(Icons.arrow_upward),
-                    onPressed: (){
-                      setState(() {
-                        Provider.of<Ascending>(context,listen: false).asc=true;
-                      });
-                    },
-                  ),
-                ],
+                      ),
+                    ),
+                    Flexible(
+                      child: asc.asc?IconButton(
+                        icon:Icon(Icons.arrow_downward),
+                        onPressed: (){
+                          setState(() {
+                            Provider.of<Ascending>(context,listen: false).asc=false;
+                          });
+                        },
+                      ):IconButton(
+                        icon:Icon(Icons.arrow_upward),
+                        onPressed: (){
+                          setState(() {
+                            Provider.of<Ascending>(context,listen: false).asc=true;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
               fit: FlexFit.tight,
             ),
