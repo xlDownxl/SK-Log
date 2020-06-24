@@ -150,20 +150,9 @@ class Analysen with ChangeNotifier {
       userPairs.add(analyse.pair);
       notifyListeners();
     });
-
-   /* if(!ascending){
-      allAnalysen[analyse.id]=analyse;
-    }
-    else{
-      allAnalysen[analyse.id]=analyse; //TODO sort
-    }
-
-    userPairs.add(analyse.pair);
-    notifyListeners();*/
   }
 
   void update(Analyse analyse) {
-    print(analyse);
     var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.document(analyse.id).updateData({
       "title": analyse.title,
@@ -173,12 +162,12 @@ class Analysen with ChangeNotifier {
       "learning": analyse.learning,
       "pair": analyse.pair,
       "date": analyse.date.millisecondsSinceEpoch,
-    });
+    }).then((_){
+      allAnalysen[analyse.id]= analyse;
+      //analysen[analyse.id]= analyse; //TODO without this can there be errors?
+      notifyListeners();
+    }).catchError((error){print(error);});
 
-
-    allAnalysen[analyse.id]= analyse;
-    //analysen[analyse.id]= analyse; //TODO without this can there be errors?
-    notifyListeners();
   }
 
   Map<String,Analyse> getAllSorted() {
