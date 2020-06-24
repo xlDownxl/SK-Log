@@ -45,11 +45,11 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
               child:
 
                        Container(
-                          decoration: BoxDecoration(
+                          decoration: !loading?BoxDecoration(
                             border: Border.all(width: 2),
                             shape: BoxShape.circle,
                             color: Theme.of(context).accentColor,
-                          ),
+                          ):null,
                           padding: EdgeInsets.all(5),
                           child: !loading?Center(
                             child: FittedBox(
