@@ -132,7 +132,6 @@ class Analysen with ChangeNotifier {
   void add(Analyse analyse,bool ascending) {
     var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.add({
-      "id": ref.id,
       "title": analyse.title,
       "link": analyse.links.toList(),
       "tags": analyse.activeTags,
@@ -140,10 +139,19 @@ class Analysen with ChangeNotifier {
       "learning": analyse.learning,
       "pair": analyse.pair,
       "date": analyse.date.millisecondsSinceEpoch,
+    }).then((val){
+      analyse.id=val.documentID;
+      if(!ascending){
+        allAnalysen[analyse.id]=analyse;
+      }
+      else{
+        allAnalysen[analyse.id]=analyse; //TODO sort
+      }
+      userPairs.add(analyse.pair);
+      notifyListeners();
     });
 
-    analyse.id=ref.id;
-    if(!ascending){
+   /* if(!ascending){
       allAnalysen[analyse.id]=analyse;
     }
     else{
@@ -151,13 +159,13 @@ class Analysen with ChangeNotifier {
     }
 
     userPairs.add(analyse.pair);
-    notifyListeners();
+    notifyListeners();*/
   }
 
   void update(Analyse analyse) {
+    print(analyse);
     var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
     ref.document(analyse.id).updateData({
-      "id": ref.id,
       "title": analyse.title,
       "tags": analyse.activeTags,
       "link": analyse.links,
