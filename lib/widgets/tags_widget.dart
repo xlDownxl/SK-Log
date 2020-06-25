@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_tags/tag.dart';
+import '../flutter_tags/tag.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import '../models/user_tags.dart';
@@ -55,8 +55,8 @@ class _TagsWidgetState extends State<TagsWidget> {
                 },
                 onRemoved: () {
                   setState(() {
-                    userTags.delete(
-                        _tags[index]); // does this really remove or do i need to init usertags alone
+                    userTags.delete(_tags[
+                        index]); // does this really remove or do i need to init usertags alone
                   });
                 },
                 removeButton: ItemTagsRemoveButton(), // OR null,
