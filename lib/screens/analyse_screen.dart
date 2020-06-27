@@ -8,6 +8,8 @@ import '../models/analyse.dart';
 import '../widgets/zefyr_textfield.dart';
 import '../models/user_pairs.dart';
 import '../models/ascending.dart';
+import '../models/user.dart';
+import '../showcaseview/showcaseview.dart';
 
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";
@@ -24,7 +26,27 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   final GlobalKey<ZefyrTextFieldState> learningKey =
       GlobalKey<ZefyrTextFieldState>();
 
+  GlobalKey pairKey = GlobalKey();
+  GlobalKey linkKey = GlobalKey();
+  GlobalKey analysePictureKey = GlobalKey();
+  GlobalKey learningkey = GlobalKey();
+  GlobalKey tagsKey = GlobalKey();
+
   bool editText = false;
+
+  @override
+  void initState() {
+    if (Provider.of<AppUser>(context, listen: false).isNew) {
+      WidgetsBinding.instance.addPostFrameCallback(
+          (_) => ShowCaseWidget.of(context).startShowCase([
+                pairKey,
+                linkKey,
+                analysePictureKey,
+                tagsKey,
+              ]));
+    }
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -50,18 +72,18 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   }
 
   void safe() {
-    if(analyse.pair==null){
-      analyse.pair="Others";
+    if (analyse.pair == null) {
+      analyse.pair = "Others";
     }
-      descriptionKey.currentState.safeDocument();
-      learningKey.currentState.safeDocument();
-      if (id == null) {
-        Provider.of<Analysen>(context, listen: false).add(analyse,Provider.of<Ascending>(context,listen: false).asc);
-      }
-      else{
-        Provider.of<Analysen>(context, listen: false).update(analyse);
-      }
-      Navigator.pop(context);
+    descriptionKey.currentState.safeDocument();
+    learningKey.currentState.safeDocument();
+    if (id == null) {
+      Provider.of<Analysen>(context, listen: false)
+          .add(analyse, Provider.of<Ascending>(context, listen: false).asc);
+    } else {
+      Provider.of<Analysen>(context, listen: false).update(analyse);
+    }
+    Navigator.pop(context);
   }
 
   bool error = false;
@@ -144,7 +166,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
             centerTitle: true,
           ),
           body: Container(
-            padding: EdgeInsets.only(top: 20,right: 20,left: 20,bottom: 0),
+            padding: EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 0),
             child: LayoutBuilder(
               builder: (ctx, constr) => Row(
                 children: <Widget>[
@@ -155,7 +177,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   ),
                   Container(
                     width: constr.maxWidth * 0.6,
-                    child: AnalysePictureArea(error),
+                    child: AnalysePictureArea(error, analysePictureKey),
                   )
                 ],
               ),

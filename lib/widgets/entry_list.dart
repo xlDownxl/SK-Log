@@ -36,7 +36,7 @@ class EntryListState extends State<EntryList> {
 
   @override
   Widget build(BuildContext context) {
-    var asc=Provider.of<Ascending>(context);
+    var asc = Provider.of<Ascending>(context);
     analysen = Provider.of<Analysen>(context);
     Widget buildHeadline() {
       return Container(
@@ -75,26 +75,30 @@ class EntryListState extends State<EntryList> {
                     Flexible(
                       child: FittedBox(
                         child: Text("Datum",
-                        style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20)),
                       ),
                     ),
                     Flexible(
-                      child: asc.asc?IconButton(
-                        icon:Icon(Icons.arrow_downward),
-                        onPressed: (){
-                          setState(() {
-                            Provider.of<Ascending>(context,listen: false).asc=false;
-                          });
-                        },
-                      ):IconButton(
-                        icon:Icon(Icons.arrow_upward),
-                        onPressed: (){
-                          setState(() {
-                            Provider.of<Ascending>(context,listen: false).asc=true;
-                          });
-                        },
-                      ),
+                      child: asc.asc
+                          ? IconButton(
+                              icon: Icon(Icons.arrow_downward),
+                              onPressed: () {
+                                setState(() {
+                                  Provider.of<Ascending>(context, listen: false)
+                                      .asc = false;
+                                });
+                              },
+                            )
+                          : IconButton(
+                              icon: Icon(Icons.arrow_upward),
+                              onPressed: () {
+                                setState(() {
+                                  Provider.of<Ascending>(context, listen: false)
+                                      .asc = true;
+                                });
+                              },
+                            ),
                     ),
                   ],
                 ),
@@ -148,31 +152,33 @@ class EntryListState extends State<EntryList> {
     return /*Showcase(
       key: widget.analysenKey,
       description: "Hier kannst du alle deine angelegten Analysen verwalten",
-      child: */Container(
-      padding: EdgeInsets.only(left: 50,right: 50, bottom: 15,top: 10),
+      child: */
+        Container(
+      padding: EdgeInsets.only(left: 50, right: 50, bottom: 15, top: 10),
       child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: <Widget>[
-            widget.buildSearchField
-                ? buildSearchfield()
-                : SizedBox(
-                    height: 20,
-                  ),
-            buildHeadline(),
-            SizedBox(
-              height: 10,
-            ),
-            Expanded(
-              child: Container(
-                child: ListView.builder(
-                  itemBuilder: (ctx, index) =>
-                      ListElement(asc.asc?analysen.analysen.keys.toList()[index]:analysen.analysen.keys.toList().reversed.toList()[index]),
-                  itemCount: analysen.analysen.length,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: <Widget>[
+          widget.buildSearchField
+              ? buildSearchfield()
+              : SizedBox(
+                  height: 20,
                 ),
+          buildHeadline(),
+          SizedBox(
+            height: 10,
+          ),
+          Expanded(
+            child: Container(
+              child: ListView.builder(
+                itemBuilder: (ctx, index) => ListElement(asc.asc
+                    ? analysen.analysen.keys.toList()[index]
+                    : analysen.analysen.keys.toList().reversed.toList()[index]),
+                itemCount: analysen.analysen.length,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
       //),
     );
   }

@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/analyse.dart';
 import '../models/analysen.dart';
+import '../showcaseview/showcaseview.dart';
 
 class AnalysePictureArea extends StatefulWidget {
   final bool showError;
+  final Key analysePictureKey;
 
-  AnalysePictureArea(this.showError);
+  AnalysePictureArea(this.showError, this.analysePictureKey);
 
   @override
   _AnalysePictureAreaState createState() => _AnalysePictureAreaState();
@@ -42,27 +44,30 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
         builder: (ctx, constraints) => Container(
               //width: constraints.maxWidth,
               height: constraints.maxWidth,
-              child:
-
-                       Container(
-                          decoration: !loading?BoxDecoration(
-                            border: Border.all(width: 2),
-                            shape: BoxShape.circle,
-                            color: Theme.of(context).accentColor,
-                          ):null,
-                          padding: EdgeInsets.all(5),
-                          child: !loading?Center(
-                            child: FittedBox(
-                              child: analyse.links[0] == ""
-                                  ? Text("")
-                                  :Text(
-                                analyse.pair,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 22),
-                              ),
-                            ),
-                          ):CircularProgressIndicator(),
+              child: Container(
+                decoration: !loading
+                    ? BoxDecoration(
+                        border: Border.all(width: 2),
+                        shape: BoxShape.circle,
+                        color: Theme.of(context).accentColor,
+                      )
+                    : null,
+                padding: EdgeInsets.all(5),
+                child: !loading
+                    ? Center(
+                        child: FittedBox(
+                          child: analyse.links[0] == ""
+                              ? Text("")
+                              : Text(
+                                  analyse.pair,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 22),
+                                ),
                         ),
+                      )
+                    : CircularProgressIndicator(),
+              ),
             ));
 
     Widget linkField(int index) {
@@ -153,11 +158,10 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
               value: 0,
               groupValue: pictureIndex,
               onChanged: (val) {
-                      setState(() {
-                        pictureIndex = val;
-                      });
-                    }
-                  ,
+                setState(() {
+                  pictureIndex = val;
+                });
+              },
             ),
             Radio(
                 value: 1,
@@ -188,7 +192,7 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
         Flexible(
           flex: 10,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:30.0),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -204,24 +208,28 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                            Flexible(child: chartLinkDescription),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            Flexible(child: linkField(0),fit: FlexFit.tight,flex: 3,),
-                            IconButton(
-                              icon: Icon(Icons.add),
-                              onPressed: () {
-                                setState(() {
-                                  if (showTwo) {
-                                    showThree = true;
-                                  } else {
-                                    showTwo = true;
-                                  }
-                                });
-                              },
-                            ),
-                          ]),
+                                Flexible(child: chartLinkDescription),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Flexible(
+                                  child: linkField(0),
+                                  fit: FlexFit.tight,
+                                  flex: 3,
+                                ),
+                                IconButton(
+                                  icon: Icon(Icons.add),
+                                  onPressed: () {
+                                    setState(() {
+                                      if (showTwo) {
+                                        showThree = true;
+                                      } else {
+                                        showTwo = true;
+                                      }
+                                    });
+                                  },
+                                ),
+                              ]),
                         ),
                       ),
                       showTwo
@@ -229,22 +237,27 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                               child: Container(
                                   padding: EdgeInsets.symmetric(vertical: 10),
                                   child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
-                                    Flexible(child: chartLinkDescription),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Flexible(child: linkField(1),fit: FlexFit.tight,flex: 3,),
-                                    IconButton(
-                                        icon: Icon(Icons.delete),
-                                        onPressed: () {
-                                          setState(() {
-                                            showTwo = false;
-                                            analyse.links[1] = "";
-                                          });
-                                        }),
-                                  ])))
+                                        Flexible(child: chartLinkDescription),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Flexible(
+                                          child: linkField(1),
+                                          fit: FlexFit.tight,
+                                          flex: 3,
+                                        ),
+                                        IconButton(
+                                            icon: Icon(Icons.delete),
+                                            onPressed: () {
+                                              setState(() {
+                                                showTwo = false;
+                                                analyse.links[1] = "";
+                                              });
+                                            }),
+                                      ])))
                           : Container(),
                       showThree
                           ? Flexible(
@@ -253,36 +266,43 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                  Flexible(child: chartLinkDescription),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Flexible(child: linkField(2),fit: FlexFit.tight,flex: 3,),
-                                  IconButton(
-                                      icon: Icon(Icons.delete),
-                                      onPressed: () {
-                                        setState(() {
-                                          showThree = false;
-                                          analyse.links[2] = "";
-                                        });
-                                      }),
-                                ]),
+                                      Flexible(child: chartLinkDescription),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Flexible(
+                                        child: linkField(2),
+                                        fit: FlexFit.tight,
+                                        flex: 3,
+                                      ),
+                                      IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {
+                                            setState(() {
+                                              showThree = false;
+                                              analyse.links[2] = "";
+                                            });
+                                          }),
+                                    ]),
                               ),
                             )
                           : Container(),
                     ],
                   ),
                 ),
-                Flexible(child: Container(),),
                 Flexible(
-                  flex: 9,
-                  fit: FlexFit.tight,
-
+                  child: Container(),
+                ),
+                Flexible(
+                    flex: 9,
+                    fit: FlexFit.tight,
                     child: Container(
-                  child: pairShowing,
-                  padding: EdgeInsets.all( 10),
-                )),
-               Flexible(child: Container(),),
+                      child: pairShowing,
+                      padding: EdgeInsets.all(10),
+                    )),
+                Flexible(
+                  child: Container(),
+                ),
               ],
             ),
           ),

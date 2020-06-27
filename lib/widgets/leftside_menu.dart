@@ -13,14 +13,15 @@ class LeftsideMenu extends StatefulWidget {
   final Key plusButtonKey;
   final Key logOutButtonKey;
 
-  LeftsideMenu(key,this.changeMode, this.reset,this.plusButtonKey,this.logOutButtonKey): super(key: key);
+  LeftsideMenu(key, this.changeMode, this.reset, this.plusButtonKey,
+      this.logOutButtonKey)
+      : super(key: key);
 
   @override
   LeftsideMenuState createState() => LeftsideMenuState();
 }
 
 class LeftsideMenuState extends State<LeftsideMenu> {
-
   @override
   Widget build(BuildContext context) {
     var analysen = Provider.of<Analysen>(context, listen: false);
@@ -46,6 +47,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
         ),
       );
     }
+
     final IconData icon = Icons.add;
 
     return Container(
@@ -110,13 +112,23 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                       overlayColor: Colors.black,
                       overlayOpacity: 0.5,
                       child: Container(
-                        decoration: BoxDecoration(shape: BoxShape.circle,color: Theme.of(context).primaryColor,),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).primaryColor,
+                        ),
                         child: InkWell(
-                          onTap:  (){Navigator.pushNamed(context, AnalyseScreen.routeName);},
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, AnalyseScreen.routeName);
+                          },
                           child: LayoutBuilder(
-                            builder:(ctx,constr)=> Text(String.fromCharCode(icon.codePoint),
-                                style: TextStyle(fontSize: constr.maxHeight*9/11, fontFamily: icon.fontFamily, package: icon.fontPackage,color: Colors.white)
-                            ),
+                            builder: (ctx, constr) => Text(
+                                String.fromCharCode(icon.codePoint),
+                                style: TextStyle(
+                                    fontSize: constr.maxHeight * 9 / 11,
+                                    fontFamily: icon.fontFamily,
+                                    package: icon.fontPackage,
+                                    color: Colors.white)),
                           ),
                         ),
                       ),
@@ -134,36 +146,36 @@ class LeftsideMenuState extends State<LeftsideMenu> {
           flex: 1,
           child: Showcase(
             key: widget.logOutButtonKey,
-            description:
-            "Klicke hier um dich auszuloggen",
-            overlayColor: Colors.black,
-            overlayOpacity: 0.5,
-            child:InkWell(
-            onTap: () {
-              FirebaseAuth.instance.signOut();
-              analysen.reset();
-              user.reset();
-              Navigator.pushReplacementNamed(context, LoginScreen.routeName);
-            },
-            child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Flexible(
-                child: Icon(
-                  Icons.input,
-                  color: Colors.white,
+            description: "Klicke hier um dich auszuloggen",
+            child: InkWell(
+              onTap: () {
+                FirebaseAuth.instance.signOut();
+                analysen.reset();
+                user.reset();
+                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+              },
+              child:
+                  Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Flexible(
+                  child: Icon(
+                    Icons.input,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-          Flexible(
-              child:FittedBox(
-                child: Text(
-                  "Log Out",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
+                SizedBox(
+                  width: 10,
                 ),
-              ),),
-            ]),
-          ),),
+                Flexible(
+                  child: FittedBox(
+                    child: Text(
+                      "Log Out",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ]),
+            ),
+          ),
         ),
       ]),
     );

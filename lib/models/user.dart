@@ -10,16 +10,20 @@ class AppUser with ChangeNotifier {
   String email;
   String id;
   FirebaseUser fbUser;
-  bool isNew=false;
+  bool isNew = true;
 
   void reset() {
     email = null;
     id = null;
     fbUser = null;
-    isNew=false;
+    isNew = false;
   }
 
-  Future _registerUser(LoginData data, Analysen analysen, userTags,) {
+  Future _registerUser(
+    LoginData data,
+    Analysen analysen,
+    userTags,
+  ) {
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
@@ -28,12 +32,12 @@ class AppUser with ChangeNotifier {
       userTags.init(user.user.uid);
       email = user.user.email;
       id = user.user.uid;
-      isNew=true;
+      isNew = true;
       return "success";
     }).catchError((error) => error.code);
   }
 
-  Future<String> register( data, analysen, userTags) async {
+  Future<String> register(data, analysen, userTags) async {
     var code = await _registerUser(data, analysen, userTags);
     print(code);
     switch (code) {
@@ -43,7 +47,7 @@ class AppUser with ChangeNotifier {
         return "Ungültige Email";
       case "auth/weak-password":
         return "Passwort sollte mindestens 6 Zeichen haben";
-      case "auth/accountexistsalready"://TODO
+      case "auth/accountexistsalready": //TODO
         return "Passwort sollte mindestens 6 Zeichen haben";
       case "success":
         return null;
@@ -59,10 +63,18 @@ class AppUser with ChangeNotifier {
     }).catchError((error) => error.code);
   }
 
-  Future<String> login(LoginData data, analysen, userTags,) async {
+  Future<String> login(
+    LoginData data,
+    analysen,
+    userTags,
+  ) async {
     var code = await Future.any(
       [
-        _loginUser(data, analysen, userTags,),
+        _loginUser(
+          data,
+          analysen,
+          userTags,
+        ),
         Future.delayed(
           const Duration(seconds: 8),
         ),
@@ -80,7 +92,8 @@ class AppUser with ChangeNotifier {
     }
   }
 
-  Future<String> _loginUser(LoginData data,Analysen analysen, UserTags userTags) async {
+  Future<String> _loginUser(
+      LoginData data, Analysen analysen, UserTags userTags) async {
     //TODO if user not in database -> create him
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
