@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'zefyr_textfield.dart';
 import 'tags_widget.dart';
+import '../showcaseview/showcaseview.dart';
 
 class AnalyseInputArea extends StatefulWidget {
-  final descriptionKey;
-  final learningKey;
-  AnalyseInputArea(this.descriptionKey, this.learningKey);
+  final Key descriptionKey;
+  final Key learningKey;
+  final Key tagsKey;
+  final Key textInputKey;
+  AnalyseInputArea( this.descriptionKey, this.learningKey, this.tagsKey,  this.textInputKey);
   @override
-  _AnalyseInputAreaState createState() => _AnalyseInputAreaState();
+  AnalyseInputAreaState createState() => AnalyseInputAreaState();
 }
 
-class _AnalyseInputAreaState extends State<AnalyseInputArea> {
+class AnalyseInputAreaState extends State<AnalyseInputArea> {
   double spaceBetweenInputs = 10;
 
   @override
@@ -20,8 +23,11 @@ class _AnalyseInputAreaState extends State<AnalyseInputArea> {
       children: <Widget>[
         Flexible(
           flex: 7,
-          child:
-              ZefyrTextField(field: "description", key: widget.descriptionKey),
+      child: Showcase(
+        key: widget.textInputKey,
+        description: "Hier kannst du alles aufschreiben aufschreiben",
+             child: ZefyrTextField(field: "description", key: widget.descriptionKey),
+      ),
         ),
         SizedBox(
           height: spaceBetweenInputs,
@@ -32,8 +38,15 @@ class _AnalyseInputAreaState extends State<AnalyseInputArea> {
         ),
         Flexible(
           flex: 3,
-          child: TagsWidget(),
-        ),
+    child: Container(
+    margin: EdgeInsets.only(bottom: 30),
+      child: Showcase(
+      description:
+      "Hier kannst du Tags zu deine Analyse hinzufügen, um sie in Kategorien zusammenzufassen und einfach wieder zu finden",
+      key: widget.tagsKey,
+      child: TagsWidget(),
+          ),
+    ),),
       ],
     );
   }
