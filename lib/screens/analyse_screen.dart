@@ -88,7 +88,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     } else {
       Provider.of<Analysen>(context, listen: false).update(analyse);
     }
-    Navigator.pop(context);
+    //Navigator.pop(context);
   }
 
   bool error = false;
@@ -99,7 +99,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       value: analyse,
       child: WillPopScope(
         onWillPop: () {
-          return Future.delayed(Duration()).then((_) {
+          return Future.delayed(Duration.zero).then((_) {
             safe();
             return true;
           });
