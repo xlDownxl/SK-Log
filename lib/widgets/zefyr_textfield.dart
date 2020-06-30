@@ -5,7 +5,6 @@ import '../models/analyse.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
 
-
 class ZefyrTextField extends StatefulWidget {
   final field;
 
@@ -20,16 +19,22 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
   ZefyrController _controller;
   FocusNode _focusNode;
   Analyse analyse;
+  TextEditingController tec; // = TextEditingController();
 
   void safeDocument() {
     if (widget.field == "description") {
+      analyse.description = tec.text;
+    } else {
+      analyse.learning = tec.text;
+    }
+    /* if (widget.field == "description") {
       analyse.description = json.encode(document.toJson());
     } else {
       analyse.learning = json.encode(document.toJson());
-    }
+    }*/
   }
 
-  NotusDocument _loadDocument(Analyse analyse) {
+  /* NotusDocument _loadDocument(Analyse analyse) {
     if (widget.field == "description") {
       if (analyse.description == null) {
         final Delta delta = Delta()..insert("Beschreibung\n");
@@ -45,15 +50,20 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
         return NotusDocument.fromJson(json.decode(analyse.learning));
       }
     }
-  }
+  }*/
 
   var init = true;
   @override
   void didChangeDependencies() {
     if (init) {
-      analyse = Provider.of<Analyse>(context);
-      document = _loadDocument(analyse);
-      _controller = ZefyrController(document);
+      analyse = Provider.of<Analyse>(context, listen: false);
+      if (widget.field == "description") {
+        tec = TextEditingController(text: analyse.description);
+      } else {
+        tec = TextEditingController(text: analyse.learning);
+      }
+      //  document = _loadDocument(analyse);
+      // _controller = ZefyrController(document);
       init = false;
     }
     super.didChangeDependencies();
@@ -71,15 +81,18 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10)),
-
-      child: ZefyrScaffold(
+      child: TextField(
+        maxLines: 20,
+        controller: tec,
+      ),
+      /*ZefyrScaffold(
         child: ZefyrEditor(
           padding: EdgeInsets.all(16),
           controller: _controller,
           focusNode: _focusNode,
           
         ),
-      ),
+      ),*/
     );
   }
 }
