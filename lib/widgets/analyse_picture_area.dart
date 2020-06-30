@@ -5,16 +5,19 @@ import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
 
 class AnalysePictureArea extends StatefulWidget {
-  final bool showError;
   final Key analysePictureKey;
+  final Key linkKey;
+  final Key pairKey;
 
-  AnalysePictureArea(this.showError, this.analysePictureKey);
+  AnalysePictureArea(
+      key, this.analysePictureKey, this.pairKey, this.linkKey)
+      : super(key: key);
 
   @override
-  _AnalysePictureAreaState createState() => _AnalysePictureAreaState();
+  AnalysePictureAreaState createState() => AnalysePictureAreaState();
 }
 
-class _AnalysePictureAreaState extends State<AnalysePictureArea> {
+class AnalysePictureAreaState extends State<AnalysePictureArea> {
   var textEditingController;
   Analyse analyse;
 
@@ -42,31 +45,37 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
 
     Widget pairShowing = LayoutBuilder(
         builder: (ctx, constraints) => Container(
+              margin: EdgeInsets.only(bottom: 10),
               //width: constraints.maxWidth,
               height: constraints.maxWidth,
-              child: Container(
-                decoration: !loading
-                    ? BoxDecoration(
-                        border: Border.all(width: 2),
-                        shape: BoxShape.circle,
-                        color: Theme.of(context).accentColor,
-                      )
-                    : null,
-                padding: EdgeInsets.all(5),
-                child: !loading
-                    ? Center(
-                        child: FittedBox(
-                          child: analyse.links[0] == ""
-                              ? Text("")
-                              : Text(
-                                  analyse.pair,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22),
-                                ),
-                        ),
-                      )
-                    : CircularProgressIndicator(),
+              child: Showcase(
+                key: widget.pairKey,
+                description:
+                    "Wenn du deinen Tradingview Link einfügst wird das Chartsymbol automatisch erkannt und hier angezeigt",
+                child: Container(
+                  decoration: !loading
+                      ? BoxDecoration(
+                          border: Border.all(width: 2),
+                          shape: BoxShape.circle,
+                          color: Theme.of(context).accentColor,
+                        )
+                      : null,
+                  padding: EdgeInsets.all(5),
+                  child: !loading
+                      ? Center(
+                          child: FittedBox(
+                            child: analyse.links[0] == ""
+                                ? Text("")
+                                : Text(
+                                    analyse.pair,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 22),
+                                  ),
+                          ),
+                        )
+                      : CircularProgressIndicator(),
+                ),
               ),
             ));
 
@@ -118,36 +127,41 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
       children: <Widget>[
         Flexible(
           child: LayoutBuilder(
-            builder: (ctx, constraints) => (analyse.links[0] != "") &&
-                    (pictureIndex == 0)
-                ? Image.network(
-                    analyse.links[0],
-                    height: constraints.maxHeight,
-                    width: constraints.maxWidth,
-                  )
-                : (analyse.links[1] != "") && (pictureIndex == 1)
-                    ? Image.network(
-                        analyse.links[1],
-                        height: constraints.maxHeight,
-                        width: constraints.maxWidth,
-                      )
-                    : (analyse.links[2] != "") && (pictureIndex == 2)
-                        ? Image.network(
-                            analyse.links[2],
-                            height: constraints.maxHeight,
-                            width: constraints.maxWidth,
-                          )
-                        : Container(
-                            child: Center(
-                              child: Text(
-                                "Copy und Paste deinen Tradingview Link in den unteren Kasten",
-                                style: TextStyle(fontSize: 18),
+            builder: (ctx, constraints) => Showcase(
+              key: widget.analysePictureKey,
+              description:
+                  "Hier werden deine Screenshots angezeigt. Mit den Punkten unterhalb kannst du zwischen mehreren Bildern wechseln",
+              child: (analyse.links[0] != "") && (pictureIndex == 0)
+                  ? Image.network(
+                      analyse.links[0],
+                      height: constraints.maxHeight,
+                      width: constraints.maxWidth,
+                    )
+                  : (analyse.links[1] != "") && (pictureIndex == 1)
+                      ? Image.network(
+                          analyse.links[1],
+                          height: constraints.maxHeight,
+                          width: constraints.maxWidth,
+                        )
+                      : (analyse.links[2] != "") && (pictureIndex == 2)
+                          ? Image.network(
+                              analyse.links[2],
+                              height: constraints.maxHeight,
+                              width: constraints.maxWidth,
+                            )
+                          : Container(
+                              child: Center(
+                                child: Text(
+                                  "Copy und Paste deinen Tradingview Link in den unteren Kasten",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.black, width: 2),
                               ),
                             ),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: Colors.black, width: 2),
-                            ),
-                          ),
+            ),
           ),
           fit: FlexFit.tight,
           flex: 26,
@@ -203,33 +217,38 @@ class _AnalysePictureAreaState extends State<AnalysePictureArea> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Flexible(
-                        child: Container(
-                          padding: EdgeInsets.symmetric(vertical: 10),
-                          child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Flexible(child: chartLinkDescription),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Flexible(
-                                  child: linkField(0),
-                                  fit: FlexFit.tight,
-                                  flex: 3,
-                                ),
-                                IconButton(
-                                  icon: Icon(Icons.add),
-                                  onPressed: () {
-                                    setState(() {
-                                      if (showTwo) {
-                                        showThree = true;
-                                      } else {
-                                        showTwo = true;
-                                      }
-                                    });
-                                  },
-                                ),
-                              ]),
+                        child: Showcase(
+                          description:
+                              "Füge hier den Link zu deinem Tradingview Screenshot ein, falls du mehr als ein Bild speichern willst, klicke auf den Plus-Button",
+                          key: widget.linkKey,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Flexible(child: chartLinkDescription),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Flexible(
+                                    child: linkField(0),
+                                    fit: FlexFit.tight,
+                                    flex: 3,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (showTwo) {
+                                          showThree = true;
+                                        } else {
+                                          showTwo = true;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ]),
+                          ),
                         ),
                       ),
                       showTwo

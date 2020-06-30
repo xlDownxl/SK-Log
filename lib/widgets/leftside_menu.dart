@@ -12,9 +12,10 @@ class LeftsideMenu extends StatefulWidget {
   final Function reset;
   final Key plusButtonKey;
   final Key logOutButtonKey;
+  final Key menuKey;
 
   LeftsideMenu(key, this.changeMode, this.reset, this.plusButtonKey,
-      this.logOutButtonKey)
+      this.logOutButtonKey,this.menuKey)
       : super(key: key);
 
   @override
@@ -76,15 +77,19 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                 "Deine Einträge",
                 style: TextStyle(fontSize: 20, color: Colors.black),
               )),
-              Divider(),
+              Divider(height: 2,),
               SizedBox(
                 height: 8,
               ),
               Flexible(
-                  child: buildEntry(
+                  child: Showcase(
+                    key: widget.menuKey,
+                    description: "Hier kannst du deine Analysen filtern",
+                    child: buildEntry(
                 "Chronologisch",
                 0,
-              )),
+              ),
+                  )),
               SizedBox(
                 height: 10,
               ),
