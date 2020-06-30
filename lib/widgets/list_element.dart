@@ -57,18 +57,11 @@ class ListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     Analyse analyse = Provider.of<Analysen>(context).analysen[analyseId];
 
-    return /*Listener(
-      onPointerSignal: (PointerSignalEvent event) {
-        if (event is PointerScrollEvent) {
-          print('x: ${event.position.dx}, y: ${event.position.dy}');
-          print('scroll delta: ${event.scrollDelta}');
-        }
-      },
-      child:*/
-    MouseRegion(
-
+    return MouseRegion(
       onEnter: (event) {
-        showOverlay(context, analyse, event.position);
+        if(analyse.links[0]!=""){
+          showOverlay(context, analyse, event.position);
+        }
       },
       onExit: (event) {
         deleteOverlay();

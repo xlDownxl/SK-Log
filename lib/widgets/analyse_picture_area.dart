@@ -5,13 +5,12 @@ import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
 
 class AnalysePictureArea extends StatefulWidget {
-  final bool showError;
   final Key analysePictureKey;
   final Key linkKey;
   final Key pairKey;
 
   AnalysePictureArea(
-      key, this.showError, this.analysePictureKey, this.pairKey, this.linkKey)
+      key, this.analysePictureKey, this.pairKey, this.linkKey)
       : super(key: key);
 
   @override

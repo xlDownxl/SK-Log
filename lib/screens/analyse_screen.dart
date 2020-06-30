@@ -29,7 +29,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   GlobalKey pairKey = GlobalKey();
   GlobalKey linkKey = GlobalKey();
   GlobalKey analysePictureKey = GlobalKey();
-  GlobalKey learningkey = GlobalKey();
   GlobalKey tagsKey = GlobalKey();
   GlobalKey textinputKey = GlobalKey();
 
@@ -47,7 +46,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                 linkKey,
                 analysePictureKey,
                 tagsKey,
-            textinputKey,
+              textinputKey,
               ]));
     }
     super.initState();
@@ -88,10 +87,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     } else {
       Provider.of<Analysen>(context, listen: false).update(analyse);
     }
-    //Navigator.pop(context);
   }
-
-  bool error = false;
 
   @override
   Widget build(BuildContext context) {
@@ -109,17 +105,15 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
             leading: InkWell(
               //TODO inkwell design/verhalten
               child: Icon(Icons.save, size: 36),
-              onTap: safe,
+              onTap: (){
+                safe();
+                Navigator.pop(context);
+                },
             ),
             gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                /*InkWell(
-                  //TODO inkwell design/verhalten
-                  child: Icon(Icons.save),
-                  onTap: safe,
-                ),*/
                 InkWell(
                   child: Icon(Icons.delete, size: 36),
                   onTap: () {
@@ -183,7 +177,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                     ),
                     Container(
                       width: constr.maxWidth * 0.6,
-                      child: AnalysePictureArea(apicKey,error, analysePictureKey,linkKey,pairKey),
+                      child: AnalysePictureArea(apicKey, analysePictureKey,linkKey,pairKey),
                     )
                   ],
                 ),
