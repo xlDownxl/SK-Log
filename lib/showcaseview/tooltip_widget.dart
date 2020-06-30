@@ -72,6 +72,10 @@ class ToolTipWidget extends StatelessWidget {
   }
 
   String findPositionForContent(Offset position) {
+    if(description=="Wenn du deinen Tradingview Link einfügst wird das Chartsymbol automatisch erkannt und hier angezeigt"||description=="Hier werden deine Screenshots angezeigt. Mit den Punkten unterhalb kannst du zwischen mehreren Bildern wechseln"||description=="Füge hier den Link zu deinem Tradingview Screenshot ein, falls du mehr als ein Bild speichern willst, klicke auf den Plus-Button"||description=="Hier kannst du alle deine angelegten Analysen verwalten"){
+      return 'ABOVE';
+    }
+
     if (isCloseToTopOrBottom(position)) {
       return 'ABOVE';
     } else {

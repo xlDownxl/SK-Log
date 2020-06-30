@@ -149,13 +149,9 @@ class EntryListState extends State<EntryList> {
       );
     }
 
-    return /*Showcase(
-      key: widget.analysenKey,
-      description: "Hier kannst du alle deine angelegten Analysen verwalten",
-      child: */
-        Container(
+    return Container(
       padding: EdgeInsets.only(left: 50, right: 50, bottom: 15, top: 10),
-      child: Column(
+      child:  Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: <Widget>[
           widget.buildSearchField
@@ -168,18 +164,21 @@ class EntryListState extends State<EntryList> {
             height: 10,
           ),
           Expanded(
-            child: Container(
+            child: /* Showcase(
+              key: widget.analysenKey,
+              description: "Hier kannst du alle deine angelegten Analysen verwalten",
+              child:*/Container(
               child: ListView.builder(
                 itemBuilder: (ctx, index) => ListElement(asc.asc
                     ? analysen.analysen.keys.toList()[index]
                     : analysen.analysen.keys.toList().reversed.toList()[index]),
                 itemCount: analysen.analysen.length,
               ),
-            ),
-          ),
+            //),
+          ),),
         ],
       ),
-      //),
+
     );
   }
 }

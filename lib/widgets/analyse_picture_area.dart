@@ -10,10 +10,12 @@ class AnalysePictureArea extends StatefulWidget {
   final Key linkKey;
   final Key pairKey;
 
+  AnalysePictureArea(
+      key, this.showError, this.analysePictureKey, this.pairKey, this.linkKey)
+      : super(key: key);
 
-  AnalysePictureArea(key,this.showError, this.analysePictureKey,this.pairKey,this.linkKey):super(key:key);
-
-  @override AnalysePictureAreaState createState() => AnalysePictureAreaState();
+  @override
+  AnalysePictureAreaState createState() => AnalysePictureAreaState();
 }
 
 class AnalysePictureAreaState extends State<AnalysePictureArea> {
@@ -44,11 +46,13 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
 
     Widget pairShowing = LayoutBuilder(
         builder: (ctx, constraints) => Container(
+              margin: EdgeInsets.only(bottom: 10),
               //width: constraints.maxWidth,
               height: constraints.maxWidth,
               child: Showcase(
                 key: widget.pairKey,
-                description: "Wenn du deinen Tradingview Link einfügst wird das Chartsymbol automatisch erkannt und hier angezeigt",
+                description:
+                    "Wenn du deinen Tradingview Link einfügst wird das Chartsymbol automatisch erkannt und hier angezeigt",
                 child: Container(
                   decoration: !loading
                       ? BoxDecoration(
@@ -126,9 +130,9 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
           child: LayoutBuilder(
             builder: (ctx, constraints) => Showcase(
               key: widget.analysePictureKey,
-              description: "Hier werden deine Screenshots angezeigt. Mit den Punkten unterhalb kannst du zwischen mehreren Bildern wechseln",
-              child: (analyse.links[0] != "") &&
-                      (pictureIndex == 0)
+              description:
+                  "Hier werden deine Screenshots angezeigt. Mit den Punkten unterhalb kannst du zwischen mehreren Bildern wechseln",
+              child: (analyse.links[0] != "") && (pictureIndex == 0)
                   ? Image.network(
                       analyse.links[0],
                       height: constraints.maxHeight,
@@ -154,7 +158,8 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
                                 ),
                               ),
                               decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black, width: 2),
+                                border:
+                                    Border.all(color: Colors.black, width: 2),
                               ),
                             ),
             ),
@@ -202,124 +207,125 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
         Flexible(
           flex: 10,
           child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Flexible(
-                    fit: FlexFit.tight,
-                    flex: 40,
-                    child: Showcase(
-                      description: "Füge hier den Link zu deinem Tradingview Screenshot ein, falls du mehr als ein Bild speichern willst, klicke auf den Plus-Button",
-                      key: widget.linkKey,
-                      child:  Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Flexible(
-                            child: Container(
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                              child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Flexible(child: chartLinkDescription),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Flexible(
-                                      child: linkField(0),
-                                      fit: FlexFit.tight,
-                                      flex: 3,
-                                    ),
-                                    IconButton(
-                                      icon: Icon(Icons.add),
-                                      onPressed: () {
-                                        setState(() {
-                                          if (showTwo) {
-                                            showThree = true;
-                                          } else {
-                                            showTwo = true;
-                                          }
-                                        });
-                                      },
-                                    ),
-                                  ]),
-                            ),
-                          ),
-                          showTwo
-                              ? Flexible(
-                                  child: Container(
-                                      padding: EdgeInsets.symmetric(vertical: 10),
-                                      child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Flexible(child: chartLinkDescription),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Flexible(
-                                              child: linkField(1),
-                                              fit: FlexFit.tight,
-                                              flex: 3,
-                                            ),
-                                            IconButton(
-                                                icon: Icon(Icons.delete),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    showTwo = false;
-                                                    analyse.links[1] = "";
-                                                  });
-                                                }),
-                                          ])))
-                              : Container(),
-                          showThree
-                              ? Flexible(
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(vertical: 10),
-                                    child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: [
-                                          Flexible(child: chartLinkDescription),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Flexible(
-                                            child: linkField(2),
-                                            fit: FlexFit.tight,
-                                            flex: 3,
-                                          ),
-                                          IconButton(
-                                              icon: Icon(Icons.delete),
-                                              onPressed: () {
-                                                setState(() {
-                                                  showThree = false;
-                                                  analyse.links[2] = "";
-                                                });
-                                              }),
-                                        ]),
+            padding: const EdgeInsets.symmetric(horizontal: 30.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Flexible(
+                  fit: FlexFit.tight,
+                  flex: 40,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Flexible(
+                        child: Showcase(
+                          description:
+                              "Füge hier den Link zu deinem Tradingview Screenshot ein, falls du mehr als ein Bild speichern willst, klicke auf den Plus-Button",
+                          key: widget.linkKey,
+                          child: Container(
+                            padding: EdgeInsets.symmetric(vertical: 10),
+                            child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Flexible(child: chartLinkDescription),
+                                  SizedBox(
+                                    width: 10,
                                   ),
-                                )
-                              : Container(),
-                        ],
+                                  Flexible(
+                                    child: linkField(0),
+                                    fit: FlexFit.tight,
+                                    flex: 3,
+                                  ),
+                                  IconButton(
+                                    icon: Icon(Icons.add),
+                                    onPressed: () {
+                                      setState(() {
+                                        if (showTwo) {
+                                          showThree = true;
+                                        } else {
+                                          showTwo = true;
+                                        }
+                                      });
+                                    },
+                                  ),
+                                ]),
+                          ),
+                        ),
                       ),
-                    ),
+                      showTwo
+                          ? Flexible(
+                              child: Container(
+                                  padding: EdgeInsets.symmetric(vertical: 10),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Flexible(child: chartLinkDescription),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Flexible(
+                                          child: linkField(1),
+                                          fit: FlexFit.tight,
+                                          flex: 3,
+                                        ),
+                                        IconButton(
+                                            icon: Icon(Icons.delete),
+                                            onPressed: () {
+                                              setState(() {
+                                                showTwo = false;
+                                                analyse.links[1] = "";
+                                              });
+                                            }),
+                                      ])))
+                          : Container(),
+                      showThree
+                          ? Flexible(
+                              child: Container(
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Flexible(child: chartLinkDescription),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Flexible(
+                                        child: linkField(2),
+                                        fit: FlexFit.tight,
+                                        flex: 3,
+                                      ),
+                                      IconButton(
+                                          icon: Icon(Icons.delete),
+                                          onPressed: () {
+                                            setState(() {
+                                              showThree = false;
+                                              analyse.links[2] = "";
+                                            });
+                                          }),
+                                    ]),
+                              ),
+                            )
+                          : Container(),
+                    ],
                   ),
-                  Flexible(
-                    child: Container(),
-                  ),
-                  Flexible(
-                      flex: 9,
-                      fit: FlexFit.tight,
-                      child: Container(
-                        child: pairShowing,
-                        padding: EdgeInsets.all(10),
-                      )),
-                  Flexible(
-                    child: Container(),
-                  ),
-                ],
-              ),
+                ),
+                Flexible(
+                  child: Container(),
+                ),
+                Flexible(
+                    flex: 9,
+                    fit: FlexFit.tight,
+                    child: Container(
+                      child: pairShowing,
+                      padding: EdgeInsets.all(10),
+                    )),
+                Flexible(
+                  child: Container(),
+                ),
+              ],
             ),
+          ),
         ),
         SizedBox(
           height: 20,

@@ -29,6 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey logOutButtonKey = GlobalKey();
   GlobalKey searchFieldKey = GlobalKey();
   GlobalKey analysenFieldKey = GlobalKey();
+  GlobalKey menuKey = GlobalKey();
 
   bool dark = true;
   int mode = 0;
@@ -54,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
     if (Provider.of<AppUser>(context, listen: false).isNew) {
       WidgetsBinding.instance.addPostFrameCallback(
           (_) => ShowCaseWidget.of(leftSideMenu.currentContext).startShowCase([
+            menuKey,
                 _plusButtonKey,
                 logOutButtonKey,
                 searchFieldKey,
@@ -98,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 width: deviceWidth * 0.25,
                 child: LeftsideMenu(leftSideMenu, changeMode, reset,
-                    _plusButtonKey, logOutButtonKey),
+                    _plusButtonKey, logOutButtonKey,menuKey),
               ),
               Container(
                 width: deviceWidth * 0.75,
