@@ -45,7 +45,7 @@ dependencies:
   url_launcher: ^5.4.2
   #showcaseview: ^0.1.5
   #flutter_login: ^1.0.14
-  #flushbar: 1.9.1 #from 1.10 this wont work with flutter lower than 1.15
+  flushbar: 1.10.4 #from 1.10 this wont work with flutter lower than 1.15
 
   #firebase_database: ^3.0.7
 
