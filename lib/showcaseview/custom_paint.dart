@@ -41,19 +41,16 @@ class ShapePainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint();
-    paint.color = Colors.black;
-
-    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), Paint()
-      ..color = Colors.black12.withOpacity(0.3)
-      ..style = PaintingStyle.fill);
-
-    // below the circle which you want to create a cropping part.
-    RRect rRect = RRect.fromRectAndRadius(rect, Radius.circular(8));
-    canvas.drawRRect(rRect, Paint()
-      ..color = Colors.orange[200]
-      ..style = PaintingStyle.fill
-      ..blendMode = BlendMode.dstOut);
+    var path=Path()
+    // Circle (円)
+      ..addRRect(
+        RRect.fromRectAndRadius(rect, Radius.circular(10))
+      )
+    // Overall drawing (全体描画)
+      ..addRect(Rect.fromLTWH(0.0, 0.0, size.width, size.height))
+    // Hollow out a circle (くり抜き)
+      ..fillType = PathFillType.evenOdd;
+    canvas.drawPath(path, Paint()..color=Colors.black45);
   }
 
   @override
