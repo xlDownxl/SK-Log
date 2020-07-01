@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zefyr/zefyr.dart';
-import 'package:quill_delta/quill_delta.dart';
+//import 'package:zefyr/zefyr.dart';
+//import 'package:quill_delta/quill_delta.dart';
 import '../models/analyse.dart';
 import 'dart:convert';
 import 'package:provider/provider.dart';
@@ -15,8 +15,8 @@ class ZefyrTextField extends StatefulWidget {
 }
 
 class ZefyrTextFieldState extends State<ZefyrTextField> {
-  NotusDocument document;
-  ZefyrController _controller;
+ // NotusDocument document;
+ // ZefyrController _controller;
   FocusNode _focusNode;
   Analyse analyse;
   TextEditingController tec; // = TextEditingController();
@@ -53,6 +53,7 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
   }*/
 
   var init = true;
+
   @override
   void didChangeDependencies() {
     if (init) {
@@ -78,10 +79,16 @@ class ZefyrTextFieldState extends State<ZefyrTextField> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10)),
       child: TextField(
+        decoration: new InputDecoration.collapsed(
+          hintText: widget.field == "description" ? 'Beschreibung' : "Learning",
+        ),
+        onChanged: (text) {
+        },
         maxLines: 20,
         controller: tec,
       ),
