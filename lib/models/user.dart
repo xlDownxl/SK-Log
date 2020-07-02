@@ -10,7 +10,7 @@ class AppUser with ChangeNotifier {
   String email;
   String id;
   FirebaseUser fbUser;
-  bool isNew = true;
+  bool isNew = false;
 
   void reset() {
     email = null;
