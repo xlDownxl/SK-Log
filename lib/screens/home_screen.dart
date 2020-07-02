@@ -59,7 +59,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 _plusButtonKey,
                 logOutButtonKey,
                 searchFieldKey,
-                analysenFieldKey,
+                //analysenFieldKey,
               ]));
     }
     super.initState();

@@ -8,7 +8,8 @@ class AnalyseInputArea extends StatefulWidget {
   final Key learningKey;
   final Key tagsKey;
   final Key textInputKey;
-  AnalyseInputArea( this.descriptionKey, this.learningKey, this.tagsKey,  this.textInputKey);
+  final Key learningInputKey;
+  AnalyseInputArea( this.descriptionKey, this.learningKey, this.tagsKey,  this.textInputKey,this.learningInputKey);
   @override
   AnalyseInputAreaState createState() => AnalyseInputAreaState();
 }
@@ -25,7 +26,7 @@ class AnalyseInputAreaState extends State<AnalyseInputArea> {
           flex: 7,
       child: Showcase(
         key: widget.textInputKey,
-        description: "Hier kannst du alles aufschreiben aufschreiben",
+        description: "Hier kannst du alle Beobachtungen aufschreiben",
              child: ZefyrTextField(field: "description", key: widget.descriptionKey),
       ),
         ),
@@ -34,7 +35,13 @@ class AnalyseInputAreaState extends State<AnalyseInputArea> {
         ),
         Flexible(
           flex: 4,
-          child: ZefyrTextField(field: "learning", key: widget.learningKey),
+          child: Showcase(
+            key: widget.learningInputKey,
+              description:"In diesem Bereich kannst du dein Fazit aus diesem Trade notieren",
+              child: ZefyrTextField(
+                  field: "learning",
+                  key: widget.learningKey,),
+          ),
         ),
         Flexible(
           flex: 3,

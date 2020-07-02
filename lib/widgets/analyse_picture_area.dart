@@ -9,8 +9,7 @@ class AnalysePictureArea extends StatefulWidget {
   final Key linkKey;
   final Key pairKey;
 
-  AnalysePictureArea(
-      key, this.analysePictureKey, this.pairKey, this.linkKey)
+  AnalysePictureArea(key, this.analysePictureKey, this.pairKey, this.linkKey)
       : super(key: key);
 
   @override
@@ -46,21 +45,17 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
     Widget pairShowing = LayoutBuilder(
         builder: (ctx, constraints) => Container(
               margin: EdgeInsets.only(bottom: 10),
-              //width: constraints.maxWidth,
               height: constraints.maxWidth,
               child: Showcase(
                 key: widget.pairKey,
                 description:
                     "Wenn du deinen Tradingview Link einfügst wird das Chartsymbol automatisch erkannt und hier angezeigt",
                 child: Container(
-                  decoration: !loading
-                      ? BoxDecoration(
+                  decoration: BoxDecoration(
                           border: Border.all(width: 2),
                           shape: BoxShape.circle,
                           color: Theme.of(context).accentColor,
-                        )
-                      : null,
-                  padding: EdgeInsets.all(5),
+                        ),
                   child: !loading
                       ? Center(
                           child: FittedBox(
@@ -92,7 +87,11 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
         onChanged: index == 0
             ? (val) {
                 if (val.contains("tradingview")) {
-                  loading = true;
+                  setState(() {
+                    loading = true;
+                    print("loading true");
+                  });
+
                   analyse
                       .setLink(
                           val, Provider.of<Analysen>(context, listen: false))
@@ -107,10 +106,14 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
               }
             : index == 1
                 ? (val) {
-                    analyse.links[1] = val;
+                    setState(() {
+                      analyse.links[1] = val;
+                    });
                   }
                 : (val) {
-                    analyse.links[2] = val;
+                    setState(() {
+                      analyse.links[2] = val;
+                    });
                   },
         controller: textEditingController,
         initialValue: analyse.links[index] != "" ? analyse.links[index] : "",

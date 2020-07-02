@@ -30,7 +30,10 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   GlobalKey linkKey = GlobalKey();
   GlobalKey analysePictureKey = GlobalKey();
   GlobalKey tagsKey = GlobalKey();
-  GlobalKey textinputKey = GlobalKey();
+  GlobalKey descriptionInputKey = GlobalKey();
+  GlobalKey learningInputKey = GlobalKey();
+  GlobalKey trashKey = GlobalKey();
+  GlobalKey saveKey = GlobalKey();
 
   final GlobalKey<AnalysePictureAreaState> apicKey =
   GlobalKey<AnalysePictureAreaState>();
@@ -46,7 +49,9 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                 linkKey,
                 analysePictureKey,
                 tagsKey,
-              textinputKey,
+              descriptionInputKey,
+            trashKey,
+            saveKey,
               ]));
     }
     super.initState();
@@ -100,27 +105,36 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
             return true;
           });
         },
-        child: Scaffold(
+        child: ShowCaseWidget(
+          builder:Builder(builder: (ctx)=>Scaffold(
           appBar: GradientAppBar(
-            leading: InkWell(
-              //TODO inkwell design/verhalten
-              child: Icon(Icons.save, size: 36),
-              onTap: (){
-                safe();
-                Navigator.pop(context);
-                },
+            leading: Showcase(
+              key: saveKey,
+              description: 'Klicke hier um die Analyse zu speichern. Der "Zurück" Pfeil deines Browsers speichert die Analyse ebenfalls',
+              child: InkWell(
+                //TODO inkwell design/verhalten
+                child: Icon(Icons.save, size: 36),
+                onTap: (){
+                  safe();
+                  Navigator.pop(context);
+                  },
+              ),
             ),
             gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                InkWell(
-                  child: Icon(Icons.delete, size: 36),
-                  onTap: () {
-                    if (id != null)
-                      Provider.of<Analysen>(context, listen: false).delete(id);
-                    Navigator.pop(context);
-                  },
+                Showcase(
+                  description: "Klicke hier um die Analyse zulöschen",
+                  key: trashKey,
+                  child: InkWell(
+                    child: Icon(Icons.delete, size: 36),
+                    onTap: () {
+                      if (id != null)
+                        Provider.of<Analysen>(context, listen: false).delete(id);
+                      Navigator.pop(context);
+                    },
+                  ),
                 ),
                 Flexible(
                   child: Container(),
@@ -164,8 +178,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
             ),
             centerTitle: true,
           ),
-          body: ShowCaseWidget(
-            builder:Builder(builder: (ctx)=> Container(
+          body:  Container(
               padding: EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 10),
               child: LayoutBuilder(
                 builder: (ctx, constr) => Row(
@@ -173,7 +186,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                     Container(
                       width: constr.maxWidth * 0.4,
                       padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: AnalyseInputArea(descriptionKey, learningKey,tagsKey,textinputKey),
+                      child: AnalyseInputArea(descriptionKey, learningKey,tagsKey,descriptionInputKey,learningInputKey),
                     ),
                     Container(
                       width: constr.maxWidth * 0.6,
