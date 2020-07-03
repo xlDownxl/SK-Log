@@ -3,6 +3,17 @@ import 'package:provider/provider.dart';
 import '../models/analyse.dart';
 import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
+import 'package:flutter/services.dart';
+
+class UpperCaseTextFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+    return TextEditingValue(
+      text: newValue.text?.toUpperCase(),
+      selection: newValue.selection,
+    );
+  }
+}
 
 class AnalysePictureArea extends StatefulWidget {
   final Key analysePictureKey;
@@ -19,6 +30,8 @@ class AnalysePictureArea extends StatefulWidget {
 class AnalysePictureAreaState extends State<AnalysePictureArea> {
   var textEditingController;
   Analyse analyse;
+  bool editPair=false;
+  FocusNode editPairFocus=FocusNode();
 
   bool loading = false;
   bool showTwo = false;
@@ -44,7 +57,7 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
 
     Widget pairShowing = LayoutBuilder(
         builder: (ctx, constraints) => Container(
-              margin: EdgeInsets.only(bottom: 10),
+
               height: constraints.maxWidth,
               child: Showcase(
                 key: widget.pairKey,
@@ -56,19 +69,54 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
                           shape: BoxShape.circle,
                           color: Theme.of(context).accentColor,
                         ),
-                  child: !loading
-                      ? Center(
-                          child: FittedBox(
-                            child: analyse.links[0] == ""
-                                ? Text("")
-                                : Text(
-                                    analyse.pair,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 22),
-                                  ),
+                  child: editPair?
+                      Center(
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          child: TextField(
+                            focusNode: editPairFocus,
+                            style: TextStyle(fontWeight: FontWeight.bold,),
+                            inputFormatters: [
+                              UpperCaseTextFormatter(),
+                            ],
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              filled: true,
+                              focusColor: Colors.white,
+                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: Colors.black,width: 2)),
+                            ),
+                            onSubmitted: (value){
+                            setState(() {
+                              editPair=false;
+                              analyse.pair=value;
+                            });
+                          },),
+                        ),
+                      )
+                      :!loading
+                      ? InkWell(
+                    customBorder: CircleBorder(),
+
+                    onTap: (){
+                      setState(() {
+                        editPair=true;
+                        editPairFocus.requestFocus();
+                      });
+
+                    },
+                        child: Center(
+                            child: FittedBox(
+                              child: analyse.links[0] == ""
+                                  ? Text("")
+                                  : Text(
+                                      analyse.pair,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 22),
+                                    ),
+                            ),
                           ),
-                        )
+                      )
                       : CircularProgressIndicator(),
                 ),
               ),
@@ -215,7 +263,7 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
               children: <Widget>[
                 Flexible(
                   fit: FlexFit.tight,
-                  flex: 40,
+                  flex: 42,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -316,7 +364,7 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
                   child: Container(),
                 ),
                 Flexible(
-                    flex: 9,
+                    flex: 11,
                     fit: FlexFit.tight,
                     child: Container(
                       child: pairShowing,
