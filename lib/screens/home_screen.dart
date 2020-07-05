@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
 import '../models/user.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -50,17 +51,92 @@ class _HomeScreenState extends State<HomeScreen> {
         .setFilter(AnalyseFilter.showAll());
   }
 
+  Future showInitDialog(context){
+    var width=MediaQuery.of(context).size.width*0.3;
+    var height=MediaQuery.of(context).size.height*0.5;
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(32.0))),
+            content:  Container(
+
+             // padding: EdgeInsets.all(20),
+                width: width,
+              height: height,
+                child: Column(
+
+                  children: [
+                    Flexible(
+                      flex: 7,
+                    //height: height*0.2,
+                      child: Image.asset("assets/skloggro.png"),
+                    //color: Theme.of(context).accentColor,
+                  ),
+
+                    Flexible(
+                      flex: 3,
+                    //height: height*0.1,
+                      child: Text(
+                        "Willkommen zu SK!Log",
+                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,),
+                      ),
+                  ),
+                    Flexible(
+                      flex:1,
+                        child: Container(),
+                        //height: height*0.05
+                       ),
+                    Flexible(
+                      flex:10,
+                    fit: FlexFit.tight,
+                    //height: height*0.4,
+                    child: AutoSizeText("Beim ersten Start des Tools werden alle grundlegenden Funktionen dieses Tools kurz erläutert. Falls du zu jeglichem Zeitpunkt eine Frage oder ein Problem bei der Nutzung hast, bitte zögere nicht uns "
+                        "über die Telegram Links auf der ersten Seite zu kontaktieren. Wir wünschen dir viel Spaß und Erfolg im Trading!",style: TextStyle(fontSize: 20),),
+                  ),
+                    Flexible(
+                      flex: 1,
+                     child: Container(),
+                     // height: height*0.1,
+                    ),
+                    Flexible(
+                      flex:4,
+                     // height: height*0.15,
+                        child: MaterialButton(
+                          onPressed: (){return true;},
+                          color: Theme.of(context).primaryColor,
+                          child: Text("Let's get Started!",
+                            style: TextStyle(fontSize: 24),
+                          ),
+                        ),
+                    ),
+                ],
+                crossAxisAlignment: CrossAxisAlignment.center,),
+              ),
+
+          );
+        });
+  }
+
   @override
   void initState() {
     if (Provider.of<AppUser>(context, listen: false).isNew) {
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ShowCaseWidget.of(leftSideMenu.currentContext).startShowCase([
-            menuKey,
-                _plusButtonKey,
-                logOutButtonKey,
-                searchFieldKey,
-                //analysenFieldKey,
-              ]));
+
+      Future.delayed(Duration.zero).then((_) {
+        showInitDialog(context).then((_) {
+          WidgetsBinding.instance.addPostFrameCallback(
+                  (_) =>
+                  ShowCaseWidget.of(leftSideMenu.currentContext).startShowCase([
+                    menuKey,
+                    _plusButtonKey,
+                    logOutButtonKey,
+                    searchFieldKey,
+                    //analysenFieldKey,
+                  ]));
+        });
+      });
+
     }
     super.initState();
   }
