@@ -31,7 +31,9 @@ class _LoginPageState extends State<LoginScreen> {
    subscription = _auth.onAuthStateChanged.listen((data) {
       if (data != null) {
         Provider.of<Analysen>(context, listen: false)
-            .loadWithId(data.uid, false);
+            .loadWithId(data.uid, false).catchError((error){
+              print(error);
+        });
         Provider.of<UserTags>(context, listen: false).loadTags(data.uid);
         Provider.of<AppUser>(context, listen: false).email = data.email;
         Provider.of<AppUser>(context, listen: false).id = data.uid;

@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
-
 class Analyse with ChangeNotifier {
   String id;
   List<dynamic> links;
@@ -11,7 +9,6 @@ class Analyse with ChangeNotifier {
   String title;
   String learning;
   String pair;
-  String owner;
   var activeTags;
   DateTime date;
   var resPair;
@@ -20,9 +17,8 @@ class Analyse with ChangeNotifier {
     date = DateTime.now();
     links = ["","",""];
     id = DateTime.now().toString();
-    title = "Analysis $id";
     activeTags = [];
-    title = "Analyse Nr. 1";
+    title = "Neue Analyse";
   }
 
 
@@ -64,7 +60,6 @@ class Analyse with ChangeNotifier {
     learning = snapshot['learning'] ?? "";
     description = snapshot['description'] ?? "";
     pair = snapshot['pair'] ?? null;
-    owner = snapshot["owner"] ?? "not implemented";
     date = DateTime.fromMillisecondsSinceEpoch(snapshot["date"]);
   }
 
@@ -74,10 +69,9 @@ class Analyse with ChangeNotifier {
     id = DateTime.now().toString();
     title = "667er SL Öl";
     pair = "OIL";
-    owner = "me";
     activeTags = [];
-    description='[{"insert":"Verkaufsbereich in Öl"},{"insert":"\n","attributes":{"heading":2}},{"insert":"Habe das Ding durchgetradet, aber bin mit der letzten Order am 618er, welche das 667er überdeckt hat rausgeflogen."},{"insert":"\n","attributes":{"heading":3}}]';
-    learning='[{"insert":"Das 667 ist das attraktivste Level, wenn 618er Trade das 667er überlappt muss ich SL reduzieren und neuen Trade am 667er platzieren.\n"}]';
+    description='Markt stand tief etc'; //TODO
+    learning='Immer 667 rein';
   }
 
   String toString() {

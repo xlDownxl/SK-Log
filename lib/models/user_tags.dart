@@ -65,7 +65,7 @@ class UserTags with ChangeNotifier {
         });
   }
 
-  void loadTags(id) async {
+  Future loadTags(id) async {
     this.userId = id;
     var user_data = await store.collection("Users").document(userId).get();
     _tags = user_data.data["user_tags"];

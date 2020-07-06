@@ -16,7 +16,7 @@ class AppUser with ChangeNotifier {
     email = null;
     id = null;
     fbUser = null;
-    isNew = false;
+    isNew = true;
   }
 
   Future _registerUser(
@@ -28,7 +28,7 @@ class AppUser with ChangeNotifier {
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
         .then((user) async {
-      analysen.loadWithId(user.user.uid, true);
+      //analysen.loadWithId(user.user.uid, true);
       userTags.init(user.user.uid);
       email = user.user.email;
       id = user.user.uid;
@@ -39,7 +39,6 @@ class AppUser with ChangeNotifier {
 
   Future<String> register(data, analysen, userTags) async {
     var code = await _registerUser(data, analysen, userTags);
-    print(code);
     switch (code) {
       case "auth/email-already-in-use":
         return "Diese Email ist schon vergeben";
@@ -49,6 +48,8 @@ class AppUser with ChangeNotifier {
         return "Passwort sollte mindestens 6 Zeichen haben";
       case "auth/accountexistsalready": //TODO
         return "Passwort sollte mindestens 6 Zeichen haben";
+      case "permission-denied":
+        return "Bitte kontaktiere einen Admin";
       case "success":
         return null;
       default:
@@ -80,11 +81,14 @@ class AppUser with ChangeNotifier {
         ),
       ],
     );
+    print(code);
     switch (code) {
       case "auth/user-not-found":
         return "Benutzer existiert nicht";
       case "auth/wrong-password":
         return "Überprüfe dein Passwort";
+      case "permission-denied":
+        return "Bitte kontaktiere einen Admin";
       case "success":
         return null;
       default:
@@ -98,11 +102,18 @@ class AppUser with ChangeNotifier {
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
         .then((user) async {
-      analysen.loadWithId(user.user.uid, false);
-      userTags.loadTags(user.user.uid);
+      var loadAnalysenFuture = analysen.loadWithId(user.user.uid, false);
+      var loadTagsFuture=userTags.loadTags(user.user.uid);
       email = user.user.email;
       id = user.user.uid;
-      return "success";
-    }).catchError((error) => error.code);
+      return Future.wait([loadAnalysenFuture,loadTagsFuture]);
+    })
+        .then((value) {
+          return "success";
+        })
+        .catchError((error) {
+          FirebaseAuth.instance.signOut();
+          return error.code;
+        });
   }
 }

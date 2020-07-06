@@ -8,42 +8,47 @@ import 'user_pairs.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class Analysen with ChangeNotifier {
-  LinkedHashMap<String,Analyse> analysen = LinkedHashMap();
-  Map<String,Analyse> allAnalysen = LinkedHashMap();
+  LinkedHashMap<String, Analyse> analysen = LinkedHashMap();
+  Map<String, Analyse> allAnalysen = LinkedHashMap();
   Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
-  UserPairs userPairs=UserPairs();
+  UserPairs userPairs = UserPairs();
 
   Analysen();
 
-  void notify(){
+  void notify() {
     notifyListeners();
   }
 
-  void reset(){
+  void reset() {
     analysen = LinkedHashMap();
     allAnalysen = {};
-    userId="";
+    userId = "";
     filter = AnalyseFilter.showAll();
   }
 
-  void loadWithId(String id, bool isNew){
+  Future loadWithId(String id, bool isNew) {
     //TODO isnew=true implementation
-    if (!isNew){
-    this.userId=id;
+    if (!isNew) {
+      this.userId = id;
 
-    Firestore.instance.collection("Users").document(userId).collection("analysen").orderBy("date",descending: false).getDocuments().then((snapshot) {
-      snapshot.documents.forEach((document) {
-        allAnalysen[document.documentID]=(Analyse.fromMap(document.data,document.documentID));
-        userPairs.add(document.data["pair"]);
+      return Firestore.instance
+          .collection("Users")
+          .document(userId)
+          .collection("analysen")
+          .orderBy("date", descending: false)
+          .getDocuments()
+          .then((snapshot) {
+        snapshot.documents.forEach((document) {
+          allAnalysen[document.documentID] =
+              (Analyse.fromMap(document.data, document.documentID));
+          userPairs.add(document.data["pair"]);
+        });
+      }).then((_) {
+        analysen = allAnalysen;
+        notifyListeners();
       });
-    }).then((_) {
-      analysen = allAnalysen;
-      notifyListeners();
-    });
-    }
-    else{
     }
   }
 
@@ -67,24 +72,20 @@ class Analysen with ChangeNotifier {
       //TODO für die zukunft: für die entry list nur die 3 infos laden, nur beim drauf klicken den rest nachladen
 
       if (filter.isPair) {
-        analysen=LinkedHashMap();
-        allAnalysen.values.forEach((analyse){
-          if (analyse.pair== filter.pair){
-            analysen[analyse.id]=analyse;
+        analysen = LinkedHashMap();
+        allAnalysen.values.forEach((analyse) {
+          if (analyse.pair == filter.pair) {
+            analysen[analyse.id] = analyse;
           }
         });
-
       } else if (filter.isTag) {
         if (filter.tags.isNotEmpty) {
-          analysen=LinkedHashMap();
+          analysen = LinkedHashMap();
           allAnalysen.values.forEach((analyse) {
-            if(
-              filter.tags.every((tag) {
-               return analyse.activeTags.contains(tag);
-              })
-            )
-            {
-              analysen[analyse.id]=analyse;
+            if (filter.tags.every((tag) {
+              return analyse.activeTags.contains(tag);
+            })) {
+              analysen[analyse.id] = analyse;
             }
           });
         } else {
@@ -94,10 +95,10 @@ class Analysen with ChangeNotifier {
     }
 
     if (filter.isSearch) {
-      analysen=LinkedHashMap();
+      analysen = LinkedHashMap();
       analysen.values.forEach((analyse) {
-        if(equalsIgnoreCase(analyse.title, filter.word)){
-          analysen[analyse.id]=analyse;
+        if (equalsIgnoreCase(analyse.title, filter.word)) {
+          analysen[analyse.id] = analyse;
         }
       });
     }
@@ -119,18 +120,24 @@ class Analysen with ChangeNotifier {
   }
 
   void delete(id) {
-    var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
-    ref.document(id).delete().then((_){
-
-     allAnalysen.removeWhere((key,analyse) {  //TODO check if both analysen+allanalysen deleted werden
-       return key == id;
-     });
-     notifyListeners();
+    var ref = Firestore.instance
+        .collection("Users")
+        .document(userId)
+        .collection("analysen");
+    ref.document(id).delete().then((_) {
+      allAnalysen.removeWhere((key, analyse) {
+        //TODO check if both analysen+allanalysen deleted werden
+        return key == id;
+      });
+      notifyListeners();
     });
   } //TODO catcherror
 
-  void add(Analyse analyse,bool ascending) {
-    var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
+  void add(Analyse analyse, bool ascending) {
+    var ref = Firestore.instance
+        .collection("Users")
+        .document(userId)
+        .collection("analysen");
     ref.add({
       "title": analyse.title,
       "link": analyse.links.toList(),
@@ -139,13 +146,12 @@ class Analysen with ChangeNotifier {
       "learning": analyse.learning,
       "pair": analyse.pair,
       "date": analyse.date.millisecondsSinceEpoch,
-    }).then((val){
-      analyse.id=val.documentID;
-      if(!ascending){
-        allAnalysen[analyse.id]=analyse;
-      }
-      else{
-        allAnalysen[analyse.id]=analyse; //TODO sort
+    }).then((val) {
+      analyse.id = val.documentID;
+      if (!ascending) {
+        allAnalysen[analyse.id] = analyse;
+      } else {
+        allAnalysen[analyse.id] = analyse; //TODO sort
       }
       userPairs.add(analyse.pair);
       notifyListeners();
@@ -153,7 +159,10 @@ class Analysen with ChangeNotifier {
   }
 
   void update(Analyse analyse) {
-    var ref = Firestore.instance.collection("Users").document(userId).collection("analysen");
+    var ref = Firestore.instance
+        .collection("Users")
+        .document(userId)
+        .collection("analysen");
     ref.document(analyse.id).updateData({
       "title": analyse.title,
       "tags": analyse.activeTags,
@@ -162,15 +171,16 @@ class Analysen with ChangeNotifier {
       "learning": analyse.learning,
       "pair": analyse.pair,
       "date": analyse.date.millisecondsSinceEpoch,
-    }).then((_){
-      allAnalysen[analyse.id]= analyse;
+    }).then((_) {
+      allAnalysen[analyse.id] = analyse;
       //analysen[analyse.id]= analyse; //TODO without this can there be errors?
       notifyListeners();
-    }).catchError((error){print(error);});
-
+    }).catchError((error) {
+      print(error);
+    });
   }
 
-  Map<String,Analyse> getAllSorted() {
+  Map<String, Analyse> getAllSorted() {
     return analysen;
   }
 
@@ -186,7 +196,7 @@ class Analysen with ChangeNotifier {
     return allAnalysen[id];
   }
 
- /* Analysen.getDummy() {
+/* Analysen.getDummy() {
     var dummy = Analyse();
     dummy.id = "id1";
     dummy.link = "https://www.tradingview.com/x/KgXTpAye/";

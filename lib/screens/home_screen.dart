@@ -104,7 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       flex:4,
                      // height: height*0.15,
                         child: MaterialButton(
-                          onPressed: (){return true;},
+                          onPressed: (){
+                            Navigator.pop(context);
+                          },
                           color: Theme.of(context).primaryColor,
                           child: Text("Let's get Started!",
                             style: TextStyle(fontSize: 24),
