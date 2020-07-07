@@ -119,19 +119,27 @@ class Analysen with ChangeNotifier {
     return result;
   }
 
-  void delete(id) {
+  Future delete(id) {
     var ref = Firestore.instance
         .collection("Users")
         .document(userId)
         .collection("analysen");
-    ref.document(id).delete().then((_) {
+
+    var firebaseFuture = ref.document(id).delete().then((_) {
       allAnalysen.removeWhere((key, analyse) {
         //TODO check if both analysen+allanalysen deleted werden
         return key == id;
       });
       notifyListeners();
     });
-  } //TODO catcherror
+
+    return Future.any(
+      [
+        Future.delayed(Duration(seconds: 5)).then((value) => throw("network timeout")),
+        firebaseFuture,
+      ],
+    );
+  }
 
   void add(Analyse analyse, bool ascending) {
     var ref = Firestore.instance

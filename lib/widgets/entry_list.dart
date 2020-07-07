@@ -49,21 +49,21 @@ class EntryListState extends State<EntryList> {
               flex: 2,
               child: Center(
                   child: FittedBox(
-                child: Text(
-                  "Analyse Title",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-              )),
+                    child: Text(
+                      "Analyse Title",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                  )),
               fit: FlexFit.tight,
             ),
             Flexible(
               flex: 1,
               child: Center(
                   child: FittedBox(
-                child: Text("Paar",
-                    style:
+                    child: Text("Paar",
+                        style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-              )),
+                  )),
               fit: FlexFit.tight,
             ),
             Flexible(
@@ -82,23 +82,23 @@ class EntryListState extends State<EntryList> {
                     Flexible(
                       child: asc.asc
                           ? IconButton(
-                              icon: Icon(Icons.arrow_downward),
-                              onPressed: () {
-                                setState(() {
-                                  Provider.of<Ascending>(context, listen: false)
-                                      .asc = false;
-                                });
-                              },
-                            )
+                        icon: Icon(Icons.arrow_downward),
+                        onPressed: () {
+                          setState(() {
+                            Provider.of<Ascending>(context, listen: false)
+                                .asc = false;
+                          });
+                        },
+                      )
                           : IconButton(
-                              icon: Icon(Icons.arrow_upward),
-                              onPressed: () {
-                                setState(() {
-                                  Provider.of<Ascending>(context, listen: false)
-                                      .asc = true;
-                                });
-                              },
-                            ),
+                        icon: Icon(Icons.arrow_upward),
+                        onPressed: () {
+                          setState(() {
+                            Provider.of<Ascending>(context, listen: false)
+                                .asc = true;
+                          });
+                        },
+                      ),
                     ),
                   ],
                 ),
@@ -109,12 +109,12 @@ class EntryListState extends State<EntryList> {
               flex: 3,
               child: Center(
                   child: FittedBox(
-                child: Text("Tags",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    )),
-              )),
+                    child: Text("Tags",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        )),
+                  )),
               fit: FlexFit.tight,
             ),
           ],
@@ -157,26 +157,25 @@ class EntryListState extends State<EntryList> {
           widget.buildSearchField
               ? buildSearchfield()
               : SizedBox(
-                  height: 20,
-                ),
+            height: 20,
+          ),
           buildHeadline(),
           SizedBox(
             height: 10,
           ),
           Expanded(
-            child:  Showcase(
+            child: /* Showcase(
               key: widget.analysenKey,
-              showArrow: false,
               description: "Hier kannst du alle deine angelegten Analysen verwalten",
-              child:Container(
+              child:*/Container(
               child: ListView.builder(
                 itemBuilder: (ctx, index) => ListElement(asc.asc
                     ? analysen.analysen.keys.toList()[index]
                     : analysen.analysen.keys.toList().reversed.toList()[index]),
                 itemCount: analysen.analysen.length,
               ),
-            ),
-          ),),
+              //),
+            ),),
         ],
       ),
 

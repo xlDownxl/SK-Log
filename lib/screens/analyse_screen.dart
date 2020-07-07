@@ -10,9 +10,11 @@ import '../models/user_pairs.dart';
 import '../models/ascending.dart';
 import '../models/user.dart';
 import '../showcaseview/showcaseview.dart';
+import '../widgets/widget_helper.dart';
 
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";
+
   @override
   _AnalyseScreenState createState() => _AnalyseScreenState();
 }
@@ -26,6 +28,8 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   final GlobalKey<ZefyrTextFieldState> learningKey =
       GlobalKey<ZefyrTextFieldState>();
 
+  bool trashcanLoading = false;
+
   GlobalKey pairKey = GlobalKey();
   GlobalKey linkKey = GlobalKey();
   GlobalKey analysePictureKey = GlobalKey();
@@ -36,7 +40,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   GlobalKey saveKey = GlobalKey();
 
   final GlobalKey<AnalysePictureAreaState> apicKey =
-  GlobalKey<AnalysePictureAreaState>();
+      GlobalKey<AnalysePictureAreaState>();
 
   bool editText = false;
 
@@ -49,9 +53,9 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                 linkKey,
                 analysePictureKey,
                 tagsKey,
-              descriptionInputKey,
-            trashKey,
-            saveKey,
+                descriptionInputKey,
+                trashKey,
+                saveKey,
               ]));
     }
     super.initState();
@@ -106,99 +110,126 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
           });
         },
         child: ShowCaseWidget(
-          builder:Builder(builder: (ctx)=>Scaffold(
-          appBar: GradientAppBar(
-            leading: Showcase(
-              key: saveKey,
-              description: 'Klicke hier um die Analyse zu speichern. Der "Zurück" Pfeil deines Browsers speichert die Analyse ebenfalls',
-              child: InkWell(
-                //TODO inkwell design/verhalten
-                child: Icon(Icons.save, size: 36),
-                onTap: (){
-                  safe();
-                  Navigator.pop(context);
-                  },
-              ),
-            ),
-            gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Showcase(
-                  description: "Klicke hier um die Analyse zulöschen",
-                  key: trashKey,
+          builder: Builder(
+            builder: (ctx) => Scaffold(
+              appBar: GradientAppBar(
+                leading: Showcase(
+                  key: saveKey,
+                  description:
+                      'Klicke hier um die Analyse zu speichern. Der "Zurück" Pfeil deines Browsers speichert die Analyse ebenfalls',
                   child: InkWell(
-                    child: Icon(Icons.delete, size: 36),
+                    //TODO inkwell design/verhalten
+                    child: Icon(Icons.save, size: 36),
                     onTap: () {
-                      if (id != null)
-                        Provider.of<Analysen>(context, listen: false).delete(id);
+                      safe();
                       Navigator.pop(context);
                     },
                   ),
                 ),
-                Flexible(
-                  child: Container(),
-                ),
-                Flexible(
-                  flex: 2,
-                  child: Container(
-                    width: 400,
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        icon: Icon(
-                          Icons.edit,
-                          color: Colors.white54,
-                          size: 30,
+                gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Showcase(
+                      description: "Klicke hier um die Analyse zulöschen",
+                      key: trashKey,
+                      child: InkWell(
+                        child: !trashcanLoading
+                            ? Icon(Icons.delete, size: 36)
+                            : CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                        onTap: () {
+                          if (id != null) {
+                            setState(() {
+                              trashcanLoading = true;
+                            });
+                            Provider.of<Analysen>(context, listen: false)
+                                .delete(id)
+                                .then((value) {
+
+                            }).catchError((error) {
+                              setState(() {
+                                trashcanLoading = false;
+                              });
+                              showErrorToast(context,
+                                  "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+                            });
+                            Navigator.pop(context);
+                          } else {
+                            Navigator.pop(context);
+                          }
+                        },
+                      ),
+                    ),
+                    Flexible(
+                      child: Container(),
+                    ),
+                    Flexible(
+                      flex: 2,
+                      child: Container(
+                        width: 400,
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            icon: Icon(
+                              Icons.edit,
+                              color: Colors.white54,
+                              size: 30,
+                            ),
+                          ),
+                          focusNode: titleFocus,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 30,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline),
+                          //initialValue: analyse.title,
+                          cursorColor: Colors.white,
+                          onChanged: (val) {
+                            //nur on submit ändern
+                            setState(() {
+                              analyse.title = val;
+
+                              editText = false;
+                            });
+                          },
+                          initialValue: analyse.title,
                         ),
                       ),
-                      focusNode: titleFocus,
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          decoration: TextDecoration.underline),
-                      //initialValue: analyse.title,
-                      cursorColor: Colors.white,
-                      onChanged: (val) {
-                        //nur on submit ändern
-                        setState(() {
-                          analyse.title = val;
-
-                          editText = false;
-                        });
-                      },
-                      initialValue: analyse.title,
                     ),
-                  ),
-                ),
-                Flexible(
-                  child: Container(),
-                ),
-              ],
-            ),
-            centerTitle: true,
-          ),
-          body:  Container(
-              padding: EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 10),
-              child: LayoutBuilder(
-                builder: (ctx, constr) => Row(
-                  children: <Widget>[
-                    Container(
-                      width: constr.maxWidth * 0.4,
-                      padding: EdgeInsets.symmetric(horizontal: 25),
-                      child: AnalyseInputArea(descriptionKey, learningKey,tagsKey,descriptionInputKey,learningInputKey),
+                    Flexible(
+                      child: Container(),
                     ),
-                    Container(
-                      width: constr.maxWidth * 0.6,
-                      child: AnalysePictureArea(apicKey, analysePictureKey,linkKey,pairKey),
-                    )
                   ],
+                ),
+                centerTitle: true,
+              ),
+              body: Container(
+                padding:
+                    EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 10),
+                child: LayoutBuilder(
+                  builder: (ctx, constr) => Row(
+                    children: <Widget>[
+                      Container(
+                        width: constr.maxWidth * 0.4,
+                        padding: EdgeInsets.symmetric(horizontal: 25),
+                        child: AnalyseInputArea(descriptionKey, learningKey,
+                            tagsKey, descriptionInputKey, learningInputKey),
+                      ),
+                      Container(
+                        width: constr.maxWidth * 0.6,
+                        child: AnalysePictureArea(
+                            apicKey, analysePictureKey, linkKey, pairKey),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
           ),
         ),
-      ),),
+      ),
     );
   }
 }
