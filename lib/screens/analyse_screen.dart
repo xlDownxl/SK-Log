@@ -148,7 +148,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                             Provider.of<Analysen>(context, listen: false)
                                 .delete(id)
                                 .then((value) {
-
+                              Navigator.pop(context);
                             }).catchError((error) {
                               setState(() {
                                 trashcanLoading = false;
@@ -156,7 +156,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                               showErrorToast(context,
                                   "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
                             });
-                            Navigator.pop(context);
+
                           } else {
                             Navigator.pop(context);
                           }
