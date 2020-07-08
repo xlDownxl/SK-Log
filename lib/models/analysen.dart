@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'analyse.dart';
 import 'analysen_filter.dart';
@@ -23,16 +22,15 @@ class Analysen with ChangeNotifier {
 
   void reset() {
     analysen = LinkedHashMap();
-    allAnalysen = {};
+    allAnalysen = LinkedHashMap();
     userId = "";
     filter = AnalyseFilter.showAll();
+    userPairs = UserPairs();
   }
 
   Future loadWithId(String id, bool isNew) {
-    //TODO isnew=true implementation
     if (!isNew) {
       this.userId = id;
-
       return Firestore.instance
           .collection("Users")
           .document(userId)
@@ -52,25 +50,15 @@ class Analysen with ChangeNotifier {
     }
   }
 
-  bool equalsIgnoreCase(String string1, String string2) {
-    return string1?.toLowerCase().contains(string2?.toLowerCase());
-  }
-
   void addSearch(String value) {
     filter.addSearch(value);
     get();
   }
 
-  void get() async {
-    List<Analyse> result = [];
+  void get() {
     if (filter.isShowAll) {
       analysen = allAnalysen;
     } else {
-      //TODO index daten in firebase nach paar,
-      // TODO search function can filter locally on the data it already pulled
-      //TODO tags erstmal weniger priorität, nach performance gucken
-      //TODO für die zukunft: für die entry list nur die 3 infos laden, nur beim drauf klicken den rest nachladen
-
       if (filter.isPair) {
         analysen = LinkedHashMap();
         allAnalysen.values.forEach((analyse) {
@@ -105,8 +93,11 @@ class Analysen with ChangeNotifier {
     notifyListeners();
   }
 
+  bool equalsIgnoreCase(String string1, String string2) {
+    return string1?.toLowerCase().contains(string2?.toLowerCase());
+  }
+
   void setFilter(AnalyseFilter filter) {
-    //check if filter the same
     this.filter = filter;
     get();
   }
@@ -131,11 +122,7 @@ class Analysen with ChangeNotifier {
         return key == id;
       });
       notifyListeners();
-    });/*.timeout(Duration(seconds: 5), onTimeout: () {
-      Firestore.instance.
-      throw ("timeout");
-    });*/
-
+    });
   }
 
   Future add(Analyse analyse, bool ascending) {
@@ -184,55 +171,10 @@ class Analysen with ChangeNotifier {
       allAnalysen[analyse.id] = analyse;
       //analysen[analyse.id]= analyse; //TODO without this can there be errors?
       notifyListeners();
-
-    });/*.timeout(Duration(seconds: 5), onTimeout: () {
-     throw ("timeout");
-    });*/
-  }
-
-  Map<String, Analyse> getAllSorted() {
-    return analysen;
-  }
-
-  List<Analyse> searchTitle(String search) {
-    return null;
-  }
-
-  List<Analyse> searchContent(String search) {
-    return null;
+    });
   }
 
   Analyse getAnalyse(String id) {
     return allAnalysen[id];
   }
-
-/* Analysen.getDummy() {
-    var dummy = Analyse();
-    dummy.id = "id1";
-    dummy.link = "https://www.tradingview.com/x/KgXTpAye/";
-    dummy.activeTags = ["Sequenzen", "SL"];
-    dummy.title = "Analyse 1";
-    dummy.pair = "AUDJPY";
-    dummy.owner = "me";
-    dummy.date = DateTime.now();
-    analysen.add(dummy);
-    dummy = Analyse();
-    dummy.id = "id2";
-    dummy.link = "https://www.tradingview.com/x/KgXTpAye/";
-    dummy.activeTags = ["Priceaction"];
-    dummy.title = "Analyse 2";
-    dummy.pair = "AUDCHF";
-    dummy.owner = "me";
-    dummy.date = DateTime.now();
-    analysen.add(dummy);
-    dummy = Analyse();
-    dummy.id = "id3";
-    dummy.link = "https://www.tradingview.com/x/KgXTpAye/";
-    dummy.title = "Analyse 3";
-    dummy.pair = "GBPJPY";
-    dummy.activeTags = ["TP"];
-    dummy.owner = "me";
-    dummy.date = DateTime.now();
-    analysen.add(dummy);
-  }*/
 }

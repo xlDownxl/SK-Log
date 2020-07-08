@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
       text: newValue.text?.toUpperCase(),
       selection: newValue.selection,
@@ -30,8 +31,8 @@ class AnalysePictureArea extends StatefulWidget {
 class AnalysePictureAreaState extends State<AnalysePictureArea> {
   var textEditingController;
   Analyse analyse;
-  bool editPair=false;
-  FocusNode editPairFocus=FocusNode();
+  bool editPair = false;
+  FocusNode editPairFocus = FocusNode();
 
   bool loading = false;
   bool showTwo = false;
@@ -57,7 +58,6 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
 
     Widget pairShowing = LayoutBuilder(
         builder: (ctx, constraints) => Container(
-
               height: constraints.maxWidth,
               child: Showcase(
                 key: widget.pairKey,
@@ -65,59 +65,63 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
                     "Wenn du deinen Tradingview Link einfügst wird das Chartsymbol automatisch erkannt und hier angezeigt",
                 child: Container(
                   decoration: BoxDecoration(
-                          border: Border.all(width: 2),
-                          shape: BoxShape.circle,
-                          color: Theme.of(context).accentColor,
-                        ),
-                  child: editPair?
-                      Center(
-                        child: Container(
-                          padding: EdgeInsets.all(10),
-                          child: TextField(
-                            focusNode: editPairFocus,
-                            style: TextStyle(fontWeight: FontWeight.bold,),
-                            inputFormatters: [
-                              UpperCaseTextFormatter(),
-                            ],
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              filled: true,
-                              focusColor: Colors.white,
-                              border: OutlineInputBorder(borderRadius: BorderRadius.circular(10),borderSide: BorderSide(color: Colors.black,width: 2)),
-                            ),
-                            onSubmitted: (value){
-                            setState(() {
-                              editPair=false;
-                              analyse.pair=value;
-                            });
-                          },),
-                        ),
-                      )
-                      :!loading
-                      ? InkWell(
-                    customBorder: CircleBorder(),
-
-                    onTap: (){
-                      setState(() {
-                        editPair=true;
-                        editPairFocus.requestFocus();
-                      });
-
-                    },
-                        child: Center(
-                            child: FittedBox(
-                              child: analyse.links[0] == ""
-                                  ? Text("")
-                                  : Text(
-                                      analyse.pair,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 22),
-                                    ),
+                    border: Border.all(width: 2),
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  child: editPair
+                      ? Center(
+                          child: Container(
+                            padding: EdgeInsets.all(10),
+                            child: TextField(
+                              focusNode: editPairFocus,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                              inputFormatters: [
+                                UpperCaseTextFormatter(),
+                              ],
+                              decoration: InputDecoration(
+                                fillColor: Colors.white,
+                                filled: true,
+                                focusColor: Colors.white,
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: BorderSide(
+                                        color: Colors.black, width: 2)),
+                              ),
+                              onSubmitted: (value) {
+                                setState(() {
+                                  editPair = false;
+                                  analyse.pair = value;
+                                });
+                              },
                             ),
                           ),
-                      )
-                      : CircularProgressIndicator(),
+                        )
+                      : !loading
+                          ? InkWell(
+                              customBorder: CircleBorder(),
+                              onTap: () {
+                                setState(() {
+                                  editPair = true;
+                                  editPairFocus.requestFocus();
+                                });
+                              },
+                              child: Center(
+                                child: FittedBox(
+                                  child: analyse.links[0] == ""
+                                      ? Text("")
+                                      : Text(
+                                          analyse.pair,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 22),
+                                        ),
+                                ),
+                              ),
+                            )
+                          : CircularProgressIndicator(),
                 ),
               ),
             ));
@@ -137,14 +141,20 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
                 if (val.contains("tradingview")) {
                   setState(() {
                     loading = true;
-                    print("loading true");
                   });
 
                   analyse
                       .setLink(
                           val, Provider.of<Analysen>(context, listen: false))
-                      .then((err) {
-                    loading = false;
+                      .then((_) {
+                    setState(() {
+                      loading = false;
+                    });
+                  }).catchError((error) {
+                    setState(() {
+                      analyse.pair = "Others";
+                      loading = false;
+                    });
                   });
                 } else {
                   setState(() {

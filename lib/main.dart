@@ -7,46 +7,14 @@ import 'models/analysen.dart';
 import 'models/user_tags.dart';
 import 'screens/login_screen.dart';
 import 'models/ascending.dart';
-void main() {
 
+void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
-}
-
-final ThemeData kLightGalleryTheme = _buildLightTheme();
-final ThemeData kDarkGalleryTheme = _buildDarkTheme();
-
-ThemeData _buildDarkTheme() {
-  const Color primaryColor = Color(0xFF0175c2);
-  const Color secondaryColor = Color(0xFF13B9FD);
-  final ColorScheme colorScheme = const ColorScheme.dark().copyWith(
-    primary: primaryColor,
-    secondary: secondaryColor,
-  );
-  final ThemeData base = ThemeData(
-    brightness: Brightness.dark,
-    accentColorBrightness: Brightness.dark,
-    primaryColor: primaryColor,
-    primaryColorDark: const Color(0xFF0050a0),
-    primaryColorLight: secondaryColor,
-    buttonColor: primaryColor,
-    indicatorColor: Colors.white,
-    toggleableActiveColor: const Color(0xFF6997DF),
-    accentColor: secondaryColor,
-    canvasColor: const Color(0xFF202124),
-    scaffoldBackgroundColor: const Color(0xFF202124),
-    backgroundColor: const Color(0xFF202124),
-    errorColor: const Color(0xFFB00020),
-    buttonTheme: ButtonThemeData(
-      colorScheme: colorScheme,
-      textTheme: ButtonTextTheme.primary,
-    ),
-  );
-  return base;
 }
 
 ThemeData _buildLightTheme() {
@@ -80,7 +48,6 @@ ThemeData _buildLightTheme() {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -99,6 +66,8 @@ class _MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
+        // onUnknownRoute: (settings) =>
+        //   MaterialPageRoute(builder: (context) => LoginScreen()),
         title: 'SK!Log',
         theme: _buildLightTheme(),
         home: LoginScreen(),
