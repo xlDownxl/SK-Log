@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import '../widgets/analyse_input_area.dart';
 import '../widgets/analyse_picture_area.dart';
@@ -11,6 +13,7 @@ import '../models/ascending.dart';
 import '../models/user.dart';
 import '../showcaseview/showcaseview.dart';
 import '../widgets/widget_helper.dart';
+import '../models/screen_loader.dart';
 
 class AnalyseScreen extends StatefulWidget {
   static const routeName = "/analyse";
@@ -19,17 +22,23 @@ class AnalyseScreen extends StatefulWidget {
   _AnalyseScreenState createState() => _AnalyseScreenState();
 }
 
-class _AnalyseScreenState extends State<AnalyseScreen> {
-  var titleFocus = FocusNode();
+class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<AnalyseScreen>{
+  FocusNode titleFocus = FocusNode();
   String id;
   Analyse analyse;
+
+
+
+  bool trashcanLoading = false;
+  bool saveLoading = false;
+  bool editText = false;
+
   final GlobalKey<ZefyrTextFieldState> descriptionKey =
       GlobalKey<ZefyrTextFieldState>();
   final GlobalKey<ZefyrTextFieldState> learningKey =
       GlobalKey<ZefyrTextFieldState>();
-
-  bool trashcanLoading = false;
-  bool saveLoading = false;
+  final GlobalKey<AnalysePictureAreaState> apicKey =
+      GlobalKey<AnalysePictureAreaState>();
 
   GlobalKey pairKey = GlobalKey();
   GlobalKey linkKey = GlobalKey();
@@ -40,23 +49,13 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   GlobalKey trashKey = GlobalKey();
   GlobalKey saveKey = GlobalKey();
 
-  final GlobalKey<AnalysePictureAreaState> apicKey =
-      GlobalKey<AnalysePictureAreaState>();
-
-  bool editText = false;
-
+  bool init = true;
   @override
   void initState() {
     if (Provider.of<AppUser>(context, listen: false).isNew) {
       WidgetsBinding.instance.addPostFrameCallback(
           (_) => ShowCaseWidget.of(apicKey.currentContext).startShowCase([
-                pairKey,
-                linkKey,
-                analysePictureKey,
-                tagsKey,
-                descriptionInputKey,
-                trashKey,
-                saveKey,
+                pairKey, linkKey, analysePictureKey, tagsKey, descriptionInputKey, trashKey, saveKey,
               ]));
     }
     super.initState();
@@ -68,11 +67,8 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     super.dispose();
   }
 
-  bool init = true;
-
   @override
   void didChangeDependencies() {
-    //TODO als future.delayed in init state implementieren für performance
     if (init) {
       id = ModalRoute.of(context).settings.arguments;
       if (id != null) {
@@ -100,30 +96,39 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget loader() {
+    return Container(
+      width: MediaQuery.of(context).size.height/5,
+      height: MediaQuery.of(context).size.height/5,
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  @override
+  Widget screen(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: analyse,
       child: WillPopScope(
-        onWillPop: () {
+        onWillPop: () async{
           if (!trashcanLoading && !saveLoading) {
             //if user clicked trashcan first do nothing
             setState(() {
               saveLoading = true;
             });
-            return safe().then((_) {
-              return true;
-            }).catchError((error) {
-              setState(() {
-                saveLoading = false;
+            return await this.performFuture(() {
+              return safe().then((_) {
+                return true;
+              }).catchError((error) {
+                setState(() {
+                  saveLoading = false;
+                });
+                showErrorToast(context,
+                    "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+                return false;
               });
-              showErrorToast(context,
-                  "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
-              return false;
             });
           } else {
-            return Future.delayed(Duration.zero).then((_) {
-              return false;
-            });
+            return Future.value(false);
           }
         },
         child: ShowCaseWidget(
@@ -138,26 +143,28 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                     padding: EdgeInsets.all(10),
                     child: InkWell(
                       //TODO inkwell design/verhalten
-                      child: !saveLoading
-                          ? Icon(Icons.save, size: 36)
-                          : CircularProgressIndicator(
+                      child: //!saveLoading ?
+                      Icon(Icons.save, size: 36)
+                          /*: CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(Colors.white),
-                            ),
-                      onTap: () {
+                            )*/,
+                      onTap: () async{
                         if (!trashcanLoading&& !saveLoading) {
                           //if user clicked trashcan first do nothing
                           setState(() {
                             saveLoading = true;
                           });
-                          return safe().then((_) {
-                            Navigator.pop(context);
-                          }).catchError((error) {
-                            setState(() {
-                              saveLoading = false;
+                    await this.performFuture(() {
+                            return safe().then((_) {
+                              Navigator.pop(context);
+                            }).catchError((error) {
+                              setState(() {
+                                saveLoading = false;
+                              });
+                              showErrorToast(context,
+                                  "Speichern fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
                             });
-                            showErrorToast(context,
-                                "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
                           });
                         }
                       },
@@ -172,13 +179,13 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                       description: "Klicke hier um die Analyse zulöschen",
                       key: trashKey,
                       child: InkWell(
-                        child: !trashcanLoading
-                            ? Icon(Icons.delete, size: 36)
-                            : CircularProgressIndicator(
+                        child: //!trashcanLoading ?
+                        Icon(Icons.delete, size: 36)
+                         /*   : CircularProgressIndicator(
                                 valueColor:
                                     AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                        onTap: () {
+                              )*/,
+                        onTap: () async{
 
                             if (!saveLoading && !trashcanLoading) {
                               if (id != null) {
@@ -186,7 +193,8 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                               setState(() {
                                 trashcanLoading = true;
                               });
-                              Provider.of<Analysen>(context, listen: false)
+                              await this.performFuture((){
+                                return Provider.of<Analysen>(context, listen: false)
                                   .delete(id)
                                   .then((value) {
                                 Navigator.pop(context);
@@ -196,6 +204,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                                 });
                                 showErrorToast(context,
                                     "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+                              });
                               });
                             } else {
                                 Navigator.pop(context);
