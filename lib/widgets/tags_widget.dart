@@ -13,9 +13,9 @@ class TagsWidget extends StatefulWidget {
 class _TagsWidgetState extends State<TagsWidget> {
   @override
   Widget build(BuildContext context) {
-    var analyse = Provider.of<Analyse>(context);
-    var userTags = Provider.of<UserTags>(context);
-    var _tags = userTags.getTags();
+    Analyse analyse = Provider.of<Analyse>(context);
+    UserTags userTags = Provider.of<UserTags>(context);
+    List<dynamic> _tags = userTags.getTags();
 
     return Padding(
       padding: EdgeInsets.only(top: 3),
@@ -30,7 +30,7 @@ class _TagsWidgetState extends State<TagsWidget> {
               textStyle: TextStyle(fontSize: 15),
               onSubmitted: (String str) {
                 setState(() {
-                  userTags.add(str);
+                  userTags.add(str, context);
                 });
               },
             ),
@@ -56,7 +56,7 @@ class _TagsWidgetState extends State<TagsWidget> {
                 onRemoved: () {
                   setState(() {
                     userTags.delete(_tags[
-                        index]); // does this really remove or do i need to init usertags alone
+                        index],context); // does this really remove or do i need to init usertags alone
                   });
                 },
                 removeButton: ItemTagsRemoveButton(), // OR null,

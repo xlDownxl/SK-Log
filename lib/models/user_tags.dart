@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import '../widgets/widget_helper.dart';
 class UserTags with ChangeNotifier {
   Firestore store = Firestore.instance;
   String userId;
@@ -29,7 +29,7 @@ class UserTags with ChangeNotifier {
     return _tags;
   }
 
-  void add(String tag) {
+  void add(String tag,BuildContext context) {
     _tags.add(tag);
     notifyListeners();
     store
@@ -42,12 +42,11 @@ class UserTags with ChangeNotifier {
         .catchError((error) {
           _tags.remove(tag);
           notifyListeners();
-          print(error);
-          //TODO show error toast
+          showErrorToast(context, "Something went wrong");
         });
   }
 
-  void delete(String tag) {
+  void delete(String tag,BuildContext context) {
     _tags.remove(tag);
     notifyListeners();
     store
@@ -60,15 +59,17 @@ class UserTags with ChangeNotifier {
         .catchError((error) {
           _tags.add(tag);
           notifyListeners();
-          print(error);
-          //TODO show error toast
+          showErrorToast(context, "Something went wrong");
+
         });
   }
 
-  Future loadTags(id) async {
+  Future loadTags(id) {
     this.userId = id;
-    var user_data = await store.collection("Users").document(userId).get();
-    _tags = user_data.data["user_tags"];
-    notifyListeners();
+    return store.collection("Users").document(userId).get().then((user_data) {
+      _tags = user_data.data["user_tags"];
+      notifyListeners();
+    });
+
   }
 }

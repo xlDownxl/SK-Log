@@ -30,18 +30,21 @@ class _LoginPageState extends State<LoginScreen> {
 
    subscription = _auth.onAuthStateChanged.listen((data) {
       if (data != null) {
-        Provider.of<Analysen>(context, listen: false)
-            .loadWithId(data.uid, false).catchError((error){
-              print(error);
+        var analyseFuture = Provider.of<Analysen>(context, listen: false)
+            .loadWithId(data.uid, false);
+        var tagsFuture = Provider.of<UserTags>(context, listen: false).loadTags(data.uid);
+        Future.wait([analyseFuture,tagsFuture]).then((value) {
+          Provider.of<AppUser>(context, listen: false).email = data.email;
+          Provider.of<AppUser>(context, listen: false).id = data.uid;
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (ctx) => HomeScreen(),
+            ),
+          );
+        }).catchError((error){
+          print(error.code);
         });
-        Provider.of<UserTags>(context, listen: false).loadTags(data.uid);
-        Provider.of<AppUser>(context, listen: false).email = data.email;
-        Provider.of<AppUser>(context, listen: false).id = data.uid;
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (ctx) => HomeScreen(),
-          ),
-        );
+        
       } else {
         setState(() {
           showLoadingIndicator = false;

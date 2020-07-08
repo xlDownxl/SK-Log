@@ -29,6 +29,7 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       GlobalKey<ZefyrTextFieldState>();
 
   bool trashcanLoading = false;
+  bool saveLoading = false;
 
   GlobalKey pairKey = GlobalKey();
   GlobalKey linkKey = GlobalKey();
@@ -84,17 +85,17 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
     super.didChangeDependencies();
   }
 
-  void safe() {
+  Future safe() {
     if (analyse.pair == null) {
       analyse.pair = "Others";
     }
     descriptionKey.currentState.safeDocument();
     learningKey.currentState.safeDocument();
     if (id == null) {
-      Provider.of<Analysen>(context, listen: false)
+      return Provider.of<Analysen>(context, listen: false)
           .add(analyse, Provider.of<Ascending>(context, listen: false).asc);
     } else {
-      Provider.of<Analysen>(context, listen: false).update(analyse);
+      return Provider.of<Analysen>(context, listen: false).update(analyse);
     }
   }
 
@@ -104,10 +105,26 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
       value: analyse,
       child: WillPopScope(
         onWillPop: () {
-          return Future.delayed(Duration.zero).then((_) {
-            safe();
-            return true;
-          });
+          if (!trashcanLoading && !saveLoading) {
+            //if user clicked trashcan first do nothing
+            setState(() {
+              saveLoading = true;
+            });
+            return safe().then((_) {
+              return true;
+            }).catchError((error) {
+              setState(() {
+                saveLoading = false;
+              });
+              showErrorToast(context,
+                  "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+              return false;
+            });
+          } else {
+            return Future.delayed(Duration.zero).then((_) {
+              return false;
+            });
+          }
         },
         child: ShowCaseWidget(
           builder: Builder(
@@ -117,13 +134,34 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                   key: saveKey,
                   description:
                       'Klicke hier um die Analyse zu speichern. Der "Zurück" Pfeil deines Browsers speichert die Analyse ebenfalls',
-                  child: InkWell(
-                    //TODO inkwell design/verhalten
-                    child: Icon(Icons.save, size: 36),
-                    onTap: () {
-                      safe();
-                      Navigator.pop(context);
-                    },
+                  child: Container(
+                    padding: EdgeInsets.all(10),
+                    child: InkWell(
+                      //TODO inkwell design/verhalten
+                      child: !saveLoading
+                          ? Icon(Icons.save, size: 36)
+                          : CircularProgressIndicator(
+                              valueColor:
+                                  AlwaysStoppedAnimation<Color>(Colors.white),
+                            ),
+                      onTap: () {
+                        if (!trashcanLoading&& !saveLoading) {
+                          //if user clicked trashcan first do nothing
+                          setState(() {
+                            saveLoading = true;
+                          });
+                          return safe().then((_) {
+                            Navigator.pop(context);
+                          }).catchError((error) {
+                            setState(() {
+                              saveLoading = false;
+                            });
+                            showErrorToast(context,
+                                "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+                          });
+                        }
+                      },
+                    ),
                   ),
                 ),
                 gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
@@ -141,24 +179,27 @@ class _AnalyseScreenState extends State<AnalyseScreen> {
                                     AlwaysStoppedAnimation<Color>(Colors.white),
                               ),
                         onTap: () {
-                          if (id != null) {
-                            setState(() {
-                              trashcanLoading = true;
-                            });
-                            Provider.of<Analysen>(context, listen: false)
-                                .delete(id)
-                                .then((value) {
-                              Navigator.pop(context);
-                            }).catchError((error) {
-                              setState(() {
-                                trashcanLoading = false;
-                              });
-                              showErrorToast(context,
-                                  "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
-                            });
 
-                          } else {
-                            Navigator.pop(context);
+                            if (!saveLoading && !trashcanLoading) {
+                              if (id != null) {
+                              //if user clicked trashcan first do nothing
+                              setState(() {
+                                trashcanLoading = true;
+                              });
+                              Provider.of<Analysen>(context, listen: false)
+                                  .delete(id)
+                                  .then((value) {
+                                Navigator.pop(context);
+                              }).catchError((error) {
+                                setState(() {
+                                  trashcanLoading = false;
+                                });
+                                showErrorToast(context,
+                                    "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+                              });
+                            } else {
+                                Navigator.pop(context);
+                              }
                           }
                         },
                       ),

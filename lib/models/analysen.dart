@@ -125,28 +125,25 @@ class Analysen with ChangeNotifier {
         .document(userId)
         .collection("analysen");
 
-    var firebaseFuture = ref.document(id).delete().then((_) {
+    return ref.document(id).delete().then((_) {
       allAnalysen.removeWhere((key, analyse) {
         //TODO check if both analysen+allanalysen deleted werden
         return key == id;
       });
       notifyListeners();
-    });
+    });/*.timeout(Duration(seconds: 5), onTimeout: () {
+      Firestore.instance.
+      throw ("timeout");
+    });*/
 
-    return Future.any(
-      [
-        Future.delayed(Duration(seconds: 5)).then((value) => throw("network timeout")),
-        firebaseFuture,
-      ],
-    );
   }
 
-  void add(Analyse analyse, bool ascending) {
+  Future add(Analyse analyse, bool ascending) {
     var ref = Firestore.instance
         .collection("Users")
         .document(userId)
         .collection("analysen");
-    ref.add({
+    return ref.add({
       "title": analyse.title,
       "link": analyse.links.toList(),
       "tags": analyse.activeTags,
@@ -159,19 +156,23 @@ class Analysen with ChangeNotifier {
       if (!ascending) {
         allAnalysen[analyse.id] = analyse;
       } else {
-        allAnalysen[analyse.id] = analyse; //TODO sort
+        allAnalysen[analyse.id] = analyse;
       }
       userPairs.add(analyse.pair);
       notifyListeners();
     });
+    /*.timeout(Duration(seconds: 5), onTimeout: () {
+      throw ("timeout");
+    });*/
   }
 
-  void update(Analyse analyse) {
+  Future update(Analyse analyse) {
     var ref = Firestore.instance
         .collection("Users")
         .document(userId)
         .collection("analysen");
-    ref.document(analyse.id).updateData({
+
+    return ref.document(analyse.id).updateData({
       "title": analyse.title,
       "tags": analyse.activeTags,
       "link": analyse.links,
@@ -183,9 +184,10 @@ class Analysen with ChangeNotifier {
       allAnalysen[analyse.id] = analyse;
       //analysen[analyse.id]= analyse; //TODO without this can there be errors?
       notifyListeners();
-    }).catchError((error) {
-      print(error);
-    });
+
+    });/*.timeout(Duration(seconds: 5), onTimeout: () {
+     throw ("timeout");
+    });*/
   }
 
   Map<String, Analyse> getAllSorted() {
