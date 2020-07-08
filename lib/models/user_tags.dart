@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../widgets/widget_helper.dart';
+
 class UserTags with ChangeNotifier {
   Firestore store = Firestore.instance;
   String userId;
-  var _tags = [];
+  List<dynamic> _tags = [];
 
-  void init(id) {
-    print(id);
+  Future init(id) {
     this.userId = id;
     _tags = [
       "Priceaction",
@@ -21,7 +20,10 @@ class UserTags with ChangeNotifier {
       "Hedging",
     ];
 
-    store.collection("Users").document(userId).setData({"user_tags": _tags});
+    return store
+        .collection("Users")
+        .document(userId)
+        .setData({"user_tags": _tags});
     // notifyListeners();
   }
 
@@ -29,39 +31,20 @@ class UserTags with ChangeNotifier {
     return _tags;
   }
 
-  void add(String tag,BuildContext context) {
+  Future add(String tag) {
     _tags.add(tag);
     notifyListeners();
-    store
-        .collection("Users")
-        .document(userId)
-        .updateData({
-          'user_tags': FieldValue.arrayUnion([tag])
-        })
-        .then((_) {})
-        .catchError((error) {
-          _tags.remove(tag);
-          notifyListeners();
-          showErrorToast(context, "Something went wrong");
-        });
+    return store.collection("Users").document(userId).updateData({
+      'user_tags': FieldValue.arrayUnion([tag])
+    });
   }
 
-  void delete(String tag,BuildContext context) {
+  Future delete(String tag) {
     _tags.remove(tag);
     notifyListeners();
-    store
-        .collection("Users")
-        .document(userId)
-        .updateData({
-          'user_tags': FieldValue.arrayRemove([tag])
-        })
-        .then((_) {})
-        .catchError((error) {
-          _tags.add(tag);
-          notifyListeners();
-          showErrorToast(context, "Something went wrong");
-
-        });
+    return store.collection("Users").document(userId).updateData({
+      'user_tags': FieldValue.arrayRemove([tag])
+    });
   }
 
   Future loadTags(id) {
@@ -70,6 +53,5 @@ class UserTags with ChangeNotifier {
       _tags = user_data.data["user_tags"];
       notifyListeners();
     });
-
   }
 }

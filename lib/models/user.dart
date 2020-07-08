@@ -6,7 +6,6 @@ import 'user_pairs.dart';
 import 'analysen.dart';
 
 class AppUser with ChangeNotifier {
-  //String username;
   String email;
   String id;
   FirebaseUser fbUser;
@@ -22,22 +21,25 @@ class AppUser with ChangeNotifier {
   Future _registerUser(
     LoginData data,
     Analysen analysen,
-    userTags,
+    UserTags userTags,
   ) {
     return FirebaseAuth.instance
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
-        .then((user) async {
-      //analysen.loadWithId(user.user.uid, true);
-      userTags.init(user.user.uid);
+        .then((user) {
+      userTags.init(user.user.uid).catchError((_) {
+        print("User tag init failed, no error handling yet");
+      }).then((_) {
+        return "success";
+      });
       email = user.user.email;
       id = user.user.uid;
       isNew = true;
-      return "success";
     }).catchError((error) => error.code);
   }
 
-  Future<String> register(data, analysen, userTags) async {
+  Future<String> register(
+      LoginData data, Analysen analysen, UserTags userTags) async {
     var code = await _registerUser(data, analysen, userTags);
     switch (code) {
       case "auth/email-already-in-use":
@@ -53,7 +55,6 @@ class AppUser with ChangeNotifier {
       case "success":
         return null;
       default:
-        print(code);
         return "Falsche Eingaben";
     }
   }
@@ -65,23 +66,9 @@ class AppUser with ChangeNotifier {
   }
 
   Future<String> login(
-    LoginData data,
-    analysen,
-    userTags,
-  ) async {
-    var code = await Future.any(
-      [
-        _loginUser(
-          data,
-          analysen,
-          userTags,
-        ),
-        Future.delayed(
-          const Duration(seconds: 8),
-        ),
-      ],
-    );
-    print(code);
+      LoginData data, Analysen analysen, UserTags userTags) async {
+    String code = await _loginUser(data, analysen, userTags);
+
     switch (code) {
       case "auth/user-not-found":
         return "Benutzer existiert nicht";
@@ -97,23 +84,23 @@ class AppUser with ChangeNotifier {
   }
 
   Future<String> _loginUser(
-      LoginData data, Analysen analysen, UserTags userTags) async {
+      LoginData data, Analysen analysen, UserTags userTags) {
     //TODO if user not in database -> create him
     return FirebaseAuth.instance
         .signInWithEmailAndPassword(email: data.name, password: data.password)
         .then((user) async {
-      var loadAnalysenFuture = analysen.loadWithId(user.user.uid, false);
-      var loadTagsFuture=userTags.loadTags(user.user.uid);
+      Future loadAnalysenFuture = analysen.loadWithId(user.user.uid, false);
+      Future loadTagsFuture = userTags.loadTags(user.user.uid);
+
       email = user.user.email;
       id = user.user.uid;
-      return Future.wait([loadAnalysenFuture,loadTagsFuture]);
-    })
-        .then((value) {
-          return "success";
-        })
-        .catchError((error) {
-          FirebaseAuth.instance.signOut();
-          return error.code;
-        });
+
+      return Future.wait([loadAnalysenFuture, loadTagsFuture]);
+    }).then((value) {
+      return "success";
+    }).catchError((error) {
+      FirebaseAuth.instance.signOut();
+      return error.code;
+    });
   }
 }

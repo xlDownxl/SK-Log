@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:provider/provider.dart';
 import '../models/user_tags.dart';
 import '../models/analyse.dart';
+import '../widgets/widget_helper.dart';
 
 class TagsWidget extends StatefulWidget {
   @override
@@ -29,8 +30,12 @@ class _TagsWidgetState extends State<TagsWidget> {
               hintText: "Füge einen Tag hinzu", //TODO größe nach unten anpassen
               textStyle: TextStyle(fontSize: 15),
               onSubmitted: (String str) {
-                setState(() {
-                  userTags.add(str, context);
+                userTags.add(str).catchError((_) {
+                  setState(() {
+                    userTags.getTags().remove(str);
+                  });
+                  showErrorToast(context,
+                      "Ein Fehler beim hinzufügen des Tags ist aufgetreten");
                 });
               },
             ),
@@ -55,8 +60,13 @@ class _TagsWidgetState extends State<TagsWidget> {
                 },
                 onRemoved: () {
                   setState(() {
-                    userTags.delete(_tags[
-                        index],context); // does this really remove or do i need to init usertags alone
+                    userTags.delete(_tags[index]).catchError((_) {
+                      setState(() {
+                        userTags.getTags().add(_tags[index]);
+                      });
+                      showErrorToast(context,
+                          "Ein Fehler beim entfernen des Tags ist aufgetreten");
+                    }); // does this really remove or do i need to init usertags alone
                   });
                 },
                 removeButton: ItemTagsRemoveButton(), // OR null,
