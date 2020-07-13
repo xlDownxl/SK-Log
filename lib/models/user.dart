@@ -15,7 +15,7 @@ class AppUser with ChangeNotifier {
     email = null;
     id = null;
     fbUser = null;
-    isNew = true;
+    isNew = false;
   }
 
   Future _registerUser(
