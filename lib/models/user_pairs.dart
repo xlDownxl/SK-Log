@@ -1,13 +1,11 @@
 class UserPairs {
-  var _pairs = [];
+  var _pairs = {};
 
-  List getPairs() {
+  Map getPairs() {
     return _pairs;
   }
 
   void add(String pair) {
-    if (!_pairs.contains(pair)) {
-      _pairs.add(pair);
-    }
+      _pairs[pair]=1;
   }
 }

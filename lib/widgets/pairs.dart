@@ -22,7 +22,7 @@ class PairsState extends State<Pairs> {
   List buildPairs() {
     var pairs = Provider.of<Analysen>(context,listen: false).userPairs.getPairs(); //listen = false?
     var pairWidgets = [];
-    pairs.forEach((pair) {
+    pairs.forEach((pair,value) {
       pairWidgets.add(Card(
         elevation: 2,
         color: Theme.of(context).accentColor,
