@@ -31,8 +31,13 @@ class AnalyseFilter {
     isShowAll = true;
   }
 
-  void addSearch(word) {
-    isSearch = true;
-    this.word = word;
+  void addSearch(String word) {
+    if (word == "") {
+      isSearch = false;
+      this.word = "";
+    } else {
+      isSearch = true;
+      this.word = word;
+    }
   }
 }

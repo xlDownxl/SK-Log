@@ -7,8 +7,9 @@ import 'user_pairs.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 class Analysen with ChangeNotifier {
-  LinkedHashMap<String, Analyse> analysen = LinkedHashMap();
-  Map<String, Analyse> allAnalysen = LinkedHashMap();
+  LinkedHashMap analysen =
+      LinkedHashMap(); //When specified as <String,Analyse> an type error with dynamic,dynamic not fitting
+  LinkedHashMap allAnalysen = LinkedHashMap();
   Firestore store;
   AnalyseFilter filter = AnalyseFilter.showAll();
   String userId;
@@ -83,18 +84,19 @@ class Analysen with ChangeNotifier {
     }
 
     if (filter.isSearch) {
-      analysen = LinkedHashMap();
+      LinkedHashMap wordFilterAnalysen = LinkedHashMap();
       analysen.values.forEach((analyse) {
         if (equalsIgnoreCase(analyse.title, filter.word)) {
-          analysen[analyse.id] = analyse;
+          wordFilterAnalysen[analyse.id] = analyse;
         }
       });
+      analysen = wordFilterAnalysen;
     }
     notifyListeners();
   }
 
   bool equalsIgnoreCase(String string1, String string2) {
-    return string1?.toLowerCase().contains(string2?.toLowerCase());
+    return string1.toLowerCase().contains(string2?.toLowerCase());
   }
 
   void setFilter(AnalyseFilter filter) {
