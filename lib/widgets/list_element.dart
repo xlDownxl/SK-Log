@@ -6,6 +6,7 @@ import 'dart:math';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import 'package:flutter/gestures.dart';
+import '../routing/application.dart';
 class ListElement extends StatelessWidget {
   final String analyseId;
 
@@ -72,8 +73,7 @@ class ListElement extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)),
         child: InkWell(
           onTap: () {
-            Navigator.pushNamed(context, AnalyseScreen.routeName,
-                arguments: analyse.id);
+            Application.router.navigateTo(context, AnalyseScreen.routeName+"/"+analyse.id);
           },
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 10),

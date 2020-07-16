@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_app/screens/home_screen.dart';
 import '../widgets/analyse_input_area.dart';
 import '../widgets/analyse_picture_area.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
@@ -14,8 +13,13 @@ import '../models/user.dart';
 import '../showcaseview/showcaseview.dart';
 import '../widgets/widget_helper.dart';
 import '../models/screen_loader.dart';
+import 'package:flutter/foundation.dart';
+import '../routing/application.dart';
 
 class AnalyseScreen extends StatefulWidget {
+  final analyseId;
+  AnalyseScreen(this.analyseId);
+
   static const routeName = "/analyse";
 
   @override
@@ -24,7 +28,6 @@ class AnalyseScreen extends StatefulWidget {
 
 class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<AnalyseScreen>{
   FocusNode titleFocus = FocusNode();
-  String id;
   Analyse analyse;
 
 
@@ -52,6 +55,11 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
   bool init = true;
   @override
   void initState() {
+    if(widget.analyseId==null){
+      analyse = Analyse();
+    } else{
+      analyse = Provider.of<Analysen>(context,listen: false).getAnalyse(widget.analyseId);
+    }
     if (Provider.of<AppUser>(context, listen: false).isNew) {
       WidgetsBinding.instance.addPostFrameCallback(
           (_) => ShowCaseWidget.of(apicKey.currentContext).startShowCase([
@@ -67,27 +75,13 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
     super.dispose();
   }
 
-  @override
-  void didChangeDependencies() {
-    if (init) {
-      id = ModalRoute.of(context).settings.arguments;
-      if (id != null) {
-        analyse = Provider.of<Analysen>(context).getAnalyse(id);
-      } else {
-        analyse = Analyse();
-      }
-      init = false;
-    }
-    super.didChangeDependencies();
-  }
-
   Future safe() {
     if (analyse.pair == null) {
       analyse.pair = "Others";
     }
     descriptionKey.currentState.safeDocument();
     learningKey.currentState.safeDocument();
-    if (id == null) {
+    if (widget.analyseId == null) {
       return Provider.of<Analysen>(context, listen: false)
           .add(analyse, Provider.of<Ascending>(context, listen: false).asc);
     } else {
@@ -106,7 +100,8 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
 
   @override
   Widget screen(BuildContext context) {
-    return ChangeNotifierProvider.value(
+    return analyse!=null?
+     ChangeNotifierProvider.value(
       value: analyse,
       child: WillPopScope(
         onWillPop: () async{
@@ -187,15 +182,15 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
                               )*/,
                         onTap: () async{
 
-                            if (!saveLoading && !trashcanLoading) {
-                              if (id != null) {
-                              //if user clicked trashcan first do nothing
+                            if (!saveLoading && !trashcanLoading) {//if user clicked trashcan first do nothing
+                              if (widget.analyseId != null) { //if its a new analysis, just pop and do nothing
+
                               setState(() {
                                 trashcanLoading = true;
                               });
                               await this.performFuture((){
                                 return Provider.of<Analysen>(context, listen: false)
-                                  .delete(id)
+                                  .delete(widget.analyseId)
                                   .then((value) {
                                 Navigator.pop(context);
                               }).catchError((error) {
@@ -234,7 +229,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
                               fontSize: 30,
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline),
-                          //initialValue: analyse.title,
                           cursorColor: Colors.white,
                           onChanged: (val) {
                             //nur on submit ändern
@@ -280,6 +274,15 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
           ),
         ),
       ),
-    );
+    ):Scaffold(body: Center(child: Column(
+      children: <Widget>[
+        Text("Diese Analyse existiert nicht. "),
+        RaisedButton(
+          child: Text("Zurück"),
+            onPressed: (){
+          Application.router.navigateTo(context, HomeScreen.routeName);
+        })
+      ],
+    ),),);
   }
 }

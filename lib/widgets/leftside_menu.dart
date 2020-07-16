@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../screens/login_screen.dart';
@@ -6,6 +7,8 @@ import '../showcaseview/showcaseview.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../screens/analyse_screen.dart';
+import '../routing/application.dart';
+
 
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
@@ -49,6 +52,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
       );
     }
 
+    var transitionType = TransitionType.cupertino;
     final IconData icon = Icons.add;
 
     return Container(
@@ -123,8 +127,9 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                         ),
                         child: InkWell(
                           onTap: () {
-                            Navigator.pushNamed(
-                                context, AnalyseScreen.routeName);
+                           // Navigator.pushNamed(
+                             //   context, AnalyseScreen.routeName);
+                            Application.router.navigateTo(context, "/analyse",transition: transitionType);
                           },
                           child: LayoutBuilder(
                             builder: (ctx, constr) => Text(
@@ -157,7 +162,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                 FirebaseAuth.instance.signOut();
                 analysen.reset();
                 user.reset();
-                Navigator.pushReplacementNamed(context, LoginScreen.routeName);
+                Application.router.navigateTo(context, LoginScreen.routeName);
               },
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [

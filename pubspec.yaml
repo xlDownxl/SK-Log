@@ -23,7 +23,7 @@ dependencies:
   cupertino_icons: ^0.1.2
   email_validator: '^1.0.0'
   font_awesome_flutter: 8.8.1
-  provider: ^4.0.2
+  provider: ^4.3.1
   intl: ^0.16.1
   path: ^1.6.2
   path_provider: ">=0.5.0 < 2.0.0"
@@ -48,7 +48,7 @@ dependencies:
   flushbar: 1.10.4 #from 1.10 this wont work with flutter lower than 1.15
   #screen_loader: ^2.0.0
   #firebase_database: ^3.0.7
-
+  fluro: "^1.6.3"
 
 
 dev_dependencies:

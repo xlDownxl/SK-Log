@@ -64,7 +64,7 @@ class Analysen with ChangeNotifier {
         analysen = LinkedHashMap();
         allAnalysen.values.forEach((analyse) {
           if (analyse.pair == filter.pair) {
-            analysen[analyse.id] = analyse;
+            analysen[analyse.analyseId] = analyse;
           }
         });
       } else if (filter.isTag) {
@@ -74,7 +74,7 @@ class Analysen with ChangeNotifier {
             if (filter.tags.every((tag) {
               return analyse.activeTags.contains(tag);
             })) {
-              analysen[analyse.id] = analyse;
+              analysen[analyse.analyseId] = analyse;
             }
           });
         } else {
@@ -87,7 +87,7 @@ class Analysen with ChangeNotifier {
       LinkedHashMap wordFilterAnalysen = LinkedHashMap();
       analysen.values.forEach((analyse) {
         if (equalsIgnoreCase(analyse.title, filter.word)) {
-          wordFilterAnalysen[analyse.id] = analyse;
+          wordFilterAnalysen[analyse.analyseId] = analyse;
         }
       });
       analysen = wordFilterAnalysen;
@@ -112,7 +112,7 @@ class Analysen with ChangeNotifier {
     return result;
   }
 
-  Future delete(id) {
+  Future delete(String id) {
     var ref = Firestore.instance
         .collection("Users")
         .document(userId)

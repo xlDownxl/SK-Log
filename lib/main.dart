@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
 import 'models/user.dart';
-import 'screens/analyse_screen.dart';
 import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
-import 'screens/login_screen.dart';
 import 'models/ascending.dart';
+import 'package:fluro/fluro.dart';
+import 'routing/routes.dart';
+import 'routing/application.dart';
 
 void main() {
+
   runApp(MyApp());
 }
 
@@ -48,6 +49,13 @@ ThemeData _buildLightTheme() {
 }
 
 class _MyAppState extends State<MyApp> {
+
+  _MyAppState() {
+    final router = Router();
+    Routes.configureRoutes(router);
+    Application.router = router;
+  }
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -70,12 +78,7 @@ class _MyAppState extends State<MyApp> {
         //   MaterialPageRoute(builder: (context) => LoginScreen()),
         title: 'SK!Log',
         theme: _buildLightTheme(),
-        home: LoginScreen(),
-        routes: {
-          HomeScreen.routeName: (ctx) => HomeScreen(),
-          AnalyseScreen.routeName: (ctx) => AnalyseScreen(),
-          LoginScreen.routeName: (ctx) => LoginScreen(),
-        },
+        onGenerateRoute: Application.router.generator,
       ),
     );
   }

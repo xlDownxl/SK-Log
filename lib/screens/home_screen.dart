@@ -167,24 +167,29 @@ class _HomeScreenState extends State<HomeScreen> {
       TagScreen(key: tagsPage),
     ];
 
-    return Scaffold(
-      appBar: appBar,
-      body: ShowCaseWidget(
-        builder: Builder(
-          builder: (ctx) => Container(
-            height: deviceHeight,
-            width: deviceWidth,
-            child: Row(children: [
-              Container(
-                width: deviceWidth * 0.25,
-                child: LeftsideMenu(leftSideMenu, changeMode, reset,
-                    _plusButtonKey, logOutButtonKey,menuKey),
-              ),
-              Container(
-                width: deviceWidth * 0.75,
-                child: rightSide[mode],
-              ),
-            ]),
+    return WillPopScope(
+      onWillPop: (){
+        return Future.delayed(Duration.zero).then((value) => false);
+      },
+      child: Scaffold(
+        appBar: appBar,
+        body: ShowCaseWidget(
+          builder: Builder(
+            builder: (ctx) => Container(
+              height: deviceHeight,
+              width: deviceWidth,
+              child: Row(children: [
+                Container(
+                  width: deviceWidth * 0.25,
+                  child: LeftsideMenu(leftSideMenu, changeMode, reset,
+                      _plusButtonKey, logOutButtonKey,menuKey),
+                ),
+                Container(
+                  width: deviceWidth * 0.75,
+                  child: rightSide[mode],
+                ),
+              ]),
+            ),
           ),
         ),
       ),

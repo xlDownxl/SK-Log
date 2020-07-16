@@ -7,10 +7,11 @@ import '../models/user_tags.dart';
 import '../flutterLogin/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
+import '../routing/application.dart';
 
 
 class LoginScreen extends StatefulWidget {
-  static const routeName = "/login_new";
+  static const routeName = "/";
 
   @override
   _LoginPageState createState() => new _LoginPageState();
@@ -36,11 +37,9 @@ class _LoginPageState extends State<LoginScreen> {
         Future.wait([analyseFuture,tagsFuture]).then((value) {
           Provider.of<AppUser>(context, listen: false).email = data.email;
           Provider.of<AppUser>(context, listen: false).id = data.uid;
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => HomeScreen(),
-            ),
-          );
+
+          Application.router.navigateTo(context, HomeScreen.routeName,replace: true,);
+
         }).catchError((error){
           print(error.code);
         });
@@ -95,11 +94,7 @@ class _LoginPageState extends State<LoginScreen> {
               },
               onRecoverPassword: user.recoverPassword,
               onSubmitAnimationCompleted: () {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (ctx) => HomeScreen(),
-                  ),
-                );
+                Application.router.navigateTo(context, HomeScreen.routeName,replace: true,);
               },
             ),
       ),
