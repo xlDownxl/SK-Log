@@ -52,7 +52,6 @@ class LeftsideMenuState extends State<LeftsideMenu> {
       );
     }
 
-    var transitionType = TransitionType.cupertino;
     final IconData icon = Icons.add;
 
     return Container(
@@ -129,7 +128,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                           onTap: () {
                            // Navigator.pushNamed(
                              //   context, AnalyseScreen.routeName);
-                            Application.router.navigateTo(context, "/analyse",transition: transitionType);
+                            Application.router.navigateTo(context, "/analyse",transition: TransitionType.fadeIn);
                           },
                           child: LayoutBuilder(
                             builder: (ctx, constr) => Text(
@@ -162,7 +161,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                 FirebaseAuth.instance.signOut();
                 analysen.reset();
                 user.reset();
-                Application.router.navigateTo(context, LoginScreen.routeName);
+                Application.router.navigateTo(context, LoginScreen.routeName,transition: TransitionType.inFromBottom);
               },
               child:
                   Row(mainAxisAlignment: MainAxisAlignment.center, children: [

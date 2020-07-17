@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import 'package:flutter/gestures.dart';
 import '../routing/application.dart';
+import 'package:fluro/fluro.dart';
 class ListElement extends StatelessWidget {
   final String analyseId;
 
@@ -73,7 +74,7 @@ class ListElement extends StatelessWidget {
             borderRadius: BorderRadius.circular(10)),
         child: InkWell(
           onTap: () {
-            Application.router.navigateTo(context, AnalyseScreen.routeName+"/"+analyse.id);
+            Application.router.navigateTo(context, AnalyseScreen.routeName+"/"+analyse.id,transition:TransitionType.fadeIn);
           },
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 10),

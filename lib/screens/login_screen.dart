@@ -1,4 +1,5 @@
 
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginScreen> {
           Provider.of<AppUser>(context, listen: false).email = data.email;
           Provider.of<AppUser>(context, listen: false).id = data.uid;
 
-          Application.router.navigateTo(context, HomeScreen.routeName,replace: true,);
+          Application.router.navigateTo(context, HomeScreen.routeName,replace: true, transition: TransitionType.fadeIn);
 
         }).catchError((error){
           print(error.code);
@@ -94,7 +95,7 @@ class _LoginPageState extends State<LoginScreen> {
               },
               onRecoverPassword: user.recoverPassword,
               onSubmitAnimationCompleted: () {
-                Application.router.navigateTo(context, HomeScreen.routeName,replace: true,);
+                Application.router.navigateTo(context, HomeScreen.routeName,replace: true, transition: TransitionType.cupertinoFullScreenDialog);
               },
             ),
       ),
