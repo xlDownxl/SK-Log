@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import '../screens/home_screen.dart';
 import '../screens/login_screen.dart';
 import '../screens/analyse_screen.dart';
+import 'package:provider/provider.dart';
+import '../models/analysen.dart';
 
 var homeHandler = Handler(
     handlerFunc: (BuildContext context, Map<String, List<String>> params) {
@@ -25,7 +27,12 @@ var loginHandler = Handler(
 });
 
 var analyseHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+  if(Provider.of<Analysen>(context).getAnalyse(params["id"][0])!=null) {
     return AnalyseScreen(params["id"][0]);
+  }
+  else{
+    return HomeScreen();  //TODO maybe add a popup saying "does not exist"
+  }
 
 });
 var newAnalyseHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {

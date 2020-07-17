@@ -169,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return WillPopScope(
       onWillPop: (){
-        return Future.delayed(Duration.zero).then((value) => false);
+        return Future.value(false);
       },
       child: Scaffold(
         appBar: appBar,

@@ -1,3 +1,4 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/home_screen.dart';
 import '../widgets/analyse_input_area.dart';
@@ -52,7 +53,6 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
   GlobalKey trashKey = GlobalKey();
   GlobalKey saveKey = GlobalKey();
 
-  bool init = true;
   @override
   void initState() {
     if(widget.analyseId==null){
