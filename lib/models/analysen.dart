@@ -64,7 +64,7 @@ class Analysen with ChangeNotifier {
         analysen = LinkedHashMap();
         allAnalysen.values.forEach((analyse) {
           if (analyse.pair == filter.pair) {
-            analysen[analyse.analyseId] = analyse;
+            analysen[analyse.id] = analyse;
           }
         });
       } else if (filter.isTag) {
@@ -74,7 +74,7 @@ class Analysen with ChangeNotifier {
             if (filter.tags.every((tag) {
               return analyse.activeTags.contains(tag);
             })) {
-              analysen[analyse.analyseId] = analyse;
+              analysen[analyse.id] = analyse;
             }
           });
         } else {
@@ -87,7 +87,7 @@ class Analysen with ChangeNotifier {
       LinkedHashMap wordFilterAnalysen = LinkedHashMap();
       analysen.values.forEach((analyse) {
         if (equalsIgnoreCase(analyse.title, filter.word)) {
-          wordFilterAnalysen[analyse.analyseId] = analyse;
+          wordFilterAnalysen[analyse.id] = analyse;
         }
       });
       analysen = wordFilterAnalysen;
