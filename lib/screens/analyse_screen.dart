@@ -1,4 +1,3 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/home_screen.dart';
 import '../widgets/analyse_input_area.dart';
@@ -8,13 +7,11 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analyse.dart';
 import '../widgets/zefyr_textfield.dart';
-import '../models/user_pairs.dart';
 import '../models/ascending.dart';
 import '../models/user.dart';
 import '../showcaseview/showcaseview.dart';
 import '../widgets/widget_helper.dart';
 import '../models/screen_loader.dart';
-import 'package:flutter/foundation.dart';
 import '../routing/application.dart';
 
 class AnalyseScreen extends StatefulWidget {
@@ -22,19 +19,14 @@ class AnalyseScreen extends StatefulWidget {
   AnalyseScreen(this.analyseId);
 
   static const routeName = "/analyse";
-
   @override
   _AnalyseScreenState createState() => _AnalyseScreenState();
 }
 
-class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<AnalyseScreen>{
+class _AnalyseScreenState extends State<AnalyseScreen>
+    with ScreenLoader<AnalyseScreen> {
   FocusNode titleFocus = FocusNode();
   Analyse analyse;
-
-
-
-  bool trashcanLoading = false;
-  bool saveLoading = false;
   bool editText = false;
 
   final GlobalKey<ZefyrTextFieldState> descriptionKey =
@@ -55,15 +47,22 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
 
   @override
   void initState() {
-    if(widget.analyseId==null){
+    if (widget.analyseId == null) {
       analyse = Analyse();
-    } else{
-      analyse = Provider.of<Analysen>(context,listen: false).getAnalyse(widget.analyseId);
+    } else {
+      analyse = Provider.of<Analysen>(context, listen: false)
+          .getAnalyse(widget.analyseId);
     }
     if (Provider.of<AppUser>(context, listen: false).isNew) {
       WidgetsBinding.instance.addPostFrameCallback(
           (_) => ShowCaseWidget.of(apicKey.currentContext).startShowCase([
-                pairKey, linkKey, analysePictureKey, tagsKey, descriptionInputKey, trashKey, saveKey,
+            pairKey,
+            linkKey,
+            analysePictureKey,
+            tagsKey,
+            descriptionInputKey,
+            trashKey,
+            saveKey,
               ]));
     }
     super.initState();
@@ -92,197 +91,179 @@ class _AnalyseScreenState extends State<AnalyseScreen> with ScreenLoader<Analyse
   @override
   Widget loader() {
     return Container(
-      width: MediaQuery.of(context).size.height/5,
-      height: MediaQuery.of(context).size.height/5,
+      width: MediaQuery.of(context).size.height / 5,
+      height: MediaQuery.of(context).size.height / 5,
       child: CircularProgressIndicator(),
     );
   }
 
+  Future goBack(bool backButton) async {
+      return await this.performFuture(() {
+        // ignore: missing_return
+        return safe().then((_) {
+          if (backButton) {
+            print("return true");
+            return true;
+          }
+          else {
+            Navigator.pop(context);
+          }
+        // ignore: missing_return
+        }).catchError((error) {
+          showErrorToast(context,
+              "Speichern fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+          if (backButton) return false;
+        });
+      });
+  }
+
+  delete() async {
+    if (widget.analyseId != null) {
+      //if its a new analysis, just pop and do nothing
+      await this.performFuture(() {
+        return Provider.of<Analysen>(context, listen: false)
+            .delete(widget.analyseId)
+            .then((value) {
+          Navigator.pop(context);
+        }).catchError((error) {
+          showErrorToast(context,
+              "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+        });
+      });
+    } else {
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget screen(BuildContext context) {
-    return analyse!=null?
-     ChangeNotifierProvider.value(
-      value: analyse,
-      child: WillPopScope(
-        onWillPop: () async{
-          if (!trashcanLoading && !saveLoading) {
-            //if user clicked trashcan first do nothing
-            setState(() {
-              saveLoading = true;
-            });
-            return await this.performFuture(() {
-              return safe().then((_) {
-                return true;
-              }).catchError((error) {
-                setState(() {
-                  saveLoading = false;
-                });
-                showErrorToast(context,
-                    "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
-                return false;
-              });
-            });
-          } else {
-            return Future.value(false);
-          }
+    Widget titleField = Container(
+      width: 400, //TODO maybe make responsive title textfield
+      child: TextFormField(
+        decoration: InputDecoration(
+          icon: Icon(
+            Icons.edit,
+            color: Colors.white54,
+            size: 30,
+          ),
+        ),
+        focusNode: titleFocus,
+        style: TextStyle(
+            color: Colors.black,
+            fontSize: 30,
+            fontWeight: FontWeight.bold,
+            decoration: TextDecoration.underline),
+        cursorColor: Colors.white,
+        onChanged: (val) {
+          //nur on submit ändern
+          setState(() {
+            analyse.title = val;
+            editText = false;
+          });
         },
-        child: ShowCaseWidget(
-          builder: Builder(
-            builder: (ctx) => Scaffold(
-              appBar: GradientAppBar(
-                leading: Showcase(
-                  key: saveKey,
-                  description:
-                      'Klicke hier um die Analyse zu speichern. Der "Zurück" Pfeil deines Browsers speichert die Analyse ebenfalls',
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    child: InkWell(
-                      //TODO inkwell design/verhalten
-                      child: //!saveLoading ?
-                      Icon(Icons.save, size: 36)
-                          /*: CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white),
-                            )*/,
-                      onTap: () async{
-                        if (!trashcanLoading&& !saveLoading) {
-                          //if user clicked trashcan first do nothing
-                          setState(() {
-                            saveLoading = true;
-                          });
-                    await this.performFuture(() {
-                            return safe().then((_) {
-                              Navigator.pop(context);
-                            }).catchError((error) {
-                              setState(() {
-                                saveLoading = false;
-                              });
-                              showErrorToast(context,
-                                  "Speichern fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
-                            });
-                          });
-                        }
-                      },
-                    ),
-                  ),
-                ),
-                gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Showcase(
-                      description: "Klicke hier um die Analyse zulöschen",
-                      key: trashKey,
-                      child: InkWell(
-                        child: //!trashcanLoading ?
-                        Icon(Icons.delete, size: 36)
-                         /*   : CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              )*/,
-                        onTap: () async{
+        initialValue: analyse.title,
+      ),
+    );
 
-                            if (!saveLoading && !trashcanLoading) {//if user clicked trashcan first do nothing
-                              if (widget.analyseId != null) { //if its a new analysis, just pop and do nothing
+    var appBar = GradientAppBar(
+      leading: Showcase(
+        key: saveKey,
+        description:
+            'Klicke hier um die Analyse zu speichern. Der "Zurück" Pfeil deines Browsers speichert die Analyse ebenfalls',
+        child: Container(
+          padding: EdgeInsets.all(10),
+          child: InkWell(
+            child: //!saveLoading ?
+                Icon(Icons.save, size: 36),
+            onTap: (){
+              goBack(false);
+              },
+          ),
+        ),
+      ),
+      gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
+      title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Showcase(
+            description: "Klicke hier um die Analyse zulöschen",
+            key: trashKey,
+            child: InkWell(
+              child:
+                  Icon(Icons.delete, size: 36),
+              onTap: delete,
+            ),
+          ),
+          Flexible(
+            child: Container(),
+          ),
+          Flexible(
+            flex: 2,
+            child: titleField,
+          ),
+          Flexible(
+            child: Container(),
+          ),
+        ],
+      ),
+      centerTitle: true,
+    );
 
-                              setState(() {
-                                trashcanLoading = true;
-                              });
-                              await this.performFuture((){
-                                return Provider.of<Analysen>(context, listen: false)
-                                  .delete(widget.analyseId)
-                                  .then((value) {
-                                Navigator.pop(context);
-                              }).catchError((error) {
-                                setState(() {
-                                  trashcanLoading = false;
-                                });
-                                showErrorToast(context,
-                                    "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
-                              });
-                              });
-                            } else {
-                                Navigator.pop(context);
-                              }
-                          }
-                        },
-                      ),
-                    ),
-                    Flexible(
-                      child: Container(),
-                    ),
-                    Flexible(
-                      flex: 2,
-                      child: Container(
-                        width: 400,
-                        child: TextFormField(
-                          decoration: InputDecoration(
-                            icon: Icon(
-                              Icons.edit,
-                              color: Colors.white54,
-                              size: 30,
+    Widget errorScreen = Scaffold(
+      body: Center(
+        child: Column(
+          children: <Widget>[
+            Text("Diese Analyse existiert nicht. "),
+            RaisedButton(
+                child: Text("Zurück"),
+                onPressed: () {
+                  Application.router
+                      .navigateTo(context, HomeScreen.routeName);
+                })
+          ],
+        ),
+      ),
+    );
+
+    return analyse != null
+        ? ChangeNotifierProvider.value(
+            value: analyse,
+            child: WillPopScope(
+              onWillPop: () async{return await goBack(true);},
+              child: ShowCaseWidget(
+                builder: Builder(
+                  builder: (ctx) => Scaffold(
+                    appBar: appBar,
+                    body: Container(
+                      padding: EdgeInsets.only(
+                          top: 20, right: 20, left: 20, bottom: 10),
+                      child: LayoutBuilder(
+                        builder: (ctx, constr) => Row(
+                          children: <Widget>[
+                            Container(
+                              width: constr.maxWidth * 0.4,
+                              padding: EdgeInsets.symmetric(horizontal: 25),
+                              child: AnalyseInputArea(
+                                  descriptionKey,
+                                  learningKey,
+                                  tagsKey,
+                                  descriptionInputKey,
+                                  learningInputKey),
                             ),
-                          ),
-                          focusNode: titleFocus,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 30,
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline),
-                          cursorColor: Colors.white,
-                          onChanged: (val) {
-                            //nur on submit ändern
-                            setState(() {
-                              analyse.title = val;
-
-                              editText = false;
-                            });
-                          },
-                          initialValue: analyse.title,
+                            Container(
+                              width: constr.maxWidth * 0.6,
+                              child: AnalysePictureArea(
+                                  apicKey, analysePictureKey, linkKey, pairKey),
+                            )
+                          ],
                         ),
                       ),
                     ),
-                    Flexible(
-                      child: Container(),
-                    ),
-                  ],
-                ),
-                centerTitle: true,
-              ),
-              body: Container(
-                padding:
-                    EdgeInsets.only(top: 20, right: 20, left: 20, bottom: 10),
-                child: LayoutBuilder(
-                  builder: (ctx, constr) => Row(
-                    children: <Widget>[
-                      Container(
-                        width: constr.maxWidth * 0.4,
-                        padding: EdgeInsets.symmetric(horizontal: 25),
-                        child: AnalyseInputArea(descriptionKey, learningKey,
-                            tagsKey, descriptionInputKey, learningInputKey),
-                      ),
-                      Container(
-                        width: constr.maxWidth * 0.6,
-                        child: AnalysePictureArea(
-                            apicKey, analysePictureKey, linkKey, pairKey),
-                      )
-                    ],
                   ),
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    ):Scaffold(body: Center(child: Column(
-      children: <Widget>[
-        Text("Diese Analyse existiert nicht. "),
-        RaisedButton(
-          child: Text("Zurück"),
-            onPressed: (){
-          Application.router.navigateTo(context, HomeScreen.routeName);
-        })
-      ],
-    ),),);
+          )
+        : errorScreen;
   }
 }
