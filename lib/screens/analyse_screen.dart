@@ -13,6 +13,7 @@ import '../showcaseview/showcaseview.dart';
 import '../widgets/widget_helper.dart';
 import '../models/screen_loader.dart';
 import '../routing/application.dart';
+import '../widgets/widget_helper.dart';
 
 class AnalyseScreen extends StatefulWidget {
   final analyseId;
@@ -102,7 +103,6 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         // ignore: missing_return
         return safe().then((_) {
           if (backButton) {
-            print("return true");
             return true;
           }
           else {
@@ -117,14 +117,14 @@ class _AnalyseScreenState extends State<AnalyseScreen>
       });
   }
 
-  delete() async {
+  Future delete() async {
     if (widget.analyseId != null) {
       //if its a new analysis, just pop and do nothing
       await this.performFuture(() {
         return Provider.of<Analysen>(context, listen: false)
             .delete(widget.analyseId)
             .then((value) {
-          Navigator.pop(context);
+          Navigator.pop(context,analyse);
         }).catchError((error) {
           showErrorToast(context,
               "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
@@ -137,6 +137,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
 
   @override
   Widget screen(BuildContext context) {
+
     Widget titleField = Container(
       width: 400, //TODO maybe make responsive title textfield
       child: TextFormField(
@@ -155,6 +156,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
             decoration: TextDecoration.underline),
         cursorColor: Colors.white,
         onChanged: (val) {
+
           //nur on submit ändern
           setState(() {
             analyse.title = val;

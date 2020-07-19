@@ -124,7 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     if (Provider.of<AppUser>(context, listen: false).isNew) {
-
       Future.delayed(Duration.zero).then((_) {
         showInitDialog(context).then((_) {
           WidgetsBinding.instance.addPostFrameCallback(
@@ -138,7 +137,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ]));
         });
       });
-
     }
     super.initState();
   }

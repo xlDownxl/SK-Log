@@ -34,6 +34,9 @@ Flushbar showErrorToast(BuildContext context, String message) {
       color: Colors.white,
     ),
     duration: const Duration(seconds: 4),
+    //dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+    // The default curve is Curves.easeOut
+    forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
     backgroundGradient: LinearGradient(
       colors: [Colors.red[600], Colors.red[400]],
     ),

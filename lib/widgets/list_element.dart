@@ -8,6 +8,11 @@ import '../models/analysen.dart';
 import 'package:flutter/gestures.dart';
 import '../routing/application.dart';
 import 'package:fluro/fluro.dart';
+import '../widgets/widget_helper.dart';
+import '../models/ascending.dart';
+import '../models/analysen.dart';
+import 'package:flushbar/flushbar.dart';
+
 class ListElement extends StatelessWidget {
   final String analyseId;
 
@@ -28,15 +33,16 @@ class ListElement extends StatelessWidget {
 
   showOverlay(BuildContext context, Analyse analyse, Offset position) async {
     OverlayState overlayState = Overlay.of(context);
-    if(overlayEntry==null){ // this is to fix the issue that mousewheel triggers on enter, so it will trigger twice and will not delete the first one, so the first on is stuck
+    if (overlayEntry == null) {
+      // this is to fix the issue that mousewheel triggers on enter, so it will trigger twice and will not delete the first one, so the first on is stuck
       overlayEntry = OverlayEntry(
         builder: (context) => Positioned(
           top: position.dy,
-          left: position.dx+30,
+          left: position.dx + 30,
           child: Container(
             decoration: BoxDecoration(
-                border:
-                Border.all(color: Colors.black45, style: BorderStyle.solid)),
+                border: Border.all(
+                    color: Colors.black45, style: BorderStyle.solid)),
             child: Image.network(
               analyse.links[0],
               scale: 2.5,
@@ -51,17 +57,20 @@ class ListElement extends StatelessWidget {
   deleteOverlay() {
     if (overlayEntry != null) {
       overlayEntry.remove();
-      overlayEntry=null;
+      overlayEntry = null;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     Analyse analyse = Provider.of<Analysen>(context).analysen[analyseId];
+    bool undoActive = true;
+    var analysen = Provider.of<Analysen>(context, listen: false);
+    var asc = Provider.of<Ascending>(context, listen: false);
 
     return MouseRegion(
       onEnter: (event) {
-        if(analyse.links[0]!=""){
+        if (analyse.links[0] != "") {
           showOverlay(context, analyse, event.position);
         }
       },
@@ -73,8 +82,44 @@ class ListElement extends StatelessWidget {
             side: BorderSide(color: Theme.of(context).accentColor),
             borderRadius: BorderRadius.circular(10)),
         child: InkWell(
-          onTap: () {
-            Application.router.navigateTo(context, AnalyseScreen.routeName+"/"+analyse.id,transition:TransitionType.fadeIn);
+          onTap: () async {
+            var deletedAnalyse = await Application.router.navigateTo(
+                context, AnalyseScreen.routeName + "/" + analyse.id,
+                transition: TransitionType.fadeIn);
+            if (analyse != null) {
+              Flushbar(
+                padding: EdgeInsets.all(10),
+                borderRadius: 8,
+                backgroundColor: Theme.of(context).primaryColor,
+                boxShadows: [
+                  BoxShadow(
+                    color: Colors.black45,
+                    offset: Offset(3, 3),
+                    blurRadius: 3,
+                  ),
+                ],
+                duration: Duration(seconds: 3),
+                //dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+                forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+                messageText: Text(
+                  deletedAnalyse.title + " gelöscht",
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                ),
+                mainButton: FlatButton(
+                  onPressed: () {
+                    if (undoActive) {
+                      undoActive = false;
+                      analysen.add(analyse, asc.asc);
+                    }
+                  },
+                  child: Text(
+                    "Undo",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                ),
+              )..show(context);
+            }
           },
           child: Container(
             margin: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
@@ -136,7 +181,8 @@ class ListElement extends StatelessWidget {
                 ),
               ],
             ),
-          ),),
+          ),
+        ),
         //),
       ),
     );
