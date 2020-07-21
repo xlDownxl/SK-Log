@@ -85,7 +85,7 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
           ),
           SlideTransition(
             position: _slideAnimation,
-            child: Container(
+            child: Container( //TODO
               alignment: widget.alignment,
               color: widget.color,
               width: widget.width,

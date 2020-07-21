@@ -27,14 +27,15 @@ class AppUser with ChangeNotifier {
         .createUserWithEmailAndPassword(
             email: data.name, password: data.password)
         .then((user) {
-      userTags.init(user.user.uid).catchError((_) {
+      return userTags.init(user.user.uid).catchError((_) {
         print("User tag init failed, no error handling yet");
       }).then((_) {
+        email = user.user.email;
+        id = user.user.uid;
+        isNew = true;
         return "success";
       });
-      email = user.user.email;
-      id = user.user.uid;
-      isNew = true;
+
     }).catchError((error) => error.code);
   }
 
@@ -55,6 +56,7 @@ class AppUser with ChangeNotifier {
       case "success":
         return null;
       default:
+        print(code);
         return "Falsche Eingaben";
     }
   }

@@ -126,15 +126,15 @@ class _HomeScreenState extends State<HomeScreen> {
     if (Provider.of<AppUser>(context, listen: false).isNew) {
       Future.delayed(Duration.zero).then((_) {
         showInitDialog(context).then((_) {
-          WidgetsBinding.instance.addPostFrameCallback(
+         /* WidgetsBinding.instance.addPostFrameCallback(
                   (_) =>
                   ShowCaseWidget.of(leftSideMenu.currentContext).startShowCase([
-                    menuKey,
+                    //menuKey,
                     _plusButtonKey,
-                    logOutButtonKey,
-                    searchFieldKey,
+                    //logOutButtonKey,
+                    //searchFieldKey,
                     //analysenFieldKey,
-                  ]));
+                  ]));*/
         });
       });
     }

@@ -179,10 +179,6 @@ class AuthCardState extends State<AuthCard> with TickerProviderStateMixin {
       curve: Interval(.72727272, 1, curve: Curves.easeInOutCubic),
     ));
 
-    //print("width ratio: "+ widthRatio.toString());
-    //print("cardsizescaleEnd ratio: "+ cardSizeScaleEnd.toString());
-    //print("quotient: "+ (widthRatio / cardSizeScaleEnd).toString());
-
     _cardSize2AnimationY =
         Tween<double>(begin: 1.0, end: 10000) //TODO fix this 1000 with whatever
             .animate(CurvedAnimation(
@@ -456,6 +452,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
   }
 
   Future<bool> _submit() async {
+    print("submit");
     // a hack to force unfocus the soft keyboard. If not, after change-route
     // animation completes, it will trigger rebuilding this widget and show all
     // textfields and buttons again before going to new route
@@ -516,7 +513,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       keyboardType: TextInputType.emailAddress,
       textInputAction: TextInputAction.next,
       onFieldSubmitted: (value) {
-        FocusScope.of(context).requestFocus(_passwordFocusNode);
+        //FocusScope.of(context).requestFocus(_passwordFocusNode);
       },
       validator: widget.emailValidator,
       onSaved: (value) => auth.email = value,
@@ -535,7 +532,7 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       focusNode: _passwordFocusNode,
       onFieldSubmitted: (value) {
         if (auth.isLogin) {
-          _submit();
+         // _submit();
         } else {
           // SignUp
           FocusScope.of(context).requestFocus(_confirmPasswordFocusNode);
@@ -557,7 +554,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       controller: _confirmPassController,
       textInputAction: TextInputAction.done,
       focusNode: _confirmPasswordFocusNode,
-      onFieldSubmitted: (value) => _submit(),
+      onFieldSubmitted: (value)  {
+
+      //_submit();
+      },
       validator: auth.isSignup
           ? (value) {
               if (value != _passController.text) {
@@ -597,7 +597,10 @@ class _LoginCardState extends State<_LoginCard> with TickerProviderStateMixin {
       child: AnimatedButton(
         controller: _submitController,
         text: auth.isLogin ? messages.loginButton : messages.signupButton,
-        onPressed: _submit,
+        onPressed: (){
+
+          _submit();
+          },
       ),
     );
   }
