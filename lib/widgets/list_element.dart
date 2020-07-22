@@ -109,7 +109,7 @@ class ListElement extends StatelessWidget {
                   onPressed: () {
                     if (undoActive) {
                       undoActive = false;
-                      analysen.add(analyse, asc.asc);
+                      analysen.add(analyse);
                     }
                   },
                   child: Text(

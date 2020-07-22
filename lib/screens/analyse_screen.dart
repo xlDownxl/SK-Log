@@ -83,7 +83,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
     learningKey.currentState.safeDocument();
     if (widget.analyseId == null) {
       return Provider.of<Analysen>(context, listen: false)
-          .add(analyse, Provider.of<Ascending>(context, listen: false).asc);
+          .add(analyse,);
     } else {
       return Provider.of<Analysen>(context, listen: false).update(analyse);
     }

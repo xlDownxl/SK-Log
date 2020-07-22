@@ -29,7 +29,7 @@ class Analysen with ChangeNotifier {
     userPairs = UserPairs();
   }
 
-  Future loadWithId(String id, bool isNew) {
+  Future loadWithId(String id, bool isNew) async{
     if (!isNew) {
       this.userId = id;
       return Firestore.instance
@@ -48,6 +48,9 @@ class Analysen with ChangeNotifier {
         analysen = allAnalysen;
         notifyListeners();
       });
+    }
+    else{
+      return Future.delayed(Duration(microseconds: 4));
     }
   }
 
@@ -127,7 +130,7 @@ class Analysen with ChangeNotifier {
     });
   }
 
-  Future add(Analyse analyse, bool ascending) {
+  Future add(Analyse analyse,) {
     var ref = Firestore.instance
         .collection("Users")
         .document(userId)
@@ -142,12 +145,9 @@ class Analysen with ChangeNotifier {
       "date": analyse.date.millisecondsSinceEpoch,
     }).then((val) {
       analyse.id = val.documentID;
-      if (!ascending) {
         allAnalysen[analyse.id] = analyse;
-      } else {
-        allAnalysen[analyse.id] = analyse;
-      }
       userPairs.add(analyse.pair);
+      print("notifyListeners");
       notifyListeners();
     });
     /*.timeout(Duration(seconds: 5), onTimeout: () {
