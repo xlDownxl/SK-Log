@@ -105,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                      // height: height*0.15,
                         child: MaterialButton(
                           onPressed: (){
+                            Provider.of<AppUser>(context,listen: false).isNew=false;
                             Navigator.pop(context);
                           },
                           color: Theme.of(context).primaryColor,

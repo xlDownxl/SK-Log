@@ -4,7 +4,6 @@ import 'analyse.dart';
 import 'analysen_filter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'user_pairs.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 class Analysen with ChangeNotifier {
   LinkedHashMap analysen =
@@ -89,7 +88,6 @@ class Analysen with ChangeNotifier {
         }
       }
     }
-
     if (filter.isSearch) {
       LinkedHashMap wordFilterAnalysen = LinkedHashMap();
       analysen.values.forEach((analyse) {
@@ -152,7 +150,6 @@ class Analysen with ChangeNotifier {
         allAnalysen[analyse.id] = analyse;
       //analysen[analyse.id] = analyse; //TODO auf den grund gehen: warum funktioniert zb update nicht mehr wenn das hier im cod eist
       userPairs.add(analyse.pair);
-      print("notifyListeners");
       notifyListeners();
       return "success";
     });
