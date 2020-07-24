@@ -30,8 +30,9 @@ class Analysen with ChangeNotifier {
   }
 
   Future loadWithId(String id, bool isNew) async{
+    this.userId = id;
     if (!isNew) {
-      this.userId = id;
+
       return Firestore.instance
           .collection("Users")
           .document(userId)
@@ -50,7 +51,10 @@ class Analysen with ChangeNotifier {
       });
     }
     else{
-      return Future.delayed(Duration(microseconds: 4));
+      return  this.add(Analyse.fromExample()).then((value)  {
+        analysen = allAnalysen;
+      notifyListeners();
+      });
     }
   }
 
@@ -146,9 +150,11 @@ class Analysen with ChangeNotifier {
     }).then((val) {
       analyse.id = val.documentID;
         allAnalysen[analyse.id] = analyse;
+      //analysen[analyse.id] = analyse; //TODO auf den grund gehen: warum funktioniert zb update nicht mehr wenn das hier im cod eist
       userPairs.add(analyse.pair);
       print("notifyListeners");
       notifyListeners();
+      return "success";
     });
     /*.timeout(Duration(seconds: 5), onTimeout: () {
       throw ("timeout");
