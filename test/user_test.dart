@@ -28,13 +28,13 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   var user=AppUser();
   test('currentUser', () async {
-    expect(user.login(ld.LoginData(
+    expect(user.handle_auth(ld.LoginData(
       name: "dfdsfsfd@asddsad.de",
       password: "123456",
     ), Analysen(), null),throws);
   });
   test('LoginWorks', () async {
-    expect(user.login(ld.LoginData(
+    expect(user.handle_auth(ld.LoginData(
       name: "qwe@qwe.de",
       password: "123456",
     ), Analysen(), null),completes);

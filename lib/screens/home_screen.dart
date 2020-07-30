@@ -61,23 +61,16 @@ class _HomeScreenState extends State<HomeScreen> {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
             content:  Container(
-
-             // padding: EdgeInsets.all(20),
                 width: width,
               height: height,
                 child: Column(
-
                   children: [
                     Flexible(
                       flex: 7,
-                    //height: height*0.2,
                       child: Image.asset("assets/skloggro.png"),
-                    //color: Theme.of(context).accentColor,
                   ),
-
                     Flexible(
                       flex: 3,
-                    //height: height*0.1,
                       child: Text(
                         "Willkommen zu SK!Log",
                         style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,),
@@ -91,18 +84,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     Flexible(
                       flex:10,
                     fit: FlexFit.tight,
-                    //height: height*0.4,
                     child: AutoSizeText("Beim ersten Start des Tools werden alle grundlegenden Funktionen dieses Tools kurz erläutert. Falls du zu jeglichem Zeitpunkt eine Frage oder ein Problem bei der Nutzung hast, bitte zögere nicht uns "
                         "über die Telegram Links auf der ersten Seite zu kontaktieren. Wir wünschen dir viel Spaß und Erfolg im Trading!",style: TextStyle(fontSize: 20),),
                   ),
                     Flexible(
                       flex: 1,
                      child: Container(),
-                     // height: height*0.1,
                     ),
                     Flexible(
                       flex:4,
-                     // height: height*0.15,
                         child: MaterialButton(
                           onPressed: (){
                             Provider.of<AppUser>(context,listen: false).isNew=false;
@@ -117,7 +107,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
                 crossAxisAlignment: CrossAxisAlignment.center,),
               ),
-
           );
         });
   }
@@ -146,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var appBar = GradientAppBar(
       title: Text("Dein Journal"),
+      centerTitle: false,
       gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
     );
 

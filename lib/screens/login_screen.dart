@@ -79,14 +79,16 @@ class _LoginPageState extends State<LoginScreen> {
                   recoverPasswordButton: "Zurücksetzen",
                   confirmPasswordHint: "Passwort bestätigen"),
               onLogin: (data) {
-                return user.login(
+                user.isNew=false;
+                return user.handle_auth(
                     data,
                     Provider.of<Analysen>(context, listen: false),
                     Provider.of<UserTags>(context, listen: false),
                 );
               },
               onSignup: (data) {
-                return user.register(
+                user.isNew=true;
+                return user.handle_auth(
                     data,
                     Provider.of<Analysen>(context, listen: false),
                     Provider.of<UserTags>(context, listen: false),

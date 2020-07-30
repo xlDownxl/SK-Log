@@ -7,13 +7,10 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analyse.dart';
 import '../widgets/zefyr_textfield.dart';
-import '../models/ascending.dart';
-import '../models/user.dart';
 import '../showcaseview/showcaseview.dart';
 import '../widgets/widget_helper.dart';
 import '../models/screen_loader.dart';
 import '../routing/application.dart';
-import '../widgets/widget_helper.dart';
 
 class AnalyseScreen extends StatefulWidget {
   final analyseId;
@@ -28,7 +25,6 @@ class _AnalyseScreenState extends State<AnalyseScreen>
     with ScreenLoader<AnalyseScreen> {
   FocusNode titleFocus = FocusNode();
   Analyse analyse;
-  bool editText = false;
 
   final GlobalKey<ZefyrTextFieldState> descriptionKey =
       GlobalKey<ZefyrTextFieldState>();
@@ -148,20 +144,17 @@ class _AnalyseScreenState extends State<AnalyseScreen>
             size: 30,
           ),
         ),
+        //maxLength: 30,
         focusNode: titleFocus,
         style: TextStyle(
             color: Colors.black,
             fontSize: 30,
             fontWeight: FontWeight.bold,
-            decoration: TextDecoration.underline),
+            //decoration: TextDecoration.underline,
+        ),
         cursorColor: Colors.white,
         onChanged: (val) {
-
-          //nur on submit ändern
-          setState(() {
             analyse.title = val;
-            editText = false;
-          });
         },
         initialValue: analyse.title,
       ),
@@ -175,8 +168,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         child: Container(
           padding: EdgeInsets.all(10),
           child: InkWell(
-            child: //!saveLoading ?
-                Icon(Icons.save, size: 36),
+            child: Icon(Icons.save, size: 36),
             onTap: (){
               goBack(false);
               },

@@ -17,11 +17,16 @@ class AppUser with ChangeNotifier {
     fbUser = null;
     isNew = false;
   }
+  
+  Future<String> recoverPassword(String name) async {
+    return FirebaseAuth.instance.sendPasswordResetEmail(email: name).then((_) {
+      return null;
+    }).catchError((error) => error.code);
+  }
 
-  Future<String> register(
+  Future<String> handle_auth(
       LoginData data, Analysen analysen, UserTags userTags) async {
-    isNew = true;
-    var code = await _auth(data, analysen, userTags);
+     var code = await _auth(data, analysen, userTags);
     switch (code) {
       case "auth/email-already-in-use":
         return "Diese Email ist schon vergeben";
@@ -33,36 +38,15 @@ class AppUser with ChangeNotifier {
         return "Passwort sollte mindestens 6 Zeichen haben";
       case "permission-denied":
         return "Bitte kontaktiere einen Admin";
-      case "success":
-        return null;
-      default:
-        print(code);
-        return "Falsche Eingaben";
-    }
-  }
-
-  Future<String> login(
-      LoginData data, Analysen analysen, UserTags userTags) async {
-    String code = await _auth(data, analysen, userTags);
-
-    switch (code) {
       case "auth/user-not-found":
         return "Benutzer existiert nicht";
       case "auth/wrong-password":
         return "Überprüfe dein Passwort";
-      case "permission-denied":
-        return "Bitte kontaktiere einen Admin";
       case "success":
         return null;
       default:
-        return "Ungültige Eingaben";
+        return "Falsche Eingaben";
     }
-  }
-
-  Future<String> recoverPassword(String name) async {
-    return FirebaseAuth.instance.sendPasswordResetEmail(email: name).then((_) {
-      return null;
-    }).catchError((error) => error.code);
   }
 
   Future _auth(

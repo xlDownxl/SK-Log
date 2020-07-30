@@ -31,7 +31,6 @@ class Analysen with ChangeNotifier {
   Future loadWithId(String id, bool isNew) async{
     this.userId = id;
     if (!isNew) {
-
       return Firestore.instance
           .collection("Users")
           .document(userId)
