@@ -390,9 +390,8 @@ class _ItemTagsState extends State<ItemTags> {
                       child: Container(
                         margin: widget.removeButton?.margin ??
                             EdgeInsets.only(left: 5),
-                        padding: (widget.removeButton?.padding ??
-                                EdgeInsets.all(2)) *
-                            (widget.textStyle.fontSize / 14),
+                        padding:
+                        EdgeInsets.only(left: 1,right: 2,top: 2,bottom: 2),
                         decoration: BoxDecoration(
                           color: widget.removeButton?.backgroundColor ??
                               Colors.black,

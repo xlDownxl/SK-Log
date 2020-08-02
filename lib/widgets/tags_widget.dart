@@ -42,6 +42,8 @@ class _TagsWidgetState extends State<TagsWidget> {
             itemCount: _tags.length,
             itemBuilder: (int index) {
               return ItemTags(
+                color: Theme.of(context).accentColor,
+                activeColor: Theme.of(context).primaryColor,
                 elevation: 3,
                 key: Key(index.toString()),
                 index: index,
@@ -69,7 +71,9 @@ class _TagsWidgetState extends State<TagsWidget> {
                     }); // does this really remove or do i need to init usertags alone
                   });
                 },
-                removeButton: ItemTagsRemoveButton(), // OR null,
+                removeButton: ItemTagsRemoveButton(
+                    color: Colors.white,backgroundColor: Colors.red,
+                ), // OR null,
               );
             },
           ),
