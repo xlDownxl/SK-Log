@@ -86,7 +86,7 @@ class ListElement extends StatelessWidget {
             var deletedAnalyse = await Application.router.navigateTo(
                 context, AnalyseScreen.routeName + "/" + analyse.id,
                 transition: TransitionType.fadeIn);
-            if (analyse != null) {
+            if (deletedAnalyse != null) {
               Flushbar(
                 padding: EdgeInsets.all(10),
                 borderRadius: 8,

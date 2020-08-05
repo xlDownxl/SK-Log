@@ -7,7 +7,7 @@ import 'models/ascending.dart';
 import 'package:fluro/fluro.dart';
 import 'routing/routes.dart';
 import 'routing/application.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 void main() {
 
   runApp(MyApp());
@@ -18,35 +18,11 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-ThemeData _buildLightTheme() {
+
   const Color primaryColor = Color(0xFF0175c2);
   const Color secondaryColor = Color(0xFF13B9FD);
-  final ColorScheme colorScheme = const ColorScheme.light().copyWith(
-    primary: primaryColor,
-    secondary: secondaryColor,
-  );
-  final ThemeData base = ThemeData(
-    brightness: Brightness.light,
-    accentColorBrightness: Brightness.dark,
-    colorScheme: colorScheme,
-    primaryColor: primaryColor,
-    buttonColor: primaryColor,
-    indicatorColor: Colors.white,
-    toggleableActiveColor: const Color(0xFF1E88E5),
-    splashColor: Colors.white24,
-    splashFactory: InkRipple.splashFactory,
-    accentColor: secondaryColor,
-    canvasColor: Colors.white,
-    scaffoldBackgroundColor: Colors.white,
-    backgroundColor: Colors.white,
-    errorColor: const Color(0xFFB00020),
-    buttonTheme: ButtonThemeData(
-      colorScheme: colorScheme,
-      textTheme: ButtonTextTheme.primary,
-    ),
-  );
-  return base;
-}
+
+
 
 class _MyAppState extends State<MyApp> {
 
@@ -77,7 +53,17 @@ class _MyAppState extends State<MyApp> {
         // onUnknownRoute: (settings) =>
         //   MaterialPageRoute(builder: (context) => LoginScreen()),
         title: 'SK!Log',
-        theme: _buildLightTheme(),
+        theme: ThemeData(
+          accentColorBrightness: Brightness.dark,
+          primaryColor: primaryColor,
+          buttonColor: primaryColor,
+          accentColor: secondaryColor,
+          canvasColor: Colors.white,
+          fontFamily: "Roboto",
+
+          scaffoldBackgroundColor: Colors.white,
+          backgroundColor: Colors.white,
+        ),
         onGenerateRoute: Application.router.generator,
       ),
     );
