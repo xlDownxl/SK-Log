@@ -31,15 +31,35 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey searchFieldKey = GlobalKey();
   GlobalKey analysenFieldKey = GlobalKey();
   GlobalKey menuKey = GlobalKey();
-
+  double offset = 1;
   bool dark = true;
   int mode = 0;
 
   void changeMode(val) {
     if (val != mode) {
+
+      if(val==0&&mode==1){
+        offset=-1;
+      }
+      if(val==1&&mode==0){
+        offset=1;
+      }
+      if(val==1&&mode==2){
+        offset=-1;
+      }
+      if(val==2&&mode==1){
+        offset=1;
+      }
+      if(val==0&&mode==2){
+        offset=-1;
+      }
+      if(val==2&&mode==0){
+        offset=1;
+      }
       setState(() {
         mode = val;
       });
+      print(offset);
     }
   }
 
@@ -175,7 +195,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                   width: deviceWidth * 0.75,
-                  child: rightSide[mode],
+                  child: ClipRRect(
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 500),
+                      transitionBuilder: (Widget child, Animation<double> animation) {
+                        final inAnimation = Tween<Offset>(begin: Offset(offset, 0.0), end: Offset(0.0, 0.0)).animate(animation);
+                        final outAnimation = Tween<Offset>(begin:  Offset(-offset, 0.0), end:  Offset(0.0, 0.0)).animate(animation);
+
+                        if(rightSide[mode]==child){
+                          return SlideTransition(child: child, position: inAnimation,);
+                        }
+                        else{
+                          return SlideTransition(child: child, position: outAnimation,);
+                        }
+                      },
+                        child: rightSide[mode],
+                    ),
+                  ),
                 ),
               ]),
             ),
