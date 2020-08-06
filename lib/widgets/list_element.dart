@@ -66,23 +66,8 @@ class ListElement extends StatelessWidget {
     Analyse analyse = Provider.of<Analysen>(context).analysen[analyseId];
     bool undoActive = true;
     var analysen = Provider.of<Analysen>(context, listen: false);
-    var asc = Provider.of<Ascending>(context, listen: false);
 
     return Container(
-     /* decoration: BoxDecoration(
-        color: Colors.white,
-
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).accentColor,
-            // color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 2,
-            offset: Offset(0, 1), // changes position of shadow
-            //   offset: Offset(_xOffset, _yOffset),
-
-          )
-        ],),*/
       child: MouseRegion(
         onEnter: (event) {
           if (analyse.links[0] != "") {
@@ -97,7 +82,7 @@ class ListElement extends StatelessWidget {
               side: BorderSide(color: Theme.of(context).primaryColor),
               borderRadius: BorderRadius.circular(10),
     ),
-          color: Theme.of(context).accentColor.withOpacity(0.4),
+          //color: Theme.of(context).accentColor.withOpacity(0.4),
           child: InkWell(
             onTap: () async {
               var deletedAnalyse = await Application.router.navigateTo(

@@ -19,9 +19,8 @@ class MyApp extends StatefulWidget {
 }
 
 
-  const Color primaryColor = Color(0xFF0175c2);
-  const Color secondaryColor = Color(0xFF13B9FD);
-
+const Color primaryColor = Color(0xFF0175c2);
+const Color secondaryColor = Color(0xFF13B9FD);
 
 
 class _MyAppState extends State<MyApp> {

@@ -598,9 +598,8 @@ class _FlutterLoginState extends State<FlutterLogin>
         widget.passwordValidator ?? FlutterLogin.defaultPasswordValidator;
 
 
-    var infoWidget= Flexible(
+    var infoWidget = Flexible(
       child: Container(
-
         padding: MediaQuery.of(context).size.width > 1000
             ? EdgeInsets.all(80)
             : EdgeInsets.all(20),
@@ -614,7 +613,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                     "Willkommen zu SK!LOG \n",
                     maxLines: 3,
                     style: TextStyle(
-                      fontSize: 42,
+                      fontSize: 52,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                     ),
@@ -630,7 +629,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                   "Dem Dokumentationstool für den",
                   maxLines: 3,
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 44,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -645,7 +644,7 @@ class _FlutterLoginState extends State<FlutterLogin>
                   "langfristigen Erfolg im Trading.",
                   maxLines: 3,
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 44,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
@@ -653,12 +652,6 @@ class _FlutterLoginState extends State<FlutterLogin>
               ),
             ),
             // SizedBox(height: 20,),
-            Flexible(
-              flex: 2,
-              child: Center(
-                child: Logo(),
-              ),
-            ),
 
             SizedBox(
               height: 20,

@@ -154,9 +154,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     var appBar = GradientAppBar(
-      title: Text("Dein Journal"),
-      centerTitle: false,
-      gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
+      title: Container(
+        margin: EdgeInsets.only(top: 2),
+          child: Image.asset("assets/logo_neu.png",),
+      ),
+      centerTitle: true,
+      gradient: LinearGradient(colors: [ Theme.of(context).accentColor,Theme.of(context).primaryColor,],stops: [0.65,1]),
     );
 
     final deviceHeight = MediaQuery.of(context).size.height -

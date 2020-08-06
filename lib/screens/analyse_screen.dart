@@ -175,7 +175,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
           ),
         ),
       ),
-      gradient: LinearGradient(colors: [Colors.cyan, Colors.indigo]),
+      gradient: LinearGradient(colors: [ Theme.of(context).accentColor,Theme.of(context).primaryColor,],stops: [0.65,1]),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[

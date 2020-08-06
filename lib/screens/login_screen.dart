@@ -67,6 +67,7 @@ class _LoginPageState extends State<LoginScreen> {
             ? Center(child: CircularProgressIndicator())
             : FlutterLogin(
               title: '',
+              logo: "assets/logo_neu.png",
               messages: LoginMessages(
                   signupButton: "Registrieren",
                   forgotPasswordButton: "Passwort vergessen?",
