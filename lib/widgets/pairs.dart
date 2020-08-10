@@ -4,16 +4,13 @@ import 'entry_list.dart';
 import '../models/analysen_filter.dart';
 import '../models/analysen.dart';
 import '../models/user_pairs.dart';
-
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 class Pairs extends StatefulWidget {
   Pairs({Key key}) : super(key: key);
 
   @override
   PairsState createState() => PairsState();
 }
-
-
-//TODO nen button in eine ecke einbauen => refresh, der die paare die man nicht mehr hat löscht
 
 class PairsState extends State<Pairs> {
   String filterPair;
@@ -22,8 +19,15 @@ class PairsState extends State<Pairs> {
   List buildPairs() {
     var pairs = Provider.of<Analysen>(context,listen: false).userPairs.getPairs(); //listen = false?
     var pairWidgets = [];
+    var counter=0;
     pairs.forEach((pair,value) {
-      pairWidgets.add(Card(
+      pairWidgets.add(AnimationConfiguration.staggeredGrid(
+        position: counter,
+        columnCount: 6,
+        duration: const Duration(milliseconds: 375),
+        child: ScaleAnimation(
+        child: FadeInAnimation(
+        child:Card(
         elevation: 2,
         color: Theme.of(context).accentColor,
         shape: RoundedRectangleBorder(
@@ -48,7 +52,9 @@ class PairsState extends State<Pairs> {
             });
           },
         ),
-      ));
+      ))),
+      ),
+      );
     });
     return pairWidgets;
   }

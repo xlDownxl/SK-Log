@@ -23,7 +23,6 @@ export 'src/providers/login_messages.dart';
 export 'src/providers/login_theme.dart';
 import 'src/constants.dart';
 import '../flutterLogin/flutter_login.dart';
-import '../widgets/LoginScreenWidgets/logo.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:auto_size_text/auto_size_text.dart';

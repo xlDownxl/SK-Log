@@ -3,7 +3,7 @@ import 'models/user.dart';
 import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
-import 'models/ascending.dart';
+import 'models/helper_providers.dart';
 import 'package:fluro/fluro.dart';
 import 'routing/routes.dart';
 import 'routing/application.dart';
@@ -47,10 +47,11 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (ctx) => Ascending(false),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => Animations(),
+        ),
       ],
       child: MaterialApp(
-        // onUnknownRoute: (settings) =>
-        //   MaterialPageRoute(builder: (context) => LoginScreen()),
         title: 'SK!Log',
         theme: ThemeData(
           accentColorBrightness: Brightness.dark,

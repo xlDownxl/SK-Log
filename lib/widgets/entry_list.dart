@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analysen_filter.dart';
 import '../showcaseview/showcaseview.dart';
-import '../models/ascending.dart';
+import '../models/helper_providers.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class EntryList extends StatefulWidget {
   final AnalyseFilter filter;
@@ -22,12 +23,15 @@ class EntryList extends StatefulWidget {
 }
 
 class EntryListState extends State<EntryList> {
-  GlobalKey _one = GlobalKey();
   var filteredList;
   Analysen analysen;
   AnalyseFilter filter;
 
   void initState() {
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) {
+          Provider.of<Animations>(context, listen:false).animEntry=false;
+        });
     super.initState();
     filter = widget.filter;
   }
@@ -38,11 +42,13 @@ class EntryListState extends State<EntryList> {
   Widget build(BuildContext context) {
     var asc = Provider.of<Ascending>(context);
     analysen = Provider.of<Analysen>(context);
+    var anim = Provider.of<Animations>(context, listen:false).animEntry;
+
     Widget buildHeadline() {
       return Container(
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Colors.blueGrey))),
-        padding: EdgeInsets.only(bottom: 3),
+            border: Border(bottom: BorderSide(color: Colors.black45,width: 2))),
+        //padding: EdgeInsets.only(bottom: 3),
         child: Row(
           children: <Widget>[
             Flexible(
@@ -149,6 +155,12 @@ class EntryListState extends State<EntryList> {
       );
     }
 
+    Widget getItem(index){
+      return ListElement(asc.asc
+        ? analysen.analysen.keys.toList()[index]
+        : analysen.analysen.keys.toList().reversed.toList()[index]);
+    }
+
     return Container(
       padding: EdgeInsets.only(left: 50, right: 50, bottom: 15, top: 10),
       child:  Column(
@@ -160,21 +172,25 @@ class EntryListState extends State<EntryList> {
             height: 20,
           ),
           buildHeadline(),
-          SizedBox(
-            height: 10,
-          ),
+
           Expanded(
-            child: /* Showcase(
-              key: widget.analysenKey,
-              description: "Hier kannst du alle deine angelegten Analysen verwalten",
-              child:*/Container(
-              child: ListView.builder(
-                itemBuilder: (ctx, index) => ListElement(asc.asc
-                    ? analysen.analysen.keys.toList()[index]
-                    : analysen.analysen.keys.toList().reversed.toList()[index]),
+            child: Container(
+              child:  ListView.builder(
+                itemBuilder: (ctx, index) {
+                  return anim ?
+                   AnimationConfiguration.staggeredList(
+                    position: index,
+                    duration: const Duration(milliseconds: 375),
+                    child: FlipAnimation(
+                      duration: Duration(microseconds: 50),
+                      child: FadeInAnimation(
+                        child: getItem(index),
+                      ),
+                    ),
+                  ): getItem(index);
+                  },
                 itemCount: analysen.analysen.length,
               ),
-              //),
             ),),
         ],
       ),

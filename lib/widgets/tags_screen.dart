@@ -40,22 +40,4 @@ class TagScreenState extends State<TagScreen> {
     );
   }
 }
-/*
-class FilterList with ChangeNotifier {
-  List<String> filters=[];
 
-  void reset(){
-    filters=[];
-    notifyListeners();
-  }
-
-  void add(item){
-    print("add");
-    filters.add(item);
-    notifyListeners();
-  }
-  void delete(item){
-    filters.remove(item);
-    notifyListeners();
-  }
-}*/

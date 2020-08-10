@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../screens/analyse_screen.dart';
 import '../routing/application.dart';
-
+import '../models/helper_providers.dart';
 
 class LeftsideMenu extends StatefulWidget {
   final Function changeMode;
@@ -125,8 +125,6 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                         ),
                         child: InkWell(
                           onTap: () {
-                           // Navigator.pushNamed(
-                             //   context, AnalyseScreen.routeName);
                             Application.router.navigateTo(context, "/analyse",transition: TransitionType.fadeIn);
                           },
                           child: LayoutBuilder(
@@ -157,7 +155,7 @@ class LeftsideMenuState extends State<LeftsideMenu> {
             description: "Klicke hier um dich auszuloggen",
             child: InkWell(
               onTap: () {
-                FirebaseAuth.instance.signOut();
+                Provider.of<Animations>(context).animEntry=false;
                 analysen.reset();
                 user.reset();
                 Application.router.navigateTo(context, LoginScreen.routeName,transition: TransitionType.inFromBottom);

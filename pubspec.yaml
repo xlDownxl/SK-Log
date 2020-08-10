@@ -49,7 +49,7 @@ dependencies:
   #screen_loader: ^2.0.0
   #firebase_database: ^3.0.7
   fluro: "^1.6.3"
-
+  flutter_staggered_animations: "^0.1.2"
 
 dev_dependencies:
   flutter_test:

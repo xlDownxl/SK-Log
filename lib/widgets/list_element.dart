@@ -9,7 +9,7 @@ import 'package:flutter/gestures.dart';
 import '../routing/application.dart';
 import 'package:fluro/fluro.dart';
 import '../widgets/widget_helper.dart';
-import '../models/ascending.dart';
+import '../models/helper_providers.dart';
 import '../models/analysen.dart';
 import 'package:flushbar/flushbar.dart';
 
@@ -28,7 +28,7 @@ class ListElement extends StatelessWidget {
       builder.write(", ");
     }
     var result = builder.toString();
-    return result.substring(0, max(result.length - 1, 0));
+    return result.substring(0, max(result.length - 2, 0));
   }
 
   showOverlay(BuildContext context, Analyse analyse, Offset position) async {
@@ -68,6 +68,13 @@ class ListElement extends StatelessWidget {
     var analysen = Provider.of<Analysen>(context, listen: false);
 
     return Container(
+    /*  decoration: BoxDecoration(
+
+
+          boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(0, 3))]),*/
       child: MouseRegion(
         onEnter: (event) {
           if (analyse.links[0] != "") {
@@ -79,10 +86,13 @@ class ListElement extends StatelessWidget {
         },
         child: Card(
           shape: RoundedRectangleBorder(
-              side: BorderSide(color: Theme.of(context).primaryColor),
+              side: BorderSide(color: Colors.black45,//Theme.of(context).primaryColor,
+                  width: 2),
               borderRadius: BorderRadius.circular(10),
     ),
-          //color: Theme.of(context).accentColor.withOpacity(0.4),
+          //shadowColor: Colors.orangeAccent,
+          elevation: 2,
+          color: Colors.blue.withOpacity(0.3),
           child: InkWell(
             onTap: () async {
               var deletedAnalyse = await Application.router.navigateTo(

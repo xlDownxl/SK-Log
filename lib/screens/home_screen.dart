@@ -37,29 +37,14 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void changeMode(val) {
     if (val != mode) {
-
-      if(val==0&&mode==1){
+      if(val<mode){
         offset=-1;
-      }
-      if(val==1&&mode==0){
-        offset=1;
-      }
-      if(val==1&&mode==2){
-        offset=-1;
-      }
-      if(val==2&&mode==1){
-        offset=1;
-      }
-      if(val==0&&mode==2){
-        offset=-1;
-      }
-      if(val==2&&mode==0){
+      }else{
         offset=1;
       }
       setState(() {
         mode = val;
       });
-      print(offset);
     }
   }
 
@@ -130,6 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
+  var rightSide;
 
   @override
   void initState() {
@@ -148,11 +134,24 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
     }
+    rightSide = [
+      EntryList(
+        entryList,
+        AnalyseFilter.showAll(),
+        true,
+        analysenFieldKey,
+        searchFieldKey,
+      ),
+      Pairs(key: pairsPage),
+      TagScreen(key: tagsPage),
+    ];
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
+
     var appBar = GradientAppBar(
       title: Container(
         margin: EdgeInsets.only(top: 2),
@@ -166,18 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar.preferredSize.height -
         MediaQuery.of(context).padding.top;
     final deviceWidth = MediaQuery.of(context).size.width;
-
-    var rightSide = [
-      EntryList(
-        entryList,
-        AnalyseFilter.showAll(),
-        true,
-        analysenFieldKey,
-        searchFieldKey,
-      ),
-      Pairs(key: pairsPage),
-      TagScreen(key: tagsPage),
-    ];
 
     return WillPopScope(
       onWillPop: (){
@@ -204,7 +191,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       transitionBuilder: (Widget child, Animation<double> animation) {
                         final inAnimation = Tween<Offset>(begin: Offset(offset, 0.0), end: Offset(0.0, 0.0)).animate(animation);
                         final outAnimation = Tween<Offset>(begin:  Offset(-offset, 0.0), end:  Offset(0.0, 0.0)).animate(animation);
-
                         if(rightSide[mode]==child){
                           return SlideTransition(child: child, position: inAnimation,);
                         }

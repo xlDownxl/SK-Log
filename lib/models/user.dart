@@ -12,6 +12,7 @@ class AppUser with ChangeNotifier {
   bool isNew = false;
 
   void reset() {
+    FirebaseAuth.instance.signOut();
     email = null;
     id = null;
     fbUser = null;

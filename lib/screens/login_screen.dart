@@ -98,7 +98,7 @@ class _LoginPageState extends State<LoginScreen> {
               },
               onRecoverPassword: user.recoverPassword,
               onSubmitAnimationCompleted: () {
-                Application.router.navigateTo(context, HomeScreen.routeName,replace: true, transition: TransitionType.cupertinoFullScreenDialog);
+                Application.router.navigateTo(context, HomeScreen.routeName,replace: true, transition: TransitionType.cupertinoFullScreenDialog,);
               },
             ),
       ),
