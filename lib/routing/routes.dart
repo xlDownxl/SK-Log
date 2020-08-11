@@ -6,7 +6,7 @@
  * Copyright (c) 2019 Yakka, LLC. All rights reserved.
  * See LICENSE for distribution and usage details.
  */
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'package:flutter/material.dart';
 import './route_handlers.dart';
 import '../screens/login_screen.dart';
@@ -18,8 +18,8 @@ class Routes {
   static String analyse_id = AnalyseScreen.routeName+"/:id";
   static String new_analyse = AnalyseScreen.routeName;
 
-  static void configureRoutes(Router router) {
-    router.notFoundHandler = Handler(
+  static void configureRoutes(fluro.Router router) {
+    router.notFoundHandler = fluro.Handler(
       // ignore: missing_return
         handlerFunc: (BuildContext context, Map<String, List<String>> params) {
       print("ROUTE WAS NOT FOUND !!!");

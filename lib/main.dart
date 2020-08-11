@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'models/analysen.dart';
 import 'models/user_tags.dart';
 import 'models/helper_providers.dart';
-import 'package:fluro/fluro.dart';
+import 'package:fluro/fluro.dart' as fluro;
 import 'routing/routes.dart';
 import 'routing/application.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -27,7 +27,7 @@ const Color secondaryColor = Color(0xFF13B9FD);
 class _MyAppState extends State<MyApp> {
 
   _MyAppState() {
-    final router = Router();
+    final router = fluro.Router();
     Routes.configureRoutes(router);
     Application.router = router;
   }
