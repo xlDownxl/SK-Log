@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/leftside_menu.dart';
 import '../widgets/entry_list.dart';
-import '../widgets/tags_screen.dart';
 import '../widgets/pairs.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import '../models/analysen_filter.dart';
@@ -20,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<PairsState> pairsPage = GlobalKey<PairsState>();
-  final GlobalKey<TagScreenState> tagsPage = GlobalKey<TagScreenState>();
+ // final GlobalKey<TagScreenState> tagsPage = GlobalKey<TagScreenState>();
 
   final GlobalKey<LeftsideMenuState> leftSideMenu =
       GlobalKey<LeftsideMenuState>();
@@ -31,22 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey searchFieldKey = GlobalKey();
   GlobalKey analysenFieldKey = GlobalKey();
   GlobalKey menuKey = GlobalKey();
-  double offset = 1;
   bool dark = true;
-  int mode = 0;
-
-  void changeMode(val) {
-    if (val != mode) {
-      if(val<mode){
-        offset=-1;
-      }else{
-        offset=1;
-      }
-      setState(() {
-        mode = val;
-      });
-    }
-  }
 
   void reset() { //has to be here cause provider not working in leftside menu //TODO
     Provider.of<Analysen>(context, listen: false)
@@ -112,7 +96,6 @@ class _HomeScreenState extends State<HomeScreen> {
           );
         });
   }
-  var rightSide;
 
   @override
   void initState() {
@@ -122,16 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
         });
       });
     }
-    rightSide = [
-      EntryList(
-        entryList,
-        true,
-        analysenFieldKey,
-        searchFieldKey,
-      ),
-      Pairs(key: pairsPage),
-      TagScreen(key: tagsPage),
-    ];
     super.initState();
   }
 
@@ -172,22 +145,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Container(
                   width: deviceWidth * 0.75,
-                  child: ClipRRect(
-                    child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      transitionBuilder: (Widget child, Animation<double> animation) {
-                        final inAnimation = Tween<Offset>(begin: Offset(offset, 0.0), end: Offset(0.0, 0.0)).animate(animation);
-                        final outAnimation = Tween<Offset>(begin:  Offset(-offset, 0.0), end:  Offset(0.0, 0.0)).animate(animation);
-                        if(rightSide[mode]==child){
-                          return SlideTransition(child: child, position: inAnimation,);
-                        }
-                        else{
-                          return SlideTransition(child: child, position: outAnimation,);
-                        }
-                      },
-                        child: rightSide[mode],
-                    ),
-                  ),
+                  child:
+                         EntryList(
+                          entryList,
+                          true,
+                          analysenFieldKey,
+                          searchFieldKey,
+                        ),
                 ),
               ]),
             ),

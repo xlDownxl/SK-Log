@@ -7,14 +7,15 @@ import '../models/analysen_filter.dart';
 import '../showcaseview/showcaseview.dart';
 import '../models/helper_providers.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import '../widgets/tags_filter_widget.dart';
 class EntryList extends StatefulWidget {
   final bool buildSearchField;
   final Key analysenKey;
   final Key searchFieldKey;
 
+
   EntryList(key, this.buildSearchField, this.analysenKey,
-      this.searchFieldKey)
+      this.searchFieldKey,)
       : super(key: key);
 
   @override
@@ -123,26 +124,30 @@ class EntryListState extends State<EntryList> {
       );
     }
 
+
     Widget buildSearchfield() {
-      return Showcase(
-        key: widget.searchFieldKey,
-        description: "Suche hier nach Namen von Analysen",
-        overlayColor: Colors.black,
-        overlayOpacity: 0.5,
-        child: LayoutBuilder(
-          builder: (_, constraint) => Container(
-            //decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.tealAccent)),
-            margin: EdgeInsets.only(bottom: 5),
-            width: constraint.maxWidth * 0.25,
-            child: TextFormField(
-              onChanged: (value) {
-                analysen.addSearch(value);
-              },
-              controller: editingController,
-              decoration: InputDecoration(
-                border: InputBorder.none,
-                labelText: "Suche eine Analyse",
-                prefixIcon: Icon(Icons.search),
+      return Align(
+        alignment: Alignment.centerRight,
+        child: Showcase(
+          key: widget.searchFieldKey,
+          description: "Suche hier nach Namen von Analysen",
+          overlayColor: Colors.black,
+          overlayOpacity: 0.5,
+          child: LayoutBuilder(
+            builder: (_, constraint) => Container(
+              //decoration: BoxDecoration(borderRadius: BorderRadius.circular(5),border: Border.all(width: 1,color: Colors.tealAccent)),
+              margin: EdgeInsets.only(bottom: 5),
+              width: constraint.maxWidth * 0.25,
+              child: TextFormField(
+                onChanged: (value) {
+                  analysen.addSearch(value);
+                },
+                controller: editingController,
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  labelText: "Suche eine Analyse",
+                  prefixIcon: Icon(Icons.search),
+                ),
               ),
             ),
           ),
@@ -159,13 +164,14 @@ class EntryListState extends State<EntryList> {
     return Container(
       padding: EdgeInsets.only(left: 50, right: 50, bottom: 15, top: 10),
       child:  Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           widget.buildSearchField
               ? buildSearchfield()
               : SizedBox(
             height: 20,
           ),
+          Provider.of<FilterMode>(context).showTagsFilter?TagsFilterWidget():Container(),
           buildHeadline(),
 
           Expanded(

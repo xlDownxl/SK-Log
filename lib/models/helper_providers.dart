@@ -10,3 +10,15 @@ class Animations with ChangeNotifier {
   bool animTag=true;
   bool animGrid=true;
 }
+
+class FilterMode with ChangeNotifier {
+  bool showTagsFilter=false;
+  void activateTagFilter(){
+    showTagsFilter=true;
+    notifyListeners();
+  }
+  void deactivateTagFilter(){
+    showTagsFilter=false;
+    notifyListeners();
+  }
+}

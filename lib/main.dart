@@ -52,7 +52,10 @@ class _MyAppState extends State<MyApp> {
           create: (ctx) => Animations(),
         ),
         ChangeNotifierProvider(
-          create: (ctx) => AnalyseFilter.showAll(),
+          create: (ctx) => AnalyseFilter.showAll(), //TODO <= brauch cih den überhaupt????
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => FilterMode(),
         ),
       ],
       child: MaterialApp(

@@ -1,6 +1,7 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_app/models/analysen_filter.dart';
 import '../screens/login_screen.dart';
 import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
@@ -37,8 +38,15 @@ class LeftsideMenuState extends State<LeftsideMenu> {
           width: constr.maxWidth,
           child: FlatButton(
             onPressed: () {
-              widget.changeMode(mode);
-              widget.reset();
+              print(mode);
+              if(mode==2){
+                Provider.of<FilterMode>(context,listen: false).activateTagFilter();
+              }
+              if(mode==0){
+                Provider.of<FilterMode>(context,listen: false).deactivateTagFilter();
+                Provider.of<Analysen>(context,listen: false).setFilter(AnalyseFilter.showAll()); //hier wird auch der searchfield filter zurück gesetzt, istag =false + notify //oder zur not muss das searchfield resettet werden
+              }
+
             },
             child: FittedBox(
               child: Text(tag,
