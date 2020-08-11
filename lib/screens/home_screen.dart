@@ -32,11 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey menuKey = GlobalKey();
   bool dark = true;
 
-  void reset() { //has to be here cause provider not working in leftside menu //TODO
-    Provider.of<Analysen>(context, listen: false)
-        .setFilter(AnalyseFilter.showAll());
-  }
-
   Future showInitDialog(context){
     var width=MediaQuery.of(context).size.width*0.3;
     var height=MediaQuery.of(context).size.height*0.5;
@@ -140,8 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(children: [
                 Container(
                   width: deviceWidth * 0.25,
-                  child: LeftsideMenu(leftSideMenu, changeMode, reset,
-                      _plusButtonKey, logOutButtonKey,menuKey),
+                  child: LeftsideMenu(leftSideMenu, _plusButtonKey, logOutButtonKey, menuKey),
                 ),
                 Container(
                   width: deviceWidth * 0.75,

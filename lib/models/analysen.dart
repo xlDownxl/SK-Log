@@ -56,10 +56,7 @@ class Analysen with ChangeNotifier {
     }
   }
 
-  void addSearch(String value) {
-    filter.addSearch(value);
-    get();
-  }
+
 
   void get() {
     if (filter.isShowAll) {
@@ -107,6 +104,10 @@ class Analysen with ChangeNotifier {
     this.filter = filter;
     get();
   }
+  void addSearch(String value) {
+    filter.addSearch(value);
+    get();
+  }
 
   String toString() {
     String result = "";
@@ -147,9 +148,14 @@ class Analysen with ChangeNotifier {
     }).then((val) {
       analyse.id = val.documentID;
         allAnalysen[analyse.id] = analyse;
+        if(!filter.isShowAll){
+          get();
+        }
+        else{
+          notifyListeners();
+        }
       //analysen[analyse.id] = analyse; //TODO auf den grund gehen: warum funktioniert zb update nicht mehr wenn das hier im cod eist
       userPairs.add(analyse.pair);
-      notifyListeners();
       return "success";
     });
     /*.timeout(Duration(seconds: 5), onTimeout: () {

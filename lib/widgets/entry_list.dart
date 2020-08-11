@@ -12,8 +12,6 @@ class EntryList extends StatefulWidget {
   final bool buildSearchField;
   final Key analysenKey;
   final Key searchFieldKey;
-
-
   EntryList(key, this.buildSearchField, this.analysenKey,
       this.searchFieldKey,)
       : super(key: key);
@@ -173,7 +171,6 @@ class EntryListState extends State<EntryList> {
           ),
           Provider.of<FilterMode>(context).showTagsFilter?TagsFilterWidget():Container(),
           buildHeadline(),
-
           Expanded(
             child: Container(
               child:  ListView.builder(

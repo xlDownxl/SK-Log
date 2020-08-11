@@ -12,13 +12,11 @@ import '../routing/application.dart';
 import '../models/helper_providers.dart';
 
 class LeftsideMenu extends StatefulWidget {
-  final Function changeMode;
-  final Function reset;
   final Key plusButtonKey;
   final Key logOutButtonKey;
   final Key menuKey;
 
-  LeftsideMenu(key, this.changeMode, this.reset, this.plusButtonKey,
+  LeftsideMenu(key,  this.plusButtonKey,
       this.logOutButtonKey,this.menuKey)
       : super(key: key);
 
