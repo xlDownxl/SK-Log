@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import '../widgets/leftside_menu.dart';
 import '../widgets/entry_list.dart';
-import '../widgets/pairs.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import '../models/analysen_filter.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +7,10 @@ import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
 import '../models/user.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import '../models/helper_providers.dart';
+import '../routing/application.dart';
+import "login_screen.dart";
+import 'package:fluro/fluro.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
@@ -18,11 +20,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final GlobalKey<PairsState> pairsPage = GlobalKey<PairsState>();
- // final GlobalKey<TagScreenState> tagsPage = GlobalKey<TagScreenState>();
-
-  final GlobalKey<LeftsideMenuState> leftSideMenu =
-      GlobalKey<LeftsideMenuState>();
   final GlobalKey<EntryListState> entryList = GlobalKey<EntryListState>();
 
   GlobalKey _plusButtonKey = GlobalKey();
@@ -30,64 +27,73 @@ class _HomeScreenState extends State<HomeScreen> {
   GlobalKey searchFieldKey = GlobalKey();
   GlobalKey analysenFieldKey = GlobalKey();
   GlobalKey menuKey = GlobalKey();
-  bool dark = true;
 
-  Future showInitDialog(context){
-    var width=MediaQuery.of(context).size.width*0.3;
-    var height=MediaQuery.of(context).size.height*0.5;
+  final IconData icon = Icons.add;
+
+  Future showInitDialog(context) {
+    var width = MediaQuery.of(context).size.width * 0.3;
+    var height = MediaQuery.of(context).size.height * 0.5;
     return showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(32.0))),
-            content:  Container(
-                width: width,
+            content: Container(
+              width: width,
               height: height,
-                child: Column(
-                  children: [
-                    Flexible(
-                      flex: 7,
-                      child: Image.asset("assets/skloggro.png"),
+              child: Column(
+                children: [
+                  Flexible(
+                    flex: 7,
+                    child: Image.asset("assets/skloggro.png"),
                   ),
-                    Flexible(
-                      flex: 3,
-                      child: Text(
-                        "Willkommen zu SK!Log",
-                        style: TextStyle(fontWeight: FontWeight.bold,fontSize: 24,),
+                  Flexible(
+                    flex: 3,
+                    child: Text(
+                      "Willkommen zu SK!Log",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
                       ),
+                    ),
                   ),
-                    Flexible(
-                      flex:1,
-                        child: Container(),
-                        //height: height*0.05
-                       ),
-                    Flexible(
-                      flex:10,
+                  Flexible(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  Flexible(
+                    flex: 10,
                     fit: FlexFit.tight,
-                    child: AutoSizeText("Beim ersten Start des Tools werden alle grundlegenden Funktionen dieses Tools kurz erläutert. Falls du zu jeglichem Zeitpunkt eine Frage oder ein Problem bei der Nutzung hast, bitte zögere nicht uns "
-                        "über die Telegram Links auf der ersten Seite zu kontaktieren. Wir wünschen dir viel Spaß und Erfolg im Trading!",style: TextStyle(fontSize: 20),),
+                    child: AutoSizeText(
+                      "Beim ersten Start des Tools werden alle grundlegenden Funktionen dieses Tools kurz erläutert. Falls du zu jeglichem Zeitpunkt eine Frage oder ein Problem bei der Nutzung hast, bitte zögere nicht uns "
+                      "über die Telegram Links auf der ersten Seite zu kontaktieren. Wir wünschen dir viel Spaß und Erfolg im Trading!",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
-                    Flexible(
-                      flex: 1,
-                     child: Container(),
+                  Flexible(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  Flexible(
+                    flex: 4,
+                    child: MaterialButton(
+                      onPressed: () {
+                        Provider.of<AppUser>(context, listen: false).isNew =
+                            false;
+                        Navigator.pop(context);
+                      },
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        "Let's get Started!",
+                        style: TextStyle(fontSize: 24),
+                      ),
                     ),
-                    Flexible(
-                      flex:4,
-                        child: MaterialButton(
-                          onPressed: (){
-                            Provider.of<AppUser>(context,listen: false).isNew=false;
-                            Navigator.pop(context);
-                          },
-                          color: Theme.of(context).primaryColor,
-                          child: Text("Let's get Started!",
-                            style: TextStyle(fontSize: 24),
-                          ),
-                        ),
-                    ),
+                  ),
                 ],
-                crossAxisAlignment: CrossAxisAlignment.center,),
+                crossAxisAlignment: CrossAxisAlignment.center,
               ),
+            ),
           );
         });
   }
@@ -96,58 +102,113 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     if (Provider.of<AppUser>(context, listen: false).isNew) {
       Future.delayed(Duration.zero).then((_) {
-        showInitDialog(context).then((_) {
-        });
+        showInitDialog(context).then((_) {});
       });
     }
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     var appBar = GradientAppBar(
       title: Container(
         margin: EdgeInsets.only(top: 2),
-          child: Image.asset("assets/logo_neu.png",),
+        child: Image.asset(
+          "assets/logo_neu.png",
+        ),
       ),
+      actions: [
+        Flexible(
+          child: IconButton(
+            icon: Icon(Icons.input),
+            color: Colors.white,
+            onPressed: () {
+              Provider.of<Animations>(context, listen: false).animEntry = false;
+              Provider.of<Analysen>(context, listen: false).reset();
+              Provider.of<AppUser>(context, listen: false).reset();
+              Application.router.navigateTo(context, LoginScreen.routeName,
+                  transition: TransitionType.inFromBottom);
+            },
+          ),
+        ),
+      ],
       centerTitle: true,
-      gradient: LinearGradient(colors: [ Theme.of(context).accentColor,Theme.of(context).primaryColor,],stops: [0.65,1]),
+      gradient: LinearGradient(colors: [
+        Theme.of(context).accentColor,
+        Theme.of(context).primaryColor,
+      ], stops: [
+        0.65,
+        1
+      ]),
     );
 
-    final deviceHeight = MediaQuery.of(context).size.height -
-        appBar.preferredSize.height -
-        MediaQuery.of(context).padding.top;
     final deviceWidth = MediaQuery.of(context).size.width;
 
+    var plusButton = LayoutBuilder(
+      builder: (ctx, constraints) => Container(
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Theme.of(context).primaryColor,
+        ),
+        child: ClipRRect(
+          child: InkWell(
+            //TODO clip rrect
+            onTap: () {
+              Application.router.navigateTo(context, "/analyse",
+                  transition: TransitionType.fadeIn);
+            },
+            child: LayoutBuilder(
+              builder: (ctx, constr) => Text(
+                  String.fromCharCode(icon.codePoint),
+                  style: TextStyle(
+                      fontSize: constr.maxHeight * 9 / 60,
+                      fontFamily: icon.fontFamily,
+                      package: icon.fontPackage,
+                      color: Colors.white)),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    Widget menu = Column(children: [
+      RaisedButton(child: Text("#",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),), onPressed: (){
+        Provider.of<FilterMode>(context,listen: false).activateTagFilter();
+      }),
+      RaisedButton(child: Text("Pairs",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),), onPressed: (){
+        Provider.of<FilterMode>(context,listen: false).activatePairFilter();
+      }),
+      RaisedButton(child: Text("Clear",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),), onPressed: (){
+        Provider.of<Analysen>(context,listen: false).setFilter(AnalyseFilter.showAll());
+        Provider.of<FilterMode>(context,listen: false).reset();
+      }),
+    ],);
+
     return WillPopScope(
-      onWillPop: (){
+      onWillPop: () {
         return Future.value(false);
       },
       child: Scaffold(
+        floatingActionButton: plusButton,
         appBar: appBar,
         body: ShowCaseWidget(
           builder: Builder(
-            builder: (ctx) => Container(
-              height: deviceHeight,
-              width: deviceWidth,
-              child: Row(children: [
+            builder: (ctx) => Row(
+              children: [
                 Container(
-                  width: deviceWidth * 0.25,
-                  child: LeftsideMenu(leftSideMenu, _plusButtonKey, logOutButtonKey, menuKey),
+                  width: deviceWidth*0.1,
+                  child: menu,
                 ),
                 Container(
-                  width: deviceWidth * 0.75,
-                  child:
-                         EntryList(
-                          entryList,
-                          true,
-                          analysenFieldKey,
-                          searchFieldKey,
-                        ),
+                  width: deviceWidth*0.9,
+                  child: EntryList(
+                    entryList,
+                    true,
+                    analysenFieldKey,
+                    searchFieldKey,
+                  ),
                 ),
-              ]),
+              ],
             ),
           ),
         ),

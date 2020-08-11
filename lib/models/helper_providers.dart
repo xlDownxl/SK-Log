@@ -31,4 +31,10 @@ class FilterMode with ChangeNotifier {
     notifyListeners();
   }
 
+  void reset(){
+    showPairFilter=false;
+    showTagsFilter=false;
+    notifyListeners();
+  }
+
 }

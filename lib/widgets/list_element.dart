@@ -8,9 +8,7 @@ import '../models/analysen.dart';
 import 'package:flutter/gestures.dart';
 import '../routing/application.dart';
 import 'package:fluro/fluro.dart';
-import '../widgets/widget_helper.dart';
-import '../models/helper_providers.dart';
-import '../models/analysen.dart';
+
 import 'package:flushbar/flushbar.dart';
 
 class ListElement extends StatelessWidget {
@@ -18,7 +16,7 @@ class ListElement extends StatelessWidget {
 
   ListElement(this.analyseId);
 
-  double fSize = 20;
+  final double fSize = 20;
   OverlayEntry overlayEntry;
 
   String writeTags(tags) {

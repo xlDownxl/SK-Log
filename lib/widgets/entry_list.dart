@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import '../showcaseview/showcase_widget.dart';
 import 'list_element.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
-import '../models/analysen_filter.dart';
 import '../showcaseview/showcaseview.dart';
 import '../models/helper_providers.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
