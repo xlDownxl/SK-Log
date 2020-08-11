@@ -12,12 +12,6 @@ class TagScreen extends StatefulWidget {
 }
 
 class TagScreenState extends State<TagScreen> {
-  List<String> filters = [];
-
-  void update(newList) {
-    Provider.of<Analysen>(context, listen: false)
-        .setFilter(AnalyseFilter.tagFilter(newList));
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +22,11 @@ class TagScreenState extends State<TagScreen> {
           children: <Widget>[
             Container(
               height: constr.maxHeight * 0.15,
-              child: TagsFilterWidget(filters, update),
+              child: TagsFilterWidget( ),
             ),
             Container(
               height: constr.maxHeight * 0.85,
-              child: EntryList(GlobalKey(),AnalyseFilter.tagFilter(filters), false,GlobalKey(),GlobalKey()),
+              child: EntryList(GlobalKey(), false,GlobalKey(),GlobalKey()),
             ),
           ],
         ),

@@ -9,12 +9,11 @@ import '../models/helper_providers.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 
 class EntryList extends StatefulWidget {
-  final AnalyseFilter filter;
   final bool buildSearchField;
   final Key analysenKey;
   final Key searchFieldKey;
 
-  EntryList(key, this.filter, this.buildSearchField, this.analysenKey,
+  EntryList(key, this.buildSearchField, this.analysenKey,
       this.searchFieldKey)
       : super(key: key);
 
@@ -23,9 +22,8 @@ class EntryList extends StatefulWidget {
 }
 
 class EntryListState extends State<EntryList> {
-  var filteredList;
   Analysen analysen;
-  AnalyseFilter filter;
+  TextEditingController editingController = TextEditingController();
 
   void initState() {
     WidgetsBinding.instance
@@ -33,10 +31,7 @@ class EntryListState extends State<EntryList> {
           Provider.of<Animations>(context, listen:false).animEntry=false;
         });
     super.initState();
-    filter = widget.filter;
   }
-
-  TextEditingController editingController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

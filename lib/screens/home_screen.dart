@@ -48,10 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void reset() {
-    if (pairsPage.currentState != null) {
-      pairsPage.currentState.resetPair(); //TODO fix when not existing
-    }
+  void reset() { //has to be here cause provider not working in leftside menu //TODO
     Provider.of<Analysen>(context, listen: false)
         .setFilter(AnalyseFilter.showAll());
   }
@@ -122,22 +119,12 @@ class _HomeScreenState extends State<HomeScreen> {
     if (Provider.of<AppUser>(context, listen: false).isNew) {
       Future.delayed(Duration.zero).then((_) {
         showInitDialog(context).then((_) {
-         /* WidgetsBinding.instance.addPostFrameCallback(
-                  (_) =>
-                  ShowCaseWidget.of(leftSideMenu.currentContext).startShowCase([
-                    //menuKey,
-                    _plusButtonKey,
-                    //logOutButtonKey,
-                    //searchFieldKey,
-                    //analysenFieldKey,
-                  ]));*/
         });
       });
     }
     rightSide = [
       EntryList(
         entryList,
-        AnalyseFilter.showAll(),
         true,
         analysenFieldKey,
         searchFieldKey,

@@ -1,4 +1,6 @@
-class AnalyseFilter {
+import 'package:flutter/material.dart';
+
+class AnalyseFilter with ChangeNotifier{
   String pair;
   List<String> tags = [];
   DateTime time;

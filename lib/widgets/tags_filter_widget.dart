@@ -3,17 +3,17 @@ import '../flutter_tags/tag.dart';
 import 'dart:math';
 import '../models/user_tags.dart';
 import 'package:provider/provider.dart';
-
+import '../models/analysen.dart';
+import '../models/analysen_filter.dart';
 class TagsFilterWidget extends StatefulWidget {
-  final List<String> filterTags;
-  final Function update;
-  TagsFilterWidget(this.filterTags, this.update);
 
   @override
   _TagsFilterWidgetState createState() => _TagsFilterWidgetState();
 }
 
 class _TagsFilterWidgetState extends State<TagsFilterWidget> {
+  List<String> filterTags = [];
+
   @override
   Widget build(BuildContext context) {
     var userTags = Provider.of<UserTags>(context);
@@ -36,22 +36,25 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
               textStyle: TextStyle(
                 fontSize: min(14, max((25 - _tags.length), 21)).toDouble(),
               ),
-              active: widget.filterTags.contains(_tags[index]),
+              active: filterTags.contains(_tags[index]),
               onPressed: (item) {
-                if (widget.filterTags.contains(item.title)) {
-                  widget.filterTags.remove(item.title);
-                  widget.update(widget.filterTags);
+                if (filterTags.contains(item.title)) {
+                  filterTags.remove(item.title);
+                  Provider.of<Analysen>(context, listen: false)
+                      .setFilter(AnalyseFilter.tagFilter(filterTags));
                 } else {
-                  widget.filterTags.add(item.title);
-                  widget.update(widget.filterTags);
+                  filterTags.add(item.title);
+                  Provider.of<Analysen>(context, listen: false)
+                      .setFilter(AnalyseFilter.tagFilter(filterTags));
                 }
               },
               onRemoved: () {
                 setState(() {
                   _tags.removeAt(index);
-                  if (widget.filterTags.contains(_tags[index])) {
-                    widget.filterTags.remove(_tags[index]);
-                    widget.update(widget.filterTags);
+                  if (filterTags.contains(_tags[index])) {
+                    filterTags.remove(_tags[index]);
+                    Provider.of<Analysen>(context, listen: false)
+                        .setFilter(AnalyseFilter.tagFilter(filterTags));
                   }
                 });
                 return true;

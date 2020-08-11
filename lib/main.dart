@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/analysen_filter.dart';
 import 'models/user.dart';
 import 'package:provider/provider.dart';
 import 'models/analysen.dart';
@@ -49,6 +50,9 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider(
           create: (ctx) => Animations(),
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => AnalyseFilter.showAll(),
         ),
       ],
       child: MaterialApp(
