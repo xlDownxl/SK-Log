@@ -21,4 +21,14 @@ class FilterMode with ChangeNotifier {
     showTagsFilter=false;
     notifyListeners();
   }
+  bool showPairFilter=false;
+  void activatePairFilter(){
+    showPairFilter=true;
+    notifyListeners();
+  }
+  void deactivatePairFilter(){
+    showPairFilter=false;
+    notifyListeners();
+  }
+
 }

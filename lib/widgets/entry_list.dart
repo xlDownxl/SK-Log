@@ -8,6 +8,8 @@ import '../showcaseview/showcaseview.dart';
 import '../models/helper_providers.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../widgets/tags_filter_widget.dart';
+import 'pairs.dart';
+
 class EntryList extends StatefulWidget {
   final bool buildSearchField;
   final Key analysenKey;
@@ -159,40 +161,48 @@ class EntryListState extends State<EntryList> {
         : analysen.analysen.keys.toList().reversed.toList()[index]);
     }
 
-    return Container(
-      padding: EdgeInsets.only(left: 50, right: 50, bottom: 15, top: 10),
-      child:  Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          widget.buildSearchField
-              ? buildSearchfield()
-              : SizedBox(
-            height: 20,
-          ),
-          Provider.of<FilterMode>(context).showTagsFilter?TagsFilterWidget():Container(),
-          buildHeadline(),
-          Expanded(
-            child: Container(
-              child:  ListView.builder(
-                itemBuilder: (ctx, index) {
-                  return anim ?
-                   AnimationConfiguration.staggeredList(
-                    position: index,
-                    duration: const Duration(milliseconds: 375),
-                    child: FlipAnimation(
-                      duration: Duration(microseconds: 50),
-                      child: FadeInAnimation(
-                        child: getItem(index),
+    return Stack(
+      children:[
+        Container(
+        padding: EdgeInsets.only(left: 50, right: 50, bottom: 15, top: 10),
+        child:  Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            widget.buildSearchField
+                ? buildSearchfield()
+                : SizedBox(
+              height: 20,
+            ),
+            Provider.of<FilterMode>(context).showTagsFilter?TagsFilterWidget():Container(),
+            buildHeadline(),
+            Expanded(
+              child: Container(
+                child:  ListView.builder(
+                  itemBuilder: (ctx, index) {
+                    return anim ?
+                     AnimationConfiguration.staggeredList(
+                      position: index,
+                      duration: const Duration(milliseconds: 375),
+                      child: FlipAnimation(
+                        duration: Duration(microseconds: 50),
+                        child: FadeInAnimation(
+                          child: getItem(index),
+                        ),
                       ),
-                    ),
-                  ): getItem(index);
-                  },
-                itemCount: analysen.analysen.length,
-              ),
-            ),),
-        ],
+                    ): getItem(index);
+                    },
+                  itemCount: analysen.analysen.length,
+                ),
+              ),),
+          ],
+        ),
       ),
-
+        Provider.of<FilterMode>(context).showPairFilter?Container(
+          color: Colors.black.withOpacity(0.7),
+          padding: EdgeInsets.all(50),
+          child: Pairs(),
+        ):Container(),
+      ],
     );
   }
 }

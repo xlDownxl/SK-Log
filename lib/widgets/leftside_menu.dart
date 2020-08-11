@@ -44,7 +44,9 @@ class LeftsideMenuState extends State<LeftsideMenu> {
                 Provider.of<FilterMode>(context,listen: false).deactivateTagFilter();
                 Provider.of<Analysen>(context,listen: false).setFilter(AnalyseFilter.showAll()); //hier wird auch der searchfield filter zurück gesetzt, istag =false + notify //oder zur not muss das searchfield resettet werden
               }
-
+              if(mode==1){
+                Provider.of<FilterMode>(context,listen: false).activatePairFilter();
+              }
             },
             child: FittedBox(
               child: Text(tag,

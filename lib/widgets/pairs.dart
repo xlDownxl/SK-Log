@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'entry_list.dart';
 import '../models/analysen_filter.dart';
 import '../models/analysen.dart';
-import '../models/user_pairs.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-
+import '../models/helper_providers.dart';
 class Pairs extends StatefulWidget {
   Pairs({Key key}) : super(key: key);
 
@@ -14,7 +12,6 @@ class Pairs extends StatefulWidget {
 }
 
 class PairsState extends State<Pairs> {
-  Analysen analysen;
 
   List buildPairs() {
     var pairs = Provider.of<Analysen>(context, listen: false)
@@ -32,9 +29,10 @@ class PairsState extends State<Pairs> {
               child: FadeInAnimation(
                   child: Card(
             elevation: 2,
-            color: Theme.of(context).accentColor,
+            color: Colors.blue,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderRadius: BorderRadius.all(Radius.circular(30),
+              ),
             ),
             child: InkWell(
               child: Container(
@@ -44,16 +42,19 @@ class PairsState extends State<Pairs> {
                     child: Text(
                       pair,
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
                     ),
                   ),
                 ),
               ),
               onTap: () {
-                analysen.setFilter(AnalyseFilter.pairFilter(pair));
+                Provider.of<Analysen>(context,listen:false).setFilter(AnalyseFilter.pairFilter(pair));
+                Provider.of<FilterMode>(context,listen: false).deactivatePairFilter();
               },
             ),
-          ))),
+          ),
+              ),
+          ),
         ),
       );
     });
@@ -62,24 +63,18 @@ class PairsState extends State<Pairs> {
 
   @override
   Widget build(BuildContext context) {
-    analysen = Provider.of<Analysen>(context);
+    return GridView(
+      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+        //crossAxisCount: 8,
+        maxCrossAxisExtent: 130,
+        childAspectRatio: 2 / 2,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+      ),
+      children: <Widget>[
+        ...buildPairs(),
+      ],
+    );
 
-    return analysen.filter.isPair == false
-        ? Container(
-            child: GridView(
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                //crossAxisCount: 8,
-                maxCrossAxisExtent: 130,
-                childAspectRatio: 2 / 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-              children: <Widget>[
-                ...buildPairs(),
-              ],
-            ),
-            padding: EdgeInsets.all(20),
-          )
-        : EntryList(GlobalKey(), false, GlobalKey(), GlobalKey());
   }
 }
