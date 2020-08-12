@@ -62,14 +62,14 @@ class EntryListState extends State<EntryList> {
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            widget.buildSearchField
+           /* widget.buildSearchField
                 ? Searchfield()
                 : SizedBox(
               height: 20,
-            ),
-            !filterMode.showTagsFilter && !analyseFilter.isPair ? Container() :
+            ),*/
+            //!filterMode.showTagsFilter && !analyseFilter.isPair ? Container() :
             Flexible(
-              flex: 1,
+              flex: 2,
                 child: FilterControl(),
             ),
             Headline(),

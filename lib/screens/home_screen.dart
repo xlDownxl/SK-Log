@@ -196,12 +196,12 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: Builder(
             builder: (ctx) => Row(
               children: [
-                Container(
+               /* Container(
                   width: deviceWidth*0.1,
                   child: menu,
-                ),
+                ),*/
                 Container(
-                  width: deviceWidth*0.9,
+                  width: deviceWidth*1,
                   child: EntryList(
                     entryList,
                     true,

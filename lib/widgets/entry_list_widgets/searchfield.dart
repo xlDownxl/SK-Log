@@ -8,11 +8,7 @@ class Searchfield extends StatelessWidget {
   Widget build(BuildContext context) {
     return Align(
       alignment: Alignment.centerRight,
-      child: LayoutBuilder(
-          builder: (_, constraint) => Container(
-            margin: EdgeInsets.only(bottom: 5),
-            width: constraint.maxWidth * 0.25,
-            child: TextFormField(
+      child:  TextFormField(
               onChanged: (value) {
                 Provider.of<Analysen>(context,listen: false).addSearch(value);
               },
@@ -22,8 +18,6 @@ class Searchfield extends StatelessWidget {
                 labelText: "Suche eine Analyse",
                 prefixIcon: Icon(Icons.search),
               ),
-            ),
-        ),
       ),
     );
   }
