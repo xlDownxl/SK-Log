@@ -10,7 +10,7 @@ class Analysen with ChangeNotifier {
       LinkedHashMap(); //When specified as <String,Analyse> an type error with dynamic,dynamic not fitting
   LinkedHashMap allAnalysen = LinkedHashMap();
   Firestore store;
-  AnalyseFilter filter = AnalyseFilter.showAll();
+  AnalyseFilter filter = AnalyseFilter();
   String userId;
   UserPairs userPairs = UserPairs();
 
@@ -24,11 +24,11 @@ class Analysen with ChangeNotifier {
     analysen = LinkedHashMap();
     allAnalysen = LinkedHashMap();
     userId = "";
-    filter = AnalyseFilter.showAll();
+    filter = AnalyseFilter();
     userPairs = UserPairs();
   }
 
-  Future loadWithId(String id, bool isNew) async{
+  Future loadWithId(String id, bool isNew) async {
     this.userId = id;
     if (!isNew) {
       return Firestore.instance
@@ -47,40 +47,49 @@ class Analysen with ChangeNotifier {
         analysen = allAnalysen;
         notifyListeners();
       });
-    }
-    else{
-      return  this.add(Analyse.fromExample()).then((value)  {
+    } else {
+      return this.add(Analyse.fromExample()).then((value) {
         analysen = allAnalysen;
-      notifyListeners();
+        notifyListeners();
       });
     }
   }
 
-
-
   void get() {
-    if (filter.isShowAll) {
+    if (!filter.isPair && !filter.isTag) {
       analysen = allAnalysen;
     } else {
-      if (filter.isPair) {
+      if (filter.isPair && filter.isTag) {
         analysen = LinkedHashMap();
         allAnalysen.values.forEach((analyse) {
-          if (analyse.pair == filter.pair) {
+          if (analyse.pair == filter.pair &&
+              filter.tags.every((tag) {
+                return analyse.activeTags.contains(tag);
+              })) {
             analysen[analyse.id] = analyse;
           }
         });
-      } else if (filter.isTag) {
-        if (filter.tags.isNotEmpty) {
-          analysen = LinkedHashMap();
-          allAnalysen.values.forEach((analyse) {
-            if (filter.tags.every((tag) {
-              return analyse.activeTags.contains(tag);
-            })) {
-              analysen[analyse.id] = analyse;
-            }
-          });
+      } else {
+        if (filter.isTag) {
+          if (filter.tags.isNotEmpty) {
+            analysen = LinkedHashMap();
+            allAnalysen.values.forEach((analyse) {
+              if (filter.tags.every((tag) {
+                return analyse.activeTags.contains(tag);
+              })) {
+                analysen[analyse.id] = analyse;
+              }
+            });
+          }
         } else {
-          analysen = allAnalysen;
+          if (filter.isPair) {
+            analysen = LinkedHashMap();
+            allAnalysen.values.forEach((analyse) {
+              if (analyse.pair == filter.pair) {
+                analysen[analyse.id] = analyse;
+              }
+            });
+          }
         }
       }
     }
@@ -104,6 +113,7 @@ class Analysen with ChangeNotifier {
     this.filter = filter;
     get();
   }
+
   void addSearch(String value) {
     filter.addSearch(value);
     get();
@@ -132,7 +142,9 @@ class Analysen with ChangeNotifier {
     });
   }
 
-  Future add(Analyse analyse,) {
+  Future add(
+    Analyse analyse,
+  ) {
     var ref = Firestore.instance
         .collection("Users")
         .document(userId)
@@ -147,13 +159,12 @@ class Analysen with ChangeNotifier {
       "date": analyse.date.millisecondsSinceEpoch,
     }).then((val) {
       analyse.id = val.documentID;
-        allAnalysen[analyse.id] = analyse;
-        if(!filter.isShowAll){
-          get();
-        }
-        else{
-          notifyListeners();
-        }
+      allAnalysen[analyse.id] = analyse;
+      if (!filter.isPair && !filter.isTag) {
+        get();
+      } else {
+        notifyListeners();
+      }
       //analysen[analyse.id] = analyse; //TODO auf den grund gehen: warum funktioniert zb update nicht mehr wenn das hier im cod eist
       userPairs.add(analyse.pair);
       return "success";

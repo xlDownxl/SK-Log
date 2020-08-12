@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../flutter_tags/tag.dart';
+import '../../flutter_tags/tag.dart';
 import 'dart:math';
-import '../models/user_tags.dart';
+import '../../models/user_tags.dart';
 import 'package:provider/provider.dart';
-import '../models/analysen.dart';
-import '../models/analysen_filter.dart';
+import '../../models/analysen.dart';
+import '../../models/analysen_filter.dart';
 class TagsFilterWidget extends StatefulWidget {
 
   @override
@@ -40,12 +40,14 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
               onPressed: (item) {
                 if (filterTags.contains(item.title)) {
                   filterTags.remove(item.title);
+                  Provider.of<AnalyseFilter>(context, listen: false).addTagFilter(filterTags);
                   Provider.of<Analysen>(context, listen: false)
-                      .setFilter(AnalyseFilter.tagFilter(filterTags));
+                      .setFilter(Provider.of<AnalyseFilter>(context, listen: false));
                 } else {
                   filterTags.add(item.title);
+                  Provider.of<AnalyseFilter>(context, listen: false).addTagFilter(filterTags);
                   Provider.of<Analysen>(context, listen: false)
-                      .setFilter(AnalyseFilter.tagFilter(filterTags));
+                      .setFilter(Provider.of<AnalyseFilter>(context, listen: false));
                 }
               },
               onRemoved: () {
@@ -53,8 +55,9 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
                   _tags.removeAt(index);
                   if (filterTags.contains(_tags[index])) {
                     filterTags.remove(_tags[index]);
+                    Provider.of<AnalyseFilter>(context, listen: false).addTagFilter(filterTags);
                     Provider.of<Analysen>(context, listen: false)
-                        .setFilter(AnalyseFilter.tagFilter(filterTags));
+                        .setFilter(Provider.of<AnalyseFilter>(context, listen: false));
                   }
                 });
                 return true;

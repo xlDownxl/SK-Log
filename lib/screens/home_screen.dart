@@ -179,7 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
         Provider.of<FilterMode>(context,listen: false).activatePairFilter();
       }),
       RaisedButton(child: Text("Clear",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),), onPressed: (){
-        Provider.of<Analysen>(context,listen: false).setFilter(AnalyseFilter.showAll());
+        Provider.of<AnalyseFilter>(context,listen: false).reset();
+        Provider.of<Analysen>(context,listen: false).setFilter(Provider.of<AnalyseFilter>(context,listen: false));
         Provider.of<FilterMode>(context,listen: false).reset();
       }),
     ],);

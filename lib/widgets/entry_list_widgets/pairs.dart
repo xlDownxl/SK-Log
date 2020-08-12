@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/analysen_filter.dart';
-import '../models/analysen.dart';
+import '../../models/analysen_filter.dart';
+import '../../models/analysen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../models/helper_providers.dart';
+import '../../models/helper_providers.dart';
 class Pairs extends StatefulWidget {
   Pairs({Key key}) : super(key: key);
 
@@ -48,7 +48,8 @@ class PairsState extends State<Pairs> {
                 ),
               ),
               onTap: () {
-                Provider.of<Analysen>(context,listen:false).setFilter(AnalyseFilter.pairFilter(pair));
+                Provider.of<AnalyseFilter>(context,listen:false).addPairFilter(pair);
+                Provider.of<Analysen>(context,listen:false).setFilter(Provider.of<AnalyseFilter>(context,listen:false));
                 Provider.of<FilterMode>(context,listen: false).deactivatePairFilter();
               },
             ),

@@ -5,9 +5,9 @@ import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
 import '../models/helper_providers.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import '../widgets/tags_filter_widget.dart';
-import 'pairs.dart';
-
+import 'entry_list_widgets/tags_filter_widget.dart';
+import 'entry_list_widgets/pairs.dart';
+import '../models/analysen_filter.dart';
 class EntryList extends StatefulWidget {
   final bool buildSearchField;
   final Key analysenKey;
@@ -21,8 +21,14 @@ class EntryList extends StatefulWidget {
 }
 
 class EntryListState extends State<EntryList> {
-  Analysen analysen;
   TextEditingController editingController = TextEditingController();
+  bool hover=false;
+
+  FilterMode filterMode;
+  AnalyseFilter analyseFilter;
+  Ascending asc;
+  Analysen analysen;
+  bool anim;
 
   void initState() {
     WidgetsBinding.instance
@@ -34,9 +40,11 @@ class EntryListState extends State<EntryList> {
 
   @override
   Widget build(BuildContext context) {
-    var asc = Provider.of<Ascending>(context);
+    asc = Provider.of<Ascending>(context);
     analysen = Provider.of<Analysen>(context);
-    var anim = Provider.of<Animations>(context, listen:false).animEntry;
+    filterMode=Provider.of<FilterMode>(context);
+    analyseFilter = Provider.of<AnalyseFilter>(context);
+    anim = Provider.of<Animations>(context, listen:false).animEntry;
 
     Widget buildHeadline() {
       return Container(
@@ -159,6 +167,26 @@ class EntryListState extends State<EntryList> {
         : analysen.analysen.keys.toList().reversed.toList()[index]);
     }
 
+    Widget pairWidget = InkWell(
+      onTap: (){
+        analyseFilter.addPairFilter("");
+        Provider.of<Analysen>(context, listen: false)
+            .setFilter(analyseFilter);
+        },
+      onHover: (isHover){
+        setState(() {
+          hover=isHover;
+        });
+
+      },
+      child: Container(
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: Theme.of(context).primaryColor,
+      ),
+      child: !hover ? Text(analyseFilter.pair) : Icon(Icons.delete),
+    ),);
+
     return Stack(
       children:[
         Container(
@@ -171,9 +199,31 @@ class EntryListState extends State<EntryList> {
                 : SizedBox(
               height: 20,
             ),
-            Provider.of<FilterMode>(context).showTagsFilter?TagsFilterWidget():Container(),
+            !filterMode.showTagsFilter && !analyseFilter.isPair ? Container() :
+            Flexible(
+              flex: 1,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: LayoutBuilder(
+                    builder:(ctx,constraints)=> Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: constraints.maxWidth*0.3,
+                            child: Provider.of<AnalyseFilter>(context).isPair ? pairWidget : Container(), //todo maybe listen:false for optimizing , how does the x btton for no more pair filter work??
+                        ),
+                        Container(
+                          width: constraints.maxWidth*0.7,
+                            child: Provider.of<FilterMode>(context).showTagsFilter ? TagsFilterWidget() : Container(),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+            ),
             buildHeadline(),
-            Expanded(
+            Flexible(
+              flex: 12,
               child: Container(
                 child:  ListView.builder(
                   itemBuilder: (ctx, index) {
