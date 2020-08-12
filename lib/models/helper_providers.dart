@@ -3,6 +3,11 @@ import 'package:flutter/material.dart';
 class Ascending with ChangeNotifier {
   bool asc;
   Ascending(this.asc);
+
+  void setAsc(bool newAsc){
+    asc=newAsc;
+    notifyListeners();
+  }
 }
 
 class Animations with ChangeNotifier {

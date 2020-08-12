@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../../models/analysen_filter.dart';
+import 'pair_button.dart';
+import 'tags_filter_widget.dart';
+import '../../models/helper_providers.dart';
+
+
+class FilterControl extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: LayoutBuilder(
+        builder:(ctx,constraints)=> Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: constraints.maxWidth*0.3,
+              child: Provider.of<AnalyseFilter>(context).isPair ? PairButton() : Container(), //todo maybe listen:false for optimizing , how does the x btton for no more pair filter work??
+            ),
+            Container(
+              width: constraints.maxWidth*0.7,
+              child: Provider.of<FilterMode>(context).showTagsFilter ? TagsFilterWidget() : Container(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
