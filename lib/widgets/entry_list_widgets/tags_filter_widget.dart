@@ -5,8 +5,9 @@ import '../../models/user_tags.dart';
 import 'package:provider/provider.dart';
 import '../../models/analysen.dart';
 import '../../models/analysen_filter.dart';
-class TagsFilterWidget extends StatefulWidget {
+import '../widget_helper.dart';
 
+class TagsFilterWidget extends StatefulWidget {
   @override
   _TagsFilterWidgetState createState() => _TagsFilterWidgetState();
 }
@@ -32,37 +33,47 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
               key: Key(index.toString()),
               border: Border.all(width: 1),
               index: index,
+              color: Theme.of(context).accentColor,
+              activeColor: Theme.of(context).primaryColor,
               title: _tags[index],
               textStyle: TextStyle(
-                fontSize: min(14, max((25 - _tags.length), 21)).toDouble(),
+                fontSize: min(14, max((40 - _tags.length), 21)).toDouble(),
               ),
               active: filterTags.contains(_tags[index]),
               onPressed: (item) {
                 if (filterTags.contains(item.title)) {
                   filterTags.remove(item.title);
-                  Provider.of<AnalyseFilter>(context, listen: false).addTagFilter(filterTags);
-                  Provider.of<Analysen>(context, listen: false)
-                      .setFilter(Provider.of<AnalyseFilter>(context, listen: false));
+                  Provider.of<AnalyseFilter>(context, listen: false)
+                      .addTagFilter(filterTags);
+                  Provider.of<Analysen>(context, listen: false).setFilter(
+                      Provider.of<AnalyseFilter>(context, listen: false));
                 } else {
                   filterTags.add(item.title);
-                  Provider.of<AnalyseFilter>(context, listen: false).addTagFilter(filterTags);
-                  Provider.of<Analysen>(context, listen: false)
-                      .setFilter(Provider.of<AnalyseFilter>(context, listen: false));
+                  Provider.of<AnalyseFilter>(context, listen: false)
+                      .addTagFilter(filterTags);
+                  Provider.of<Analysen>(context, listen: false).setFilter(
+                      Provider.of<AnalyseFilter>(context, listen: false));
                 }
               },
               onRemoved: () {
-                setState(() {
-                  _tags.removeAt(index);
-                  if (filterTags.contains(_tags[index])) {
-                    filterTags.remove(_tags[index]);
-                    Provider.of<AnalyseFilter>(context, listen: false).addTagFilter(filterTags);
-                    Provider.of<Analysen>(context, listen: false)
-                        .setFilter(Provider.of<AnalyseFilter>(context, listen: false));
-                  }
+                if (filterTags.contains(_tags[index])) {
+                  filterTags.remove(_tags[index]);
+                  Provider.of<AnalyseFilter>(context, listen: false)
+                      .addTagFilter(filterTags);
+                  Provider.of<Analysen>(context, listen: false).setFilter(
+                      Provider.of<AnalyseFilter>(context, listen: false));
+                }
+                userTags.delete(_tags[index]).catchError((_) {
+                  userTags.add(_tags[index]);
+                  showErrorToast(context,
+                      "Ein Fehler beim entfernen des Tags ist aufgetreten");
                 });
                 return true;
               },
-              removeButton: ItemTagsRemoveButton(), // OR null,
+              removeButton: ItemTagsRemoveButton(
+                color: Colors.white,
+                backgroundColor: Colors.red,
+              ), // OR null,
             );
           },
         ),

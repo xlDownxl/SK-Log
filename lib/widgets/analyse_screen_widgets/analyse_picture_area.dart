@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../models/analyse.dart';
-import '../models/analysen.dart';
-import '../showcaseview/showcaseview.dart';
+import '../../models/analyse.dart';
+import '../../models/analysen.dart';
+import '../../showcaseview/showcaseview.dart';
 import 'package:flutter/services.dart';
 
 class UpperCaseTextFormatter extends TextInputFormatter {

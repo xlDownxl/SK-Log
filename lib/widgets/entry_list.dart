@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/widgets/entry_list_widgets/searchfield.dart';
-import 'list_element.dart';
+import 'entry_list_widgets/list_element.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/helper_providers.dart';

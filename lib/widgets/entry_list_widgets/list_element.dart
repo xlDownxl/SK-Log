@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../screens/analyse_screen.dart';
-import '../models/analyse.dart';
+import '../../screens/analyse_screen.dart';
+import '../../models/analyse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
-import '../models/analysen.dart';
+import '../../models/analysen.dart';
 import 'package:flutter/gestures.dart';
-import '../routing/application.dart';
+import '../../routing/application.dart';
 import 'package:fluro/fluro.dart';
 
 import 'package:flushbar/flushbar.dart';

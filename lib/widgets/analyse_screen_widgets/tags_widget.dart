@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import '../flutter_tags/tag.dart';
+import '../../flutter_tags/tag.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
-import '../models/user_tags.dart';
-import '../models/analyse.dart';
-import '../widgets/widget_helper.dart';
+import '../../models/user_tags.dart';
+import '../../models/analyse.dart';
+import '../widget_helper.dart';
 
 class TagsWidget extends StatefulWidget {
   @override
@@ -61,15 +61,15 @@ class _TagsWidgetState extends State<TagsWidget> {
                   }
                 },
                 onRemoved: () {
-                  setState(() {
+                  if (analyse.activeTags.contains(_tags[index])) {
+                    analyse.activeTags.remove(_tags[index]);
+                  }
                     userTags.delete(_tags[index]).catchError((_) {
-                      setState(() {
-                        userTags.getTags().add(_tags[index]);
-                      });
+                        userTags.add(_tags[index]);
                       showErrorToast(context,
                           "Ein Fehler beim entfernen des Tags ist aufgetreten");
-                    }); // does this really remove or do i need to init usertags alone
-                  });
+                    });
+                   // does this really remove or do i need to init usertags alone
                 },
                 removeButton: ItemTagsRemoveButton(
                     color: Colors.white,backgroundColor: Colors.red,

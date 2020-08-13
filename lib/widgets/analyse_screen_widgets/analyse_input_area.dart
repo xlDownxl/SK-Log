@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'zefyr_textfield.dart';
 import 'tags_widget.dart';
-import '../showcaseview/showcaseview.dart';
+import '../../showcaseview/showcaseview.dart';
 
 class AnalyseInputArea extends StatefulWidget {
   final Key descriptionKey;

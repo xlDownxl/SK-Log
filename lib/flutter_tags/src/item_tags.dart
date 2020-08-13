@@ -236,6 +236,7 @@ class _ItemTagsState extends State<ItemTags> {
         color: _dataList.active ? widget.activeColor : widget.color,
       ),
       child: InkWell(
+        hoverColor: Theme.of(context).accentColor.withAlpha(20),
         borderRadius:
             widget.borderRadius ?? BorderRadius.circular(_initBorderRadius),
         highlightColor:

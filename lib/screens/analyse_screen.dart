@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/home_screen.dart';
-import '../widgets/analyse_input_area.dart';
-import '../widgets/analyse_picture_area.dart';
+import '../widgets/analyse_screen_widgets/analyse_input_area.dart';
+import '../widgets/analyse_screen_widgets/analyse_picture_area.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analyse.dart';
-import '../widgets/zefyr_textfield.dart';
+import '../widgets/analyse_screen_widgets/zefyr_textfield.dart';
 import '../showcaseview/showcaseview.dart';
 import '../widgets/widget_helper.dart';
 import '../models/screen_loader.dart';
