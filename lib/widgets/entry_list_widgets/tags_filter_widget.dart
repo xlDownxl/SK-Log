@@ -31,9 +31,9 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
             return ItemTags(
               elevation: 3,
               key: Key(index.toString()),
-              border: Border.all(width: 1),
+              //border: Border.all(width: 1),
               index: index,
-              color: Theme.of(context).accentColor,
+              color: Theme.of(context).accentColor.withAlpha(220),
               activeColor: Theme.of(context).primaryColor,
               title: _tags[index],
               textStyle: TextStyle(
@@ -72,7 +72,7 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
               },
               removeButton: ItemTagsRemoveButton(
                 color: Colors.white,
-                backgroundColor: Colors.red,
+                backgroundColor: Colors.red[900],
               ), // OR null,
             );
           },

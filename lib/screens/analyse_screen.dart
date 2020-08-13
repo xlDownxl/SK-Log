@@ -50,18 +50,6 @@ class _AnalyseScreenState extends State<AnalyseScreen>
       analyse = Provider.of<Analysen>(context, listen: false)
           .getAnalyse(widget.analyseId);
     }
-   /* if (Provider.of<AppUser>(context, listen: false).isNew) {
-      WidgetsBinding.instance.addPostFrameCallback(
-          (_) => ShowCaseWidget.of(apicKey.currentContext).startShowCase([
-            pairKey,
-            linkKey,
-            analysePictureKey,
-            tagsKey,
-            descriptionInputKey,
-            trashKey,
-            saveKey,
-              ]));
-    }*/
     super.initState();
   }
 
@@ -140,7 +128,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         decoration: InputDecoration(
           icon: Icon(
             Icons.edit,
-            color: Colors.white54,
+            color: Colors.white,
             size: 30,
           ),
         ),

@@ -92,7 +92,7 @@ class Analysen with ChangeNotifier {
           }
         }
       }
-    }
+    } //TODO issearch auslagern damit bei searchbar nur untere search function gecalled wird
     if (filter.isSearch) {
       LinkedHashMap wordFilterAnalysen = LinkedHashMap();
       analysen.values.forEach((analyse) {

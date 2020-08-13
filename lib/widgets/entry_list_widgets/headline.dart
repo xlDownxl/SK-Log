@@ -16,7 +16,7 @@ class Headline extends StatelessWidget {
             child: Center(
                 child: FittedBox(
               child: Text(
-                "Analyse Title",
+                "Analyse Titel",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
               ),
             )),

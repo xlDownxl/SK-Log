@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/entry_list.dart';
 import 'package:gradient_app_bar/gradient_app_bar.dart';
-import '../models/analysen_filter.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
@@ -11,7 +10,7 @@ import '../models/helper_providers.dart';
 import '../routing/application.dart';
 import "login_screen.dart";
 import 'package:fluro/fluro.dart';
-
+import 'dart:math';
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
 
@@ -132,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ],
+      leading: Container(),
       centerTitle: true,
       gradient: LinearGradient(colors: [
         Theme.of(context).accentColor,
@@ -142,74 +142,20 @@ class _HomeScreenState extends State<HomeScreen> {
       ]),
     );
 
-    final deviceWidth = MediaQuery.of(context).size.width;
-
-    var plusButton = LayoutBuilder(
-      builder: (ctx, constraints) => Container(
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Theme.of(context).primaryColor,
-        ),
-        child: ClipRRect(
-          child: InkWell(
-            //TODO clip rrect
-            onTap: () {
-              Application.router.navigateTo(context, "/analyse",
-                  transition: TransitionType.fadeIn);
-            },
-            child: LayoutBuilder(
-              builder: (ctx, constr) => Text(
-                  String.fromCharCode(icon.codePoint),
-                  style: TextStyle(
-                      fontSize: constr.maxHeight * 9 / 60,
-                      fontFamily: icon.fontFamily,
-                      package: icon.fontPackage,
-                      color: Colors.white)),
-            ),
-          ),
-        ),
-      ),
-    );
-
-    Widget menu = Column(children: [
-      RaisedButton(child: Text("#",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),), onPressed: (){
-        Provider.of<FilterMode>(context,listen: false).activateTagFilter();
-      }),
-      RaisedButton(child: Text("Pairs",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),), onPressed: (){
-        Provider.of<FilterMode>(context,listen: false).activatePairFilter();
-      }),
-      RaisedButton(child: Text("Clear",style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),), onPressed: (){
-        Provider.of<AnalyseFilter>(context,listen: false).reset();
-        Provider.of<Analysen>(context,listen: false).setFilter(Provider.of<AnalyseFilter>(context,listen: false));
-        Provider.of<FilterMode>(context,listen: false).reset();
-      }),
-    ],);
-
     return WillPopScope(
       onWillPop: () {
         return Future.value(false);
       },
       child: Scaffold(
-        floatingActionButton: plusButton,
+        //floatingActionButton: plusButton,
         appBar: appBar,
         body: ShowCaseWidget(
           builder: Builder(
-            builder: (ctx) => Row(
-              children: [
-               /* Container(
-                  width: deviceWidth*0.1,
-                  child: menu,
-                ),*/
-                Container(
-                  width: deviceWidth*1,
-                  child: EntryList(
-                    entryList,
-                    true,
-                    analysenFieldKey,
-                    searchFieldKey,
-                  ),
-                ),
-              ],
+            builder: (ctx) => EntryList(
+              entryList,
+              true,
+              analysenFieldKey,
+              searchFieldKey,
             ),
           ),
         ),

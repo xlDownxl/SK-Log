@@ -5,7 +5,7 @@ import '../../models/analysen_filter.dart';
 import '../../models/analysen.dart';
 import '../../models/helper_providers.dart';
 import 'dart:math';
-
+import 'package:flutter_shine/flutter_shine.dart';
 class PairButton extends StatefulWidget {
   @override
   _PairButtonState createState() => _PairButtonState();
@@ -100,7 +100,10 @@ class _PairButtonState extends State<PairButton> {
           child: filter.isPair
               ? LayoutBuilder(builder: (ctx, constraints) {
                   var size = max(constraints.maxWidth, constraints.maxHeight);
-                  return Material(
+                  return FlutterShine(
+                    config: Config(shadowColor: Colors.white,),
+                    light: Light(intensity: 0.5,),
+                    builder:(ctx,ShineShadow shineShadow)=>Material(
                     color: Colors.red,
                     shape: CircleBorder(),
                     child: ClipRRect(
@@ -112,6 +115,7 @@ class _PairButtonState extends State<PairButton> {
                           filter.addPairFilter("");
                           Provider.of<Analysen>(context, listen: false)
                               .setFilter(filter);
+                          hover = false;
                         },
                         splashColor: Colors.red[900],
                         onHover: (hovered) {
@@ -121,19 +125,25 @@ class _PairButtonState extends State<PairButton> {
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(4.0),
-                          child: Center(
-                              child: hover
-                                  ? FittedBox(
-                                      //TODO hierzwischen animation
-                                      child: Icon(
-                                      Icons.close,
-                                      size: size / 2,
-                                    ))
-                                  : FittedBox(
-                                      child: Text(
-                                      filter.pair,
-                                      style: TextStyle(fontSize: size / 12 + 8),
-                                    ))),
+                          child:  Center(
+                                child: hover
+                                    ? FittedBox(
+                                        //TODO hierzwischen animation
+                                        child: Icon(
+                                        Icons.close,
+                                        size: size / 2,
+                                      ))
+                                    : FittedBox(
+                                        child: Text(
+                                        filter.pair.toUpperCase(),
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                            fontSize: size / 12 + 8,
+                                        fontWeight: FontWeight.bold,
+                                            shadows:shineShadow?.shadows,
+                                        ),
+                                      ))),
+                          ),
                         ),
                       ),
                     ),

@@ -9,7 +9,10 @@ import 'entry_list_widgets/pairs.dart';
 import '../models/analysen_filter.dart';
 import 'entry_list_widgets/headline.dart';
 import 'entry_list_widgets/filter_control.dart';
-
+import '../routing/application.dart';
+import 'dart:math';
+import 'package:fluro/fluro.dart';
+import 'package:flutter_shine/flutter_shine.dart';
 class EntryList extends StatefulWidget {
   final bool buildSearchField;
   final Key analysenKey;
@@ -23,7 +26,7 @@ class EntryList extends StatefulWidget {
 }
 
 class EntryListState extends State<EntryList> {
-
+  final IconData icon = Icons.add;
   FilterMode filterMode;
   AnalyseFilter analyseFilter;
   Ascending asc;
@@ -46,15 +49,56 @@ class EntryListState extends State<EntryList> {
     analyseFilter = Provider.of<AnalyseFilter>(context);
     anim = Provider.of<Animations>(context, listen:false).animEntry;
 
-
-
+    Widget plusButton=LayoutBuilder(builder: (ctx, constraints) {
+      var size = max(constraints.maxWidth, constraints.maxHeight);
+      return SizedBox(
+        width: constraints.maxHeight*0.15,
+        height: constraints.maxHeight*0.15,
+        child: FlutterShine(
+          config: Config(shadowColor: Colors.black,),
+      light: Light(intensity: 0.5,),
+      builder:(ctx,ShineShadow shineShadow)=> Material(
+          color: Colors.orange,
+          elevation: 4,
+          shape: CircleBorder(),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(size / 2),
+            child: InkWell(
+              customBorder: CircleBorder(),
+              borderRadius: BorderRadius.circular(25.0),
+              onTap: () {
+                Application.router.navigateTo(context, "/analyse",
+                    transition: TransitionType.fadeIn);
+              },
+              splashColor: Colors.orange[900],
+              child: Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Center(
+                  child: LayoutBuilder(
+                    builder: (ctx, constr) => Text(
+                        String.fromCharCode(icon.codePoint),
+                        style: TextStyle(
+                            fontSize: constr.maxHeight ,
+                            shadows: shineShadow?.shadows,
+                            fontFamily: icon.fontFamily,
+                            package: icon.fontPackage,
+                            color: Colors.white)),
+                  ),
+                ),
+              ),
+            ),
+          ),
+      ),
+        ),
+      );
+    });
 
     Widget getItem(index){
       return ListElement(asc.asc
         ? analysen.analysen.keys.toList()[index]
         : analysen.analysen.keys.toList().reversed.toList()[index]);
     }
-//TODO flexible column alignments
+
     return Stack(
       children:[
         Container(
@@ -62,12 +106,6 @@ class EntryListState extends State<EntryList> {
         child:  Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-           /* widget.buildSearchField
-                ? Searchfield()
-                : SizedBox(
-              height: 20,
-            ),*/
-            //!filterMode.showTagsFilter && !analyseFilter.isPair ? Container() :
             Flexible(
               flex: 2,
                 child: FilterControl(),
@@ -96,6 +134,13 @@ class EntryListState extends State<EntryList> {
           ],
         ),
       ),
+    Align(
+    alignment: Alignment.bottomRight,
+    child: Container(
+      margin: const EdgeInsets.only(bottom: 10,right: 10,),
+        child: plusButton,
+    ),
+    ),
         Provider.of<FilterMode>(context).showPairFilter?Container(
           color: Colors.black.withOpacity(0.7),
           padding: EdgeInsets.all(50),
