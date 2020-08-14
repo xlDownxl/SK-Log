@@ -4,28 +4,73 @@ import '../../models/analysen_filter.dart';
 import '../../models/analysen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../models/helper_providers.dart';
+import 'package:flutter_shine/flutter_shine.dart';
+
 class Pairs extends StatelessWidget {
   Pairs({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List buildPairs() {
-      var pairs = Provider.of<Analysen>(context, listen: false)
+      var pairs = Provider
+          .of<Analysen>(context, listen: false)
           .userPairs
-          .getPairs(); //listen = false?
+          .getPairs();
       var pairWidgets = [];
-      var counter = 0;
+
       pairs.forEach((pair, value) {
-        pairWidgets.add(
-          AnimationConfiguration.staggeredGrid(
-            position: counter,
-            columnCount: 6,
-            duration: const Duration(milliseconds: 375),
-            child: ScaleAnimation(
-              child: FadeInAnimation(
-                child: Card(
+        pairWidgets.add(GridElement(pair,value));
+      });
+      return pairWidgets;
+    }
+
+    return GestureDetector(
+      onTap: () {
+        Provider.of<FilterMode>(context, listen: false).deactivatePairFilter();
+      },
+      child: GridView(
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 130,
+          childAspectRatio: 2 / 2,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        children: <Widget>[...buildPairs(),],
+      ),
+    );
+  }
+}
+
+class GridElement extends StatefulWidget {
+  final pair;
+  final value;
+  GridElement(this.pair,this.value);
+
+  @override
+  _GridElementState createState() => _GridElementState();
+}
+
+class _GridElementState extends State<GridElement> {
+  var counter = 0;
+  bool colors=false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimationConfiguration.staggeredGrid(
+      position: counter,
+      columnCount: 6,
+      duration: const Duration(milliseconds: 375),
+      child: ScaleAnimation(
+        child: FadeInAnimation(
+          child: FlutterShine(
+            config: Config(shadowColor: Theme
+                .of(context)
+                .primaryColor,),
+            light: Light(intensity: 0.5,),
+            builder: (ctx, ShineShadow shineShadow) =>
+                Card(
                   elevation: 2,
-                  color: Colors.blue,
+                  color: !colors ? Colors.orange :  Colors.yellowAccent,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(30),
                     ),
@@ -36,44 +81,35 @@ class Pairs extends StatelessWidget {
                       child: Center(
                         child: FittedBox(
                           child: Text(
-                            pair,
+                            widget.pair,
                             style:
-                            TextStyle(fontWeight: FontWeight.bold, fontSize: 24),
+                            TextStyle(fontWeight: FontWeight.bold,
+                              fontSize: 30,
+                              //color: Colors.white,
+                              shadows: shineShadow?.shadows,),
                           ),
                         ),
                       ),
                     ),
                     onTap: () {
-                      Provider.of<AnalyseFilter>(context,listen:false).addPairFilter(pair);
-                      Provider.of<Analysen>(context,listen:false).setFilter(Provider.of<AnalyseFilter>(context,listen:false));
-                      Provider.of<FilterMode>(context,listen: false).deactivatePairFilter();
+                      Provider.of<AnalyseFilter>(context, listen: false)
+                          .addPairFilter(widget.pair);
+                      Provider.of<Analysen>(context, listen: false).setFilter(
+                          Provider.of<AnalyseFilter>(context, listen: false));
+                      Provider.of<FilterMode>(context, listen: false)
+                          .deactivatePairFilter();
+                    },
+                    onHover: (val) {
+                      setState(() {
+                        colors = val;
+                      });
                     },
                   ),
                 ),
-              ),
-            ),
           ),
-        );
-      });
-      return pairWidgets;
-    }
-
-    return GestureDetector(
-      onTap: (){
-        Provider.of<FilterMode>(context,listen: false).deactivatePairFilter();
-      },
-      child: GridView(
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          //crossAxisCount: 8,
-          maxCrossAxisExtent: 130,
-          childAspectRatio: 2 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
         ),
-        children: <Widget>[
-          ...buildPairs(),
-        ],
       ),
     );
   }
 }
+

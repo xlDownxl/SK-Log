@@ -6,6 +6,7 @@ import '../../models/analysen.dart';
 import '../../models/helper_providers.dart';
 import 'dart:math';
 import 'package:flutter_shine/flutter_shine.dart';
+
 class PairButton extends StatefulWidget {
   @override
   _PairButtonState createState() => _PairButtonState();
@@ -101,31 +102,35 @@ class _PairButtonState extends State<PairButton> {
               ? LayoutBuilder(builder: (ctx, constraints) {
                   var size = max(constraints.maxWidth, constraints.maxHeight);
                   return FlutterShine(
-                    config: Config(shadowColor: Colors.white,),
-                    light: Light(intensity: 0.5,),
-                    builder:(ctx,ShineShadow shineShadow)=>Material(
-                    color: Colors.red,
-                    shape: CircleBorder(),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(size / 2),
-                      child: InkWell(
-                        customBorder: CircleBorder(),
-                        borderRadius: BorderRadius.circular(25.0),
-                        onTap: () {
-                          filter.addPairFilter("");
-                          Provider.of<Analysen>(context, listen: false)
-                              .setFilter(filter);
-                          hover = false;
-                        },
-                        splashColor: Colors.red[900],
-                        onHover: (hovered) {
-                          setState(() {
-                            hover = hovered;
-                          });
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child:  Center(
+                    config: Config(
+                      shadowColor: Colors.black,
+                    ),
+                    light: Light(
+                      intensity: 0.7,
+                    ),
+                    builder: (ctx, ShineShadow shineShadow) => Material(
+                      color: Colors.redAccent,
+                      shape: CircleBorder(),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(size / 2),
+                        child: InkWell(
+                          customBorder: CircleBorder(),
+                          borderRadius: BorderRadius.circular(25.0),
+                          onTap: () {
+                            filter.addPairFilter("");
+                            Provider.of<Analysen>(context, listen: false)
+                                .setFilter(filter);
+                            hover = false;
+                          },
+                          splashColor: Colors.red[900],
+                          onHover: (hovered) {
+                            setState(() {
+                              hover = hovered;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(4.0),
+                            child: Center(
                                 child: hover
                                     ? FittedBox(
                                         //TODO hierzwischen animation
@@ -138,9 +143,9 @@ class _PairButtonState extends State<PairButton> {
                                         filter.pair.toUpperCase(),
                                         style: TextStyle(
                                           color: Colors.white,
-                                            fontSize: size / 12 + 8,
-                                        fontWeight: FontWeight.bold,
-                                            shadows:shineShadow?.shadows,
+                                          fontSize: size / 12 + 8,
+                                          fontWeight: FontWeight.bold,
+                                          shadows: shineShadow?.shadows,
                                         ),
                                       ))),
                           ),

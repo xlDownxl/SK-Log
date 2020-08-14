@@ -31,7 +31,6 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
             return ItemTags(
               elevation: 3,
               key: Key(index.toString()),
-              //border: Border.all(width: 1),
               index: index,
               color: Theme.of(context).accentColor.withAlpha(220),
               activeColor: Theme.of(context).primaryColor,
