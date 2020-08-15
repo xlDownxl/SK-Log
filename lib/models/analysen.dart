@@ -161,9 +161,9 @@ class Analysen with ChangeNotifier {
       analyse.id = val.documentID;
       allAnalysen[analyse.id] = analyse;
       if (!filter.isPair && !filter.isTag) {
-        get();
-      } else {
         notifyListeners();
+      } else {
+        get();
       }
       //analysen[analyse.id] = analyse; //TODO auf den grund gehen: warum funktioniert zb update nicht mehr wenn das hier im cod eist
       userPairs.add(analyse.pair);

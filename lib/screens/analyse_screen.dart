@@ -149,18 +149,13 @@ class _AnalyseScreenState extends State<AnalyseScreen>
     );
 
     var appBar = GradientAppBar(
-      leading: Showcase(
-        key: saveKey,
-        description:
-            'Klicke hier um die Analyse zu speichern. Der "Zurück" Pfeil deines Browsers speichert die Analyse ebenfalls',
-        child: Container(
-          padding: EdgeInsets.all(10),
-          child: InkWell(
-            child: Icon(Icons.save, size: 36),
-            onTap: (){
-              goBack(false);
-              },
-          ),
+      leading: Container(
+        padding: EdgeInsets.all(10),
+        child: InkWell(
+          child: Icon(Icons.save, size: 36),
+          onTap: (){
+            goBack(false);
+            },
         ),
       ),
       gradient: LinearGradient(colors: [ Theme.of(context).accentColor,Theme.of(context).primaryColor,],stops: [0.65,1]),
@@ -225,17 +220,11 @@ class _AnalyseScreenState extends State<AnalyseScreen>
                             Container(
                               width: constr.maxWidth * 0.4,
                               padding: EdgeInsets.symmetric(horizontal: 25),
-                              child: AnalyseInputArea(
-                                  descriptionKey,
-                                  learningKey,
-                                  tagsKey,
-                                  descriptionInputKey,
-                                  learningInputKey),
+                              child: AnalyseInputArea( descriptionKey, learningKey,),
                             ),
                             Container(
                               width: constr.maxWidth * 0.6,
-                              child: AnalysePictureArea(
-                                  apicKey, analysePictureKey, linkKey, pairKey),
+                              child: AnalysePictureArea(),
                             )
                           ],
                         ),

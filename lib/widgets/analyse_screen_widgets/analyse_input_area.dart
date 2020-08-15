@@ -1,18 +1,11 @@
 import 'package:flutter/material.dart';
 import 'zefyr_textfield.dart';
 import 'tags_widget.dart';
-import '../../showcaseview/showcaseview.dart';
 
 class AnalyseInputArea extends StatefulWidget {
   final Key descriptionKey;
   final Key learningKey;
-  final Key tagsKey;
-  final Key textInputKey;
-  final Key learningInputKey;
-
-  AnalyseInputArea(this.descriptionKey, this.learningKey, this.tagsKey,
-      this.textInputKey, this.learningInputKey);
-
+  AnalyseInputArea(this.descriptionKey, this.learningKey, );
   @override
   AnalyseInputAreaState createState() => AnalyseInputAreaState();
 }

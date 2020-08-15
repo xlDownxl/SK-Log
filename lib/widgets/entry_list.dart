@@ -114,21 +114,23 @@ class EntryListState extends State<EntryList> {
             Flexible(
               flex: 12,
               child: Container(
-                child:  ListView.builder(
-                  itemBuilder: (ctx, index) {
-                    return anim ?
-                     AnimationConfiguration.staggeredList(
-                      position: index,
-                      duration: const Duration(milliseconds: 375),
-                      child: FlipAnimation(
-                        duration: Duration(microseconds: 50),
-                        child: FadeInAnimation(
-                          child: getItem(index),
+                child:  AnimationLimiter(
+                  child: ListView.builder(
+                    itemBuilder: (ctx, index) {
+                      return anim ?
+                       AnimationConfiguration.staggeredList(
+                        position: index,
+                        duration: const Duration(milliseconds: 500),
+                        child: FlipAnimation(
+                          duration: const Duration(milliseconds: 500),
+                          child: FadeInAnimation(
+                            child: getItem(index),
+                          ),
                         ),
-                      ),
-                    ): getItem(index);
-                    },
-                  itemCount: analysen.analysen.length,
+                      ): getItem(index);
+                      },
+                    itemCount: analysen.analysen.length,
+                  ),
                 ),
               ),),
           ],

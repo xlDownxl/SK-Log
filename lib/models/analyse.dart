@@ -20,6 +20,11 @@ class Analyse with ChangeNotifier {
     title = "Neue Analyse";
   }
 
+  void setLink(String link, int index){
+    links[index]=link;
+    notifyListeners();
+  }
+
   Future getPair(tv_url, analysen) async {
     String url = "https://sk-log.appspot.com/getpair?id=" + tv_url;
 
@@ -36,7 +41,7 @@ class Analyse with ChangeNotifier {
     });
   }
 
-  Future setLink(String link, analysen) {
+  Future setLinkAuto(String link, analysen) {
     this.links[0] = link;
     return getPair(link, analysen);
   }
