@@ -5,13 +5,13 @@ import '../../models/analysen.dart';
 
 class LinkArea extends StatefulWidget {
   final pairShowing;
-  LinkArea(this.pairShowing);
+  LinkArea(key,this.pairShowing): super(key: key);
 
   @override
-  _LinkAreaState createState() => _LinkAreaState();
+  LinkAreaState createState() => LinkAreaState();
 }
 
-class _LinkAreaState extends State<LinkArea> {
+class LinkAreaState extends State<LinkArea> {
   bool showTwo = false;
   bool showThree = false;
   Analyse analyse;
@@ -46,11 +46,15 @@ class _LinkAreaState extends State<LinkArea> {
             ? (val) {
           if (val.contains("tradingview")) {
             widget.pairShowing.currentState.editLoading(true);
-            analyse
+             analyse
                 .setLinkAuto(
-                val, Provider.of<Analysen>(context, listen: false))
+                val,)
                 .then((_) {
+                  try{
                 widget.pairShowing.currentState.editLoading(false);
+                  } catch (error){
+                  }
+
             }).catchError((error) {
                 analyse.pair = "Others";
                 widget.pairShowing.currentState.editLoading(false);

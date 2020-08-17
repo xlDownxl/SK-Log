@@ -11,7 +11,8 @@ import '../showcaseview/showcaseview.dart';
 import '../widgets/widget_helper.dart';
 import '../models/screen_loader.dart';
 import '../routing/application.dart';
-
+import 'dart:io';
+import 'package:rflutter_alert/rflutter_alert.dart';
 class AnalyseScreen extends StatefulWidget {
   final analyseId;
   AnalyseScreen(this.analyseId);
@@ -33,14 +34,10 @@ class _AnalyseScreenState extends State<AnalyseScreen>
   final GlobalKey<AnalysePictureAreaState> apicKey =
       GlobalKey<AnalysePictureAreaState>();
 
-  GlobalKey pairKey = GlobalKey();
-  GlobalKey linkKey = GlobalKey();
-  GlobalKey analysePictureKey = GlobalKey();
-  GlobalKey tagsKey = GlobalKey();
+  GlobalKey<AnalysePictureAreaState> apa = GlobalKey<AnalysePictureAreaState>();
+
   GlobalKey descriptionInputKey = GlobalKey();
   GlobalKey learningInputKey = GlobalKey();
-  GlobalKey trashKey = GlobalKey();
-  GlobalKey saveKey = GlobalKey();
 
   @override
   void initState() {
@@ -66,8 +63,44 @@ class _AnalyseScreenState extends State<AnalyseScreen>
     descriptionKey.currentState.safeDocument();
     learningKey.currentState.safeDocument();
     if (widget.analyseId == null) {
-      return Provider.of<Analysen>(context, listen: false)
-          .add(analyse,);
+      if(apa.currentState.pairShowing.currentState.loading==true){
+        return Alert(
+          context: context,
+          type: AlertType.warning,
+          title: "Dein Screenshot wird noch analysiert",
+          desc: "Wenn du zurück gehst wird deiner Analyse nicht das korrekte Symbol zugewiesen. Willst du trotzdem zurück gehen?",
+          buttons: [
+            DialogButton(
+              child: Text(
+                "Abbrechen",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {    Navigator.pop(context, false);},
+              color: Color.fromRGBO(0, 179, 134, 1.0),
+            ),
+            DialogButton(
+              child: Text(
+                "Zurück zur Auswahl",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+              onPressed: () {    Navigator.pop(context, true);},
+              gradient: LinearGradient(colors: [
+                Color.fromRGBO(116, 116, 191, 1.0),
+                Color.fromRGBO(52, 138, 199, 1.0)
+              ]),
+            )
+          ],
+        ).show().then((value) {
+          if(value){
+            return Provider.of<Analysen>(context, listen: false).add(analyse);
+          }
+          else{
+            throw ("error");
+          }
+        });
+      }else{
+        return Provider.of<Analysen>(context, listen: false).add(analyse);
+      }
     } else {
       return Provider.of<Analysen>(context, listen: false).update(analyse);
     }
@@ -94,8 +127,9 @@ class _AnalyseScreenState extends State<AnalyseScreen>
           }
         // ignore: missing_return
         }).catchError((error) {
-          showErrorToast(context,
-              "Speichern fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+          print(error);
+         // showErrorToast(context,
+         //     "Speichern fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
           if (backButton) return false;
         });
       });
@@ -162,14 +196,10 @@ class _AnalyseScreenState extends State<AnalyseScreen>
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Showcase(
-            description: "Klicke hier um die Analyse zulöschen",
-            key: trashKey,
-            child: InkWell(
-              child:
-                  Icon(Icons.delete, size: 36),
-              onTap: delete,
-            ),
+          InkWell(
+            child:
+                Icon(Icons.delete, size: 36),
+            onTap: delete,
           ),
           Flexible(
             child: Container(),
@@ -224,7 +254,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
                             ),
                             Container(
                               width: constr.maxWidth * 0.6,
-                              child: AnalysePictureArea(),
+                              child: AnalysePictureArea(apa),
                             )
                           ],
                         ),

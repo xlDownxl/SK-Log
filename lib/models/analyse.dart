@@ -25,7 +25,7 @@ class Analyse with ChangeNotifier {
     notifyListeners();
   }
 
-  Future getPair(tv_url, analysen) async {
+  Future getPair(tv_url,) async {
     String url = "https://sk-log.appspot.com/getpair?id=" + tv_url;
 
     return http.get(url).then((response) {
@@ -36,14 +36,14 @@ class Analyse with ChangeNotifier {
         this.pair = res["pair"] ?? "Others";
 
         notifyListeners();
-        analysen.notify();
+        //analysen.notify();
       }
     });
   }
 
-  Future setLinkAuto(String link, analysen) {
+  Future setLinkAuto(String link,) {
     this.links[0] = link;
-    return getPair(link, analysen);
+    return getPair(link,);
   }
 
   Analyse.fromMap(Map snapshot, docID) {

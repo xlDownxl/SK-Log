@@ -7,6 +7,7 @@ import 'pair_showing.dart';
 import 'link_area.dart';
 
 class AnalysePictureArea extends StatefulWidget {
+  AnalysePictureArea(key): super(key: key);
 
   @override
   AnalysePictureAreaState createState() => AnalysePictureAreaState();
@@ -16,6 +17,7 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
   Analyse analyse;
 
   var pairShowing = GlobalKey<PairShowingState>();
+  var linkArea = GlobalKey<LinkAreaState>();
   var pictureIndex = 0;
 
   @override
@@ -41,7 +43,7 @@ class AnalysePictureAreaState extends State<AnalysePictureArea> {
                 Flexible(
                   fit: FlexFit.tight,
                   flex: 42,
-                  child: LinkArea(pairShowing),
+                  child: LinkArea(linkArea,pairShowing),
                 ),
                 Flexible(
                   child: Container(),
