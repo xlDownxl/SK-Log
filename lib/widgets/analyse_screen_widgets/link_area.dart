@@ -16,6 +16,7 @@ class LinkAreaState extends State<LinkArea> {
   bool showThree = false;
   Analyse analyse;
   var textEditingController;
+  Future pairLoadingFuture;
 
   @override
   void initState() {
@@ -46,7 +47,7 @@ class LinkAreaState extends State<LinkArea> {
             ? (val) {
           if (val.contains("tradingview")) {
             widget.pairShowing.currentState.editLoading(true);
-             analyse
+             pairLoadingFuture=analyse
                 .setLinkAuto(
                 val,)
                 .then((_) {

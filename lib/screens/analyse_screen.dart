@@ -13,11 +13,14 @@ import '../models/screen_loader.dart';
 import '../routing/application.dart';
 import 'dart:io';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
 class AnalyseScreen extends StatefulWidget {
   final analyseId;
+
   AnalyseScreen(this.analyseId);
 
   static const routeName = "/analyse";
+
   @override
   _AnalyseScreenState createState() => _AnalyseScreenState();
 }
@@ -63,46 +66,19 @@ class _AnalyseScreenState extends State<AnalyseScreen>
     descriptionKey.currentState.safeDocument();
     learningKey.currentState.safeDocument();
     if (widget.analyseId == null) {
-      if(apa.currentState.pairShowing.currentState.loading==true){
-        return Alert(
-          context: context,
-          type: AlertType.warning,
-          title: "Dein Screenshot wird noch analysiert",
-          desc: "Wenn du zurück gehst wird deiner Analyse nicht das korrekte Symbol zugewiesen. Willst du trotzdem zurück gehen?",
-          buttons: [
-            DialogButton(
-              child: Text(
-                "Abbrechen",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {    Navigator.pop(context, false);},
-              color: Color.fromRGBO(0, 179, 134, 1.0),
-            ),
-            DialogButton(
-              child: Text(
-                "Zurück zur Auswahl",
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
-              onPressed: () {    Navigator.pop(context, true);},
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(116, 116, 191, 1.0),
-                Color.fromRGBO(52, 138, 199, 1.0)
-              ]),
-            )
-          ],
-        ).show().then((value) {
-          if(value){
-            return Provider.of<Analysen>(context, listen: false).add(analyse);
-          }
-          else{
-            throw ("error");
-          }
-        });
-      }else{
+      return apa.currentState.linkArea.currentState.pairLoadingFuture.then((value) {
         return Provider.of<Analysen>(context, listen: false).add(analyse);
-      }
+      }).catchError((error) {
+        print(error);
+        return Provider.of<Analysen>(context, listen: false).add(analyse);
+      });
     } else {
-      return Provider.of<Analysen>(context, listen: false).update(analyse);
+      return apa.currentState.linkArea.currentState.pairLoadingFuture.then((value) { //maybe use oncompleted
+        return Provider.of<Analysen>(context, listen: false).update(analyse);
+      }).catchError((error) {
+        print(error);
+        return Provider.of<Analysen>(context, listen: false).update(analyse);
+      });
     }
   }
 
@@ -116,23 +92,22 @@ class _AnalyseScreenState extends State<AnalyseScreen>
   }
 
   Future goBack(bool backButton) async {
-      return await this.performFuture(() {
+    return await this.performFuture(() {
+      // ignore: missing_return
+      return safe().then((_) {
+        if (backButton) {
+          return true;
+        } else {
+          Navigator.pop(context);
+        }
         // ignore: missing_return
-        return safe().then((_) {
-          if (backButton) {
-            return true;
-          }
-          else {
-            Navigator.pop(context);
-          }
-        // ignore: missing_return
-        }).catchError((error) {
-          print(error);
-         // showErrorToast(context,
-         //     "Speichern fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
-          if (backButton) return false;
-        });
+      }).catchError((error) {
+        print(error);
+        // showErrorToast(context,
+        //     "Speichern fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+        if (backButton) return false;
       });
+    });
   }
 
   Future delete() async {
@@ -142,7 +117,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         return Provider.of<Analysen>(context, listen: false)
             .delete(widget.analyseId)
             .then((value) {
-          Navigator.pop(context,analyse);
+          Navigator.pop(context, analyse);
         }).catchError((error) {
           showErrorToast(context,
               "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
@@ -155,7 +130,6 @@ class _AnalyseScreenState extends State<AnalyseScreen>
 
   @override
   Widget screen(BuildContext context) {
-
     Widget titleField = Container(
       width: 400, //TODO maybe make responsive title textfield
       child: TextFormField(
@@ -169,14 +143,14 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         //maxLength: 30,
         focusNode: titleFocus,
         style: TextStyle(
-            color: Colors.black,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
-            //decoration: TextDecoration.underline,
+          color: Colors.black,
+          fontSize: 30,
+          fontWeight: FontWeight.bold,
+          //decoration: TextDecoration.underline,
         ),
         cursorColor: Colors.white,
         onChanged: (val) {
-            analyse.title = val;
+          analyse.title = val;
         },
         initialValue: analyse.title,
       ),
@@ -187,18 +161,23 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         padding: EdgeInsets.all(10),
         child: InkWell(
           child: Icon(Icons.save, size: 36),
-          onTap: (){
+          onTap: () {
             goBack(false);
-            },
+          },
         ),
       ),
-      gradient: LinearGradient(colors: [ Theme.of(context).accentColor,Theme.of(context).primaryColor,],stops: [0.65,1]),
+      gradient: LinearGradient(colors: [
+        Theme.of(context).accentColor,
+        Theme.of(context).primaryColor,
+      ], stops: [
+        0.65,
+        1
+      ]),
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           InkWell(
-            child:
-                Icon(Icons.delete, size: 36),
+            child: Icon(Icons.delete, size: 36),
             onTap: delete,
           ),
           Flexible(
@@ -224,8 +203,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
             RaisedButton(
                 child: Text("Zurück"),
                 onPressed: () {
-                  Application.router
-                      .navigateTo(context, HomeScreen.routeName);
+                  Application.router.navigateTo(context, HomeScreen.routeName);
                 })
           ],
         ),
@@ -236,7 +214,9 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         ? ChangeNotifierProvider.value(
             value: analyse,
             child: WillPopScope(
-              onWillPop: () async{return await goBack(true);},
+              onWillPop: () async {
+                return await goBack(true);
+              },
               child: ShowCaseWidget(
                 builder: Builder(
                   builder: (ctx) => Scaffold(
@@ -250,7 +230,10 @@ class _AnalyseScreenState extends State<AnalyseScreen>
                             Container(
                               width: constr.maxWidth * 0.4,
                               padding: EdgeInsets.symmetric(horizontal: 25),
-                              child: AnalyseInputArea( descriptionKey, learningKey,),
+                              child: AnalyseInputArea(
+                                descriptionKey,
+                                learningKey,
+                              ),
                             ),
                             Container(
                               width: constr.maxWidth * 0.6,

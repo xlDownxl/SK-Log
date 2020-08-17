@@ -19,6 +19,7 @@ class PairShowingState extends State<PairShowing> {
   FocusNode editPairFocus = FocusNode();
   bool loading = false;
 
+
   void editLoading(bool load){
     setState(() {
       loading=load;
