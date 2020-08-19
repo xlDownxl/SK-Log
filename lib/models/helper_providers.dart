@@ -10,6 +10,10 @@ class Ascending with ChangeNotifier {
   }
 }
 
+class UsingScrollbar with ChangeNotifier {
+  bool use=false;
+}
+
 class Animations with ChangeNotifier {
   bool animEntry=true;
   bool animTag=true;

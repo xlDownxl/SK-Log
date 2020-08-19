@@ -13,6 +13,8 @@ import '../routing/application.dart';
 import 'dart:math';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_shine/flutter_shine.dart';
+import 'draggable_scrollbar.dart';
+
 class EntryList extends StatefulWidget {
   final bool buildSearchField;
   final Key analysenKey;
@@ -32,6 +34,7 @@ class EntryListState extends State<EntryList> {
   Ascending asc;
   Analysen analysen;
   bool anim;
+  ScrollController scrollController=ScrollController();
 
   void initState() {
     WidgetsBinding.instance
@@ -115,21 +118,27 @@ class EntryListState extends State<EntryList> {
               flex: 12,
               child: Container(
                 child:  AnimationLimiter(
-                  child: ListView.builder(
-                    itemBuilder: (ctx, index) {
-                      return anim ?
-                       AnimationConfiguration.staggeredList(
-                        position: index,
-                        duration: const Duration(milliseconds: 500),
-                        child: FlipAnimation(
+                  child: DraggableScrollbar.rrect(
+                    controller: scrollController,
+                    alwaysVisibleScrollThumb: true,
+                    child: ListView.builder(
+                      padding: EdgeInsets.only(right: 20),
+                      controller: scrollController,
+                      itemBuilder: (ctx, index) {
+                        return anim ?
+                         AnimationConfiguration.staggeredList(
+                          position: index,
                           duration: const Duration(milliseconds: 500),
-                          child: FadeInAnimation(
-                            child: getItem(index),
+                          child: FlipAnimation(
+                            duration: const Duration(milliseconds: 500),
+                            child: FadeInAnimation(
+                              child: getItem(index),
+                            ),
                           ),
-                        ),
-                      ): getItem(index);
-                      },
-                    itemCount: analysen.analysen.length,
+                        ): getItem(index);
+                        },
+                      itemCount: analysen.analysen.length,
+                    ),
                   ),
                 ),
               ),),

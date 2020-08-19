@@ -57,6 +57,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (ctx) => FilterMode(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => UsingScrollbar(),
+        ),
       ],
       child: MaterialApp(
         title: 'SK!Log',

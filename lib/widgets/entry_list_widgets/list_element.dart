@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/helper_providers.dart';
 import '../../screens/analyse_screen.dart';
 import '../../models/analyse.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -63,139 +64,131 @@ class ListElement extends StatelessWidget {
   Widget build(BuildContext context) {
     Analyse analyse = Provider.of<Analysen>(context).analysen[analyseId];
     bool undoActive = true;
-    var analysen = Provider.of<Analysen>(context, listen: false);
+    Analysen analysen = Provider.of<Analysen>(context, listen: false);
 
-    return Container(
-    /*  decoration: BoxDecoration(
-
-
-          boxShadow: [BoxShadow(color: Colors.grey.withOpacity(0.5),
-          spreadRadius: 5,
-          blurRadius: 7,
-          offset: Offset(0, 3))]),*/
-      child: MouseRegion(
-        onEnter: (event) {
-          if (analyse.links[0] != "") {
-            showOverlay(context, analyse, event.position);
-          }
-        },
-        onExit: (event) {
-          deleteOverlay();
-        },
-        child: Card(
-          shape: RoundedRectangleBorder(
-              side: BorderSide(color: Colors.black45,//Theme.of(context).primaryColor,
-                  width: 2),
-              borderRadius: BorderRadius.circular(10),
-    ),
-          //shadowColor: Colors.orangeAccent,
-          elevation: 2,
-          color: Colors.blue.withOpacity(0.3),
-          child: InkWell(
-            onTap: () async {
-              var deletedAnalyse = await Application.router.navigateTo(
-                  context, AnalyseScreen.routeName + "/" + analyse.id,
-                  transition: TransitionType.fadeIn);
-              if (deletedAnalyse != null) {
-                Flushbar(
-                  padding: EdgeInsets.all(10),
-                  borderRadius: 8,
-                  backgroundColor: Theme.of(context).primaryColor,
-                  boxShadows: [
-                    BoxShadow(
-                      color: Colors.black45,
-                      offset: Offset(3, 3),
-                      blurRadius: 3,
-                    ),
-                  ],
-                  duration: Duration(seconds: 3),
-                  //dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                  forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-                  messageText: Text(
-                    deletedAnalyse.title + " gelöscht",
-                    style: TextStyle(fontSize: 24, color: Colors.white),
-                  ),
-                  mainButton: FlatButton(
-                    onPressed: () {
-                      if (undoActive) {
-                        undoActive = false;
-                        analysen.add(analyse);
-                      }
-                    },
-                    child: Text(
-                      "Undo",
-                      style: TextStyle(fontSize: 24),
-                    ),
-                    color: Theme.of(context).primaryColor,
-                  ),
-                )..show(context);
-              }
-            },
-            child: Container(
-              margin: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
-
-              child: Row(
-                children: <Widget>[
-                  Flexible(
-                    flex: 2,
-                    child: Center(
-                      child: FittedBox(
-                          child: Text(
-                        analyse.title,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: fSize),
-                      )),
-                    ),
-                    fit: FlexFit.tight,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Center(
-                        child: FittedBox(
-                      child: Text(
-                        analyse.pair,
-                        style: TextStyle(fontSize: fSize),
-                      ),
-                    )),
-                    fit: FlexFit.tight,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    flex: 1,
-                    child: Center(
-                      child: FittedBox(
-                          child: Text(
-                        "${analyse.date.day}.${analyse.date.month}.${analyse.date.year}",
-                        style: TextStyle(fontSize: fSize),
-                      )),
-                    ),
-                    fit: FlexFit.tight,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Flexible(
-                    flex: 3,
-                    child: Center(
-                      child: AutoSizeText(
-                        writeTags(analyse.activeTags),
-                        maxLines: 2,
-                        style: TextStyle(color: Colors.blueGrey, fontSize: fSize),
-                      ),
-                    ),
-                    fit: FlexFit.tight,
+    return MouseRegion(
+      onEnter: (event) {
+        if (Provider.of<UsingScrollbar>(context, listen: false).use ==
+            false) //kann ich auch problemlos einschalten
+        if (analyse.links[0] != "") {
+          showOverlay(context, analyse, event.position);
+        }
+      },
+      onExit: (event) {
+        deleteOverlay();
+      },
+      child: Card(
+        shape: RoundedRectangleBorder(
+          side: BorderSide(
+              color: Colors.black45, //Theme.of(context).primaryColor,
+              width: 2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        elevation: 2,
+        color: Colors.blue.withOpacity(0.3),
+        child: InkWell(
+          onTap: () async {
+            var deletedAnalyse = await Application.router.navigateTo(
+                context, AnalyseScreen.routeName + "/" + analyse.id,
+                transition: TransitionType.fadeIn);
+            if (deletedAnalyse != null) {
+              Flushbar(
+                padding: EdgeInsets.all(10),
+                borderRadius: 8,
+                backgroundColor: Theme.of(context).primaryColor,
+                boxShadows: [
+                  BoxShadow(
+                    color: Colors.black45,
+                    offset: Offset(3, 3),
+                    blurRadius: 3,
                   ),
                 ],
-              ),
+                duration: Duration(seconds: 3),
+                //dismissDirection: FlushbarDismissDirection.HORIZONTAL,
+                forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
+                messageText: Text(
+                  deletedAnalyse.title + " gelöscht",
+                  style: TextStyle(fontSize: 24, color: Colors.white),
+                ),
+                mainButton: FlatButton(
+                  onPressed: () {
+                    if (undoActive) {
+                      undoActive = false;
+                      analysen.add(analyse);
+                    }
+                  },
+                  child: Text(
+                    "Undo",
+                    style: TextStyle(fontSize: 24),
+                  ),
+                  color: Theme.of(context).primaryColor,
+                ),
+              )..show(context);
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+            child: Row(
+              children: <Widget>[
+                Flexible(
+                  flex: 2,
+                  child: Center(
+                    child: FittedBox(
+                        child: Text(
+                      analyse.title,
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: fSize),
+                    )),
+                  ),
+                  fit: FlexFit.tight,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Center(
+                      child: FittedBox(
+                    child: Text(
+                      analyse.pair,
+                      style: TextStyle(fontSize: fSize),
+                    ),
+                  )),
+                  fit: FlexFit.tight,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  flex: 1,
+                  child: Center(
+                    child: FittedBox(
+                        child: Text(
+                      "${analyse.date.day}.${analyse.date.month}.${analyse.date.year}",
+                      style: TextStyle(fontSize: fSize),
+                    )),
+                  ),
+                  fit: FlexFit.tight,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Flexible(
+                  flex: 3,
+                  child: Center(
+                    child: AutoSizeText(
+                      writeTags(analyse.activeTags),
+                      maxLines: 2,
+                      style: TextStyle(color: Colors.blueGrey, fontSize: fSize),
+                    ),
+                  ),
+                  fit: FlexFit.tight,
+                ),
+              ],
             ),
           ),
-          //),
         ),
+        //),
       ),
     );
   }

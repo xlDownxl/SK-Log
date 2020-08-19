@@ -10,7 +10,8 @@ import '../models/helper_providers.dart';
 import '../routing/application.dart';
 import "login_screen.dart";
 import 'package:fluro/fluro.dart';
-import 'dart:math';
+import 'package:animated_text_kit/animated_text_kit.dart';
+
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
 
@@ -107,11 +108,31 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     var appBar = GradientAppBar(
+      automaticallyImplyLeading: false,
+      leading:Container(),/* Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        // mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          SizedBox(width: 20.0,),
+          Text(
+            "Be",
+            style: TextStyle(fontSize: 43.0),
+          ),
+          SizedBox(width: 20.0, ),
+          RotateAnimatedTextKit(
+            text: ["AWESOME", "OPTIMISTIC", "DIFFERENT"],
+            textStyle: TextStyle(fontSize: 40.0, fontFamily: "Horizon"),
+          ),
+        ],
+      ),*/
       title: Container(
-        margin: EdgeInsets.only(top: 2),
+        margin: EdgeInsets.only(top: 2,),
         child: Image.asset(
           "assets/logo_neu.png",
         ),
@@ -131,7 +152,28 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ],
-      leading: Container(),
+      elevation: 2,
+      /*Container(
+       // width: MediaQuery.of(context).size.width*0.3,
+        child: Row(
+          //mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            SizedBox(width: 20.0, height: 100.0),
+            Text(
+              "Be",
+              style: TextStyle(fontSize: 43.0),
+            ),
+            SizedBox(width: 20.0, height: 100.0),
+            RotateAnimatedTextKit(
+              onTap: () {
+               // print("Tap Event");
+              },
+              text: ["AWESOME", "OPTIMISTIC", "DIFFERENT"],
+              textStyle: TextStyle(fontSize: 40.0, fontFamily: "Horizon"),
+            ),
+          ],
+        ),
+      ),*/
       centerTitle: true,
       gradient: LinearGradient(colors: [
         Theme.of(context).accentColor,
