@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_shine/flutter_shine.dart';
 import 'package:provider/provider.dart';
 import '../../models/helper_providers.dart';
 
 class Headline extends StatelessWidget {
+  TextStyle headlineStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 24, color: Colors.black,fontFamily: "Tisa",);
+
   @override
   Widget build(BuildContext context) {
+
+    buildText(text){
+      return Center(
+          child: FittedBox(
+            child: FlutterShine(
+              config: Config(
+                shadowColor: Colors.grey,
+                blur: 25,
+              ),
+              light: Light(
+                intensity: 0.3,
+              ),
+              builder: (ctx,shineShadows)=>
+                  Text(text,
+                    style: headlineStyle.copyWith(shadows: shineShadows?.shadows),
+                  ),
+            ),
+          ));
+    }
+
     return Container(
       decoration: BoxDecoration(
           border: Border(bottom: BorderSide(color: Colors.black45, width: 2))),
@@ -12,42 +35,43 @@ class Headline extends StatelessWidget {
       child: Row(
         children: <Widget>[
           Flexible(
+            flex: 3,
+            child: buildText("Analyse Titel"),
+            fit: FlexFit.tight,
+          ),
+          Flexible(
             flex: 2,
-            child: Center(
-                child: FittedBox(
-              child: Text(
-                "Analyse Titel",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-              ),
-            )),
+            child: buildText("Paar"),
             fit: FlexFit.tight,
           ),
           Flexible(
-            flex: 1,
-            child: Center(
-                child: FittedBox(
-              child: Text("Paar",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-            )),
-            fit: FlexFit.tight,
-          ),
-          Flexible(
-            flex: 1,
+            flex: 3,
             child: Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Flexible(
-                    child: FittedBox(
-                      child: Text("Datum",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
+                    child: FlutterShine(
+                      config: Config(
+                        shadowColor: Colors.grey,
+                        blur: 25,
+                      ),
+                      light: Light(
+                        intensity: 0.3,
+                      ),
+                      builder: (ctx,shineShadows)=> FittedBox(
+                        child: Text(
+                          "Datum",
+                          style: headlineStyle.copyWith(shadows: shineShadows?.shadows),
+                        ),
+                      ),
                     ),
                   ),
+                 // SizedBox(width: 10,),
                   Flexible(
                     child: Provider.of<Ascending>(context, listen: false).asc
                         ? IconButton(
-                            icon: Icon(Icons.arrow_downward),
+                            icon: Icon(Icons.arrow_downward,),
                             onPressed: () {
                               Provider.of<Ascending>(context, listen: false)
                                   .setAsc(false);
@@ -67,15 +91,8 @@ class Headline extends StatelessWidget {
             fit: FlexFit.tight,
           ),
           Flexible(
-            flex: 3,
-            child: Center(
-                child: FittedBox(
-              child: Text("Tags",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  )),
-            )),
+            flex: 5,
+            child: buildText("Tags"),
             fit: FlexFit.tight,
           ),
         ],

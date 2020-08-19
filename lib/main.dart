@@ -69,7 +69,7 @@ class _MyAppState extends State<MyApp> {
           buttonColor: primaryColor,
           accentColor: secondaryColor,
           canvasColor: Colors.white,
-          fontFamily: "Roboto",
+          fontFamily: "OpenSans",
 
           scaffoldBackgroundColor: Colors.white,
           backgroundColor: Colors.white,
