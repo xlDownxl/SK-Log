@@ -66,19 +66,29 @@ class _AnalyseScreenState extends State<AnalyseScreen>
     descriptionKey.currentState.safeDocument();
     learningKey.currentState.safeDocument();
     if (widget.analyseId == null) {
-      return apa.currentState.linkArea.currentState.pairLoadingFuture.then((value) {
+      if(apa.currentState.linkArea.currentState.pairLoadingFuture!=null){
+        return apa.currentState.linkArea.currentState.pairLoadingFuture.then((value) {
+          return Provider.of<Analysen>(context, listen: false).add(analyse);
+        }).catchError((error) {
+          print(error);
+          return Provider.of<Analysen>(context, listen: false).add(analyse);
+        });}
+      else{
         return Provider.of<Analysen>(context, listen: false).add(analyse);
-      }).catchError((error) {
-        print(error);
-        return Provider.of<Analysen>(context, listen: false).add(analyse);
-      });
+      }
     } else {
-      return apa.currentState.linkArea.currentState.pairLoadingFuture.then((value) { //maybe use oncompleted
+      if(apa.currentState.linkArea.currentState.pairLoadingFuture!=null) {
+        return apa.currentState.linkArea.currentState.pairLoadingFuture.then((
+            value) { //maybe use oncompleted
+          return Provider.of<Analysen>(context, listen: false).update(analyse);
+        }).catchError((error) {
+          print(error);
+          return Provider.of<Analysen>(context, listen: false).update(analyse);
+        });
+      }
+      else{
         return Provider.of<Analysen>(context, listen: false).update(analyse);
-      }).catchError((error) {
-        print(error);
-        return Provider.of<Analysen>(context, listen: false).update(analyse);
-      });
+      }
     }
   }
 
