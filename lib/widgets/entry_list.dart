@@ -119,6 +119,7 @@ class EntryListState extends State<EntryList> {
               child: Container(
                 child:  AnimationLimiter(
                   child: DraggableScrollbar.rrect(
+                    backgroundColor: Colors.grey,
                     controller: scrollController,
                     alwaysVisibleScrollThumb: true,
                     child: ListView.builder(

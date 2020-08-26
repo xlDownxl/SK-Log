@@ -54,6 +54,10 @@ class _GridElementState extends State<GridElement> {
   var counter = 0;
   bool colors=false;
 
+  final nonHoverTransform = Matrix4.identity()..translate(0, 0, 0);
+  final hoverTransform = Matrix4.identity()..translate(0, -8, 0);
+  bool _hovering = false;
+
   @override
   Widget build(BuildContext context) {
     return AnimationConfiguration.staggeredGrid(
@@ -68,42 +72,49 @@ class _GridElementState extends State<GridElement> {
                 .primaryColor,),
             light: Light(intensity: 0.5,),
             builder: (ctx, ShineShadow shineShadow) =>
-                Card(
-                  elevation: 2,
-                  color: !colors ? Colors.orange :  Colors.yellowAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(30),
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  transform: _hovering ? hoverTransform : nonHoverTransform,
+                  margin: EdgeInsets.only(top: 8),
+                  child: Card(
+                    elevation: 2,
+                    color: !colors ? Colors.orange :  Colors.yellowAccent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(30),
+                      ),
                     ),
-                  ),
-                  child: InkWell(
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 5),
-                      child: Center(
-                        child: FittedBox(
-                          child: Text(
-                            widget.pair,
-                            style:
-                            TextStyle(fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              //color: Colors.white,
-                              shadows: shineShadow?.shadows,),
+                    child: InkWell(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        child: Center(
+                          child: FittedBox(
+                            child: Text(
+                              widget.pair,
+                              style:
+                              TextStyle(fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                                //color: Colors.white,
+                                shadows: shineShadow?.shadows,),
+                            ),
                           ),
                         ),
                       ),
+                      onTap: () {
+                        Provider.of<AnalyseFilter>(context, listen: false)
+                            .addPairFilter(widget.pair);
+                        Provider.of<Analysen>(context, listen: false).setFilter(
+                            Provider.of<AnalyseFilter>(context, listen: false));
+                        Provider.of<FilterMode>(context, listen: false)
+                            .deactivatePairFilter();
+                      },
+                      onHover: (val) {
+                        setState(() {
+                          colors = val;
+                          _hovering = val;
+
+                        });
+                      },
                     ),
-                    onTap: () {
-                      Provider.of<AnalyseFilter>(context, listen: false)
-                          .addPairFilter(widget.pair);
-                      Provider.of<Analysen>(context, listen: false).setFilter(
-                          Provider.of<AnalyseFilter>(context, listen: false));
-                      Provider.of<FilterMode>(context, listen: false)
-                          .deactivatePairFilter();
-                    },
-                    onHover: (val) {
-                      setState(() {
-                        colors = val;
-                      });
-                    },
                   ),
                 ),
           ),
