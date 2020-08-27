@@ -62,7 +62,7 @@ class ListElement extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Analyse analyse = Provider.of<Analysen>(context).analysen[analyseId];
+    Analyse analyse = Provider.of<Analysen>(context,listen: false).analysen[analyseId];
     bool undoActive = true;
     Analysen analysen = Provider.of<Analysen>(context, listen: false);
 

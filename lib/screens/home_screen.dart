@@ -10,7 +10,7 @@ import '../models/helper_providers.dart';
 import '../routing/application.dart';
 import "login_screen.dart";
 import 'package:fluro/fluro.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
+//import 'package:animated_text_kit/animated_text_kit.dart';
 
 class HomeScreen extends StatefulWidget {
   static const routeName = "/home";
