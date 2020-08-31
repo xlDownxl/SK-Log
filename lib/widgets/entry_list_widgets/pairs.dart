@@ -5,9 +5,10 @@ import '../../models/analysen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../models/helper_providers.dart';
 import 'package:flutter_shine/flutter_shine.dart';
-
+import 'pair_button.dart';
 class Pairs extends StatelessWidget {
-  Pairs({Key key}) : super(key: key);
+  final GlobalKey<PairButtonState> pairButtonKey;
+  Pairs(this.pairButtonKey);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +18,7 @@ class Pairs extends StatelessWidget {
       var pairWidgets = [];
 
       pairs.forEach((pair, value) {
-        pairWidgets.add(GridElement(pair, value));
+        pairWidgets.add(GridElement(pair, value, pairButtonKey));
       });
       return pairWidgets;
     }
@@ -44,8 +45,9 @@ class Pairs extends StatelessWidget {
 class GridElement extends StatefulWidget {
   final pair;
   final value;
+  final GlobalKey<PairButtonState> pairButtonKey;
 
-  GridElement(this.pair, this.value);
+  GridElement(this.pair, this.value,this.pairButtonKey);
 
   @override
   _GridElementState createState() => _GridElementState();
@@ -109,6 +111,7 @@ class _GridElementState extends State<GridElement> {
                           Provider.of<AnalyseFilter>(context, listen: false));
                       Provider.of<FilterMode>(context, listen: false)
                           .deactivatePairFilter();
+                      widget.pairButtonKey.currentState.controller.forward();
                     },
                     onHover: (val) {
                       setState(() {

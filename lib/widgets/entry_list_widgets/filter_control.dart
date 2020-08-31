@@ -7,6 +7,9 @@ import '../../models/helper_providers.dart';
 import 'searchfield.dart';
 
 class FilterControl extends StatelessWidget {
+  final pairButtonKey;
+  FilterControl(this.pairButtonKey);
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,7 +20,7 @@ class FilterControl extends StatelessWidget {
             Container(
               width: constraints.maxWidth*0.2,
               child: //Provider.of<AnalyseFilter>(context).isPair ?
-               PairButton() //: Container(), //todo maybe listen:false for optimizing , how does the x btton for no more pair filter work??
+               PairButton(pairButtonKey) //: Container(), //todo maybe listen:false for optimizing , how does the x btton for no more pair filter work??
             ),
             Container(
               width: constraints.maxWidth*0.6,

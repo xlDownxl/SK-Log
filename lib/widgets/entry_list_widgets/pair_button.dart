@@ -8,18 +8,32 @@ import 'dart:math';
 import 'package:flutter_shine/flutter_shine.dart';
 
 class PairButton extends StatefulWidget {
+  PairButton(key): super(key: key);
   @override
-  _PairButtonState createState() => _PairButtonState();
+  PairButtonState createState() => PairButtonState();
 }
 
-class _PairButtonState extends State<PairButton> {
+class PairButtonState extends State<PairButton> with SingleTickerProviderStateMixin<PairButton>{
   bool hover = false;
   AnalyseFilter filter;
+
+  AnimationController controller;
+  Animation flip_anim;
+
+
+  @override
+  void initState() {
+    super.initState();
+    controller =
+        AnimationController(duration: Duration(seconds: 2), vsync: this);
+
+    flip_anim = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+        parent: controller, curve: Interval(0.0, 0.7, curve: Curves.linearToEaseOut)));
+  }
 
   @override
   Widget build(BuildContext context) {
     filter = Provider.of<AnalyseFilter>(context);
-
     var dollarLogo = Container(
       child: LayoutBuilder(builder: (ctx, constraints) {
         var size = min(constraints.maxHeight, constraints.maxWidth) / 3 + 2;
@@ -108,46 +122,59 @@ class _PairButtonState extends State<PairButton> {
                     light: Light(
                       intensity: 0.7,
                     ),
-                    builder: (ctx, ShineShadow shineShadow) => Material(
-                      color: Colors.redAccent,
-                      shape: CircleBorder(),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(size / 2),
-                        child: InkWell(
-                          customBorder: CircleBorder(),
-                          borderRadius: BorderRadius.circular(25.0),
-                          onTap: () {
-                            filter.addPairFilter("");
-                            Provider.of<Analysen>(context, listen: false)
-                                .setFilter(filter);
-                            hover = false;
-                          },
-                          splashColor: Colors.red[900],
-                          onHover: (hovered) {
-                            setState(() {
-                              hover = hovered;
-                            });
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(4.0),
-                            child: Center(
-                                child: hover
-                                    ? FittedBox(
-                                        //TODO hierzwischen animation
-                                        child: Icon(
-                                        Icons.close,
-                                        size: size / 2,
-                                      ))
-                                    : FittedBox(
-                                        child: Text(
-                                        filter.pair.toUpperCase(),
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: size / 12 + 8,
-                                          fontWeight: FontWeight.bold,
-                                          shadows: shineShadow?.shadows,
-                                        ),
-                                      ))),
+                    builder: (ctx, ShineShadow shineShadow) => AnimatedBuilder(
+                      animation: controller,
+                      builder:(ctx,child) => Transform(
+                        transform: Matrix4.identity()
+                          ..setEntry(3, 2, 0.005)
+                          ..rotateY(4 * pi * flip_anim.value),
+                        alignment: Alignment.center,
+                        child: RotationTransition(
+                          turns: flip_anim,
+                          child: Material(
+                            color: Colors.redAccent,
+                            shape: CircleBorder(),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(size / 2),
+                              child: InkWell(
+                                customBorder: CircleBorder(),
+                                borderRadius: BorderRadius.circular(25.0),
+                                onTap: () {
+                                  controller.reset();
+                                  filter.addPairFilter("");
+                                  Provider.of<Analysen>(context, listen: false)
+                                      .setFilter(filter);
+                                  hover = false;
+                                },
+                                splashColor: Colors.red[900],
+                                onHover: (hovered) {
+                                  setState(() {
+                                    hover = hovered;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4.0),
+                                  child: Center(
+                                      child: hover
+                                          ? FittedBox(
+                                              //TODO hierzwischen animation
+                                              child: Icon(
+                                              Icons.close,
+                                              size: size / 2,
+                                            ))
+                                          : FittedBox(
+                                              child: Text(
+                                              filter.pair.toUpperCase(),
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: size / 12 + 8,
+                                                fontWeight: FontWeight.bold,
+                                                shadows: shineShadow?.shadows,
+                                              ),
+                                            ))),
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -160,3 +187,4 @@ class _PairButtonState extends State<PairButton> {
     );
   }
 }
+

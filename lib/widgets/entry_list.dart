@@ -14,6 +14,7 @@ import 'dart:math';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_shine/flutter_shine.dart';
 import 'draggable_scrollbar.dart';
+import 'entry_list_widgets/pair_button.dart';
 
 class EntryList extends StatefulWidget {
   final bool buildSearchField;
@@ -39,6 +40,7 @@ class EntryListState extends State<EntryList> {
   Analysen analysen;
   bool anim;
   ScrollController scrollController = ScrollController();
+  GlobalKey<PairButtonState> pairButton = GlobalKey<PairButtonState>();
 
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -118,7 +120,7 @@ class EntryListState extends State<EntryList> {
             children: <Widget>[
               Flexible(
                 flex: 2,
-                child: FilterControl(),
+                child: FilterControl(pairButton),
               ),
               Headline(),
               Flexible(
@@ -126,6 +128,14 @@ class EntryListState extends State<EntryList> {
                 child: Container(
                   child: AnimationLimiter(
                     child: DraggableScrollbar.rrect(
+                      labelTextBuilder: (double offset)  {
+                        DateTime entry = asc.asc
+                            ? analysen.analysen.values.toList()[((offset ~/ 100*1.7)).toInt()].date
+                            : analysen.analysen.values.toList().reversed.toList()[((offset ~/ 100*1.7)).toInt()].date;
+                        return Text("${entry.day}. ${entry.month}. ${entry.year}",
+                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20), );
+                      },
+                      labelConstraints: BoxConstraints.expand(width: 120,height: 40),
                       backgroundColor: Colors.grey,
                       controller: scrollController,
                       alwaysVisibleScrollThumb: true,
@@ -169,7 +179,7 @@ class EntryListState extends State<EntryList> {
             ? Container(
                 color: Colors.black.withOpacity(0.7),
                 padding: EdgeInsets.all(50),
-                child: Pairs(),
+                child: Pairs(pairButton),
               )
             : Container(),
       ],
