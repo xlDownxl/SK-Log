@@ -129,11 +129,16 @@ class EntryListState extends State<EntryList> {
                   child: AnimationLimiter(
                     child: DraggableScrollbar.rrect(
                       labelTextBuilder: (double offset)  {
-                        DateTime entry = asc.asc
-                            ? analysen.analysen.values.toList()[((offset ~/ 100*1.7)).toInt()].date
-                            : analysen.analysen.values.toList().reversed.toList()[((offset ~/ 100*1.7)).toInt()].date;
-                        return Text("${entry.day}. ${entry.month}. ${entry.year}",
-                          style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20), );
+                        if((offset ~/ 100*1.7)<=analysen.analysen.length){
+                          DateTime entry = asc.asc
+                              ? analysen.analysen.values.toList()[((offset ~/ 100*1.7)).toInt()].date
+                              : analysen.analysen.values.toList().reversed.toList()[((offset ~/ 100*1.7)).toInt()].date;
+                          return Text("${entry.day}. ${entry.month}. ${entry.year}",
+                            style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20), );
+                        }
+                        else{
+                          return null;
+                        }
                       },
                       labelConstraints: BoxConstraints.expand(width: 120,height: 40),
                       backgroundColor: Colors.grey,
