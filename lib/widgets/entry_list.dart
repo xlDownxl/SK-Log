@@ -183,7 +183,7 @@ class EntryListState extends State<EntryList> {
         Provider.of<FilterMode>(context).showPairFilter
             ? Container(
                 color: Colors.black.withOpacity(0.7),
-                padding: EdgeInsets.all(50),
+                //padding: EdgeInsets.all(50),
                 child: Pairs(pairButton),
               )
             : Container(),

@@ -34,6 +34,7 @@ class Pairs extends StatelessWidget {
           crossAxisSpacing: 5,
           mainAxisSpacing: 10,
         ),
+        padding:  EdgeInsets.all(40),
         children: <Widget>[
           ...buildPairs(),
         ],
