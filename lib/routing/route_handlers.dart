@@ -16,18 +16,18 @@ import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 
 var homeHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
   return HomeScreen();
 });
 
 var loginHandler = Handler(
-    handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+    handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
 
   return LoginScreen();
 });
 
-var analyseHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
-  if(Provider.of<Analysen>(context).getAnalyse(params["id"][0])!=null) {
+var analyseHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
+  if(Provider.of<Analysen>(context!).getAnalyse(params["id"][0])!=null) {
     return AnalyseScreen(params["id"][0]);
   }
   else{
@@ -35,6 +35,6 @@ var analyseHandler = Handler(handlerFunc: (BuildContext context, Map<String, dyn
   }
 
 });
-var newAnalyseHandler = Handler(handlerFunc: (BuildContext context, Map<String, dynamic> params) {
+var newAnalyseHandler = Handler(handlerFunc: (BuildContext? context, Map<String, dynamic> params) {
     return AnalyseScreen(null);
 });

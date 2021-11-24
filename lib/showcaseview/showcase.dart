@@ -35,30 +35,30 @@ import 'tooltip_widget.dart';
 
 class Showcase extends StatefulWidget {
   final Widget child;
-  final String title;
-  final String description;
-  final ShapeBorder shapeBorder;
-  final TextStyle titleTextStyle;
-  final TextStyle descTextStyle;
-  final GlobalKey key;
+  final String? title;
+  final String? description;
+  final ShapeBorder? shapeBorder;
+  final TextStyle? titleTextStyle;
+  final TextStyle? descTextStyle;
+  final GlobalKey? key;
   final Color overlayColor;
   final double overlayOpacity;
-  final Widget container;
+  final Widget? container;
   final Color showcaseBackgroundColor;
   final Color textColor;
   final bool showArrow;
-  final double height;
-  final double width;
+  final double? height;
+  final double? width;
   final Duration animationDuration;
-  final VoidCallback onToolTipClick;
-  final VoidCallback onTargetClick;
-  final bool disposeOnTap;
+  final VoidCallback? onToolTipClick;
+  final VoidCallback? onTargetClick;
+  final bool? disposeOnTap;
   final bool disableAnimation;
 
-  const Showcase({@required this.key,
-    @required this.child,
+  const Showcase({required this.key,
+    required this.child,
     this.title,
-    @required this.description,
+    required this.description,
     this.shapeBorder,
     this.overlayColor = Colors.black,
     this.overlayOpacity = 0.75,
@@ -102,10 +102,10 @@ class Showcase extends StatefulWidget {
             animationDuration != null);
 
   const Showcase.withWidget({this.key,
-    @required this.child,
-    @required this.container,
-    @required this.height,
-    @required this.width,
+    required this.child,
+    required this.container,
+    required this.height,
+    required this.width,
     this.title,
     this.description,
     this.shapeBorder,
@@ -142,10 +142,10 @@ class Showcase extends StatefulWidget {
 
 class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
   bool _showShowCase = false;
-  Animation<double> _slideAnimation;
-  AnimationController _slideAnimationController;
+  Animation<double>? _slideAnimation;
+  late AnimationController _slideAnimationController;
 
-  GetPosition position;
+  GetPosition? position;
 
   @override
   void initState() {
@@ -189,7 +189,7 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
   /// show overlay if there is any target widget
   ///
   void showOverlay() {
-    GlobalKey activeStep = ShowCaseWidget.activeTargetWidget(context);
+    GlobalKey? activeStep = ShowCaseWidget.activeTargetWidget(context);
     setState(() {
       _showShowCase = activeStep == widget.key;
     });
@@ -213,7 +213,7 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
   }
 
   _nextIfAny() {
-    ShowCaseWidget.of(context).completed(widget.key);
+    ShowCaseWidget.of(context)!.completed(widget.key);
     if (!widget.disableAnimation) {
       _slideAnimationController.forward();
     }
@@ -223,11 +223,11 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
     if (widget.disposeOnTap == true) {
       return widget.onTargetClick == null
           ? () {
-        ShowCaseWidget.of(context).dismiss();
+        ShowCaseWidget.of(context)!.dismiss();
       }
           : () {
-        ShowCaseWidget.of(context).dismiss();
-        widget.onTargetClick();
+        ShowCaseWidget.of(context)!.dismiss();
+        widget.onTargetClick!();
       };
     } else {
       return widget.onTargetClick ?? _nextIfAny;
@@ -238,11 +238,11 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
     if (widget.disposeOnTap == true) {
       return widget.onToolTipClick == null
           ? () {
-        ShowCaseWidget.of(context).dismiss();
+        ShowCaseWidget.of(context)!.dismiss();
       }
           : () {
-        ShowCaseWidget.of(context).dismiss();
-        widget.onToolTipClick();
+        ShowCaseWidget.of(context)!.dismiss();
+        widget.onToolTipClick!();
       };
     } else {
       return widget.onToolTipClick ?? () {};
@@ -267,7 +267,7 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
                 child: CustomPaint(
                   painter: ShapePainter(
                       opacity: widget.overlayOpacity,
-                      rect: position.getRect(),
+                      rect: position!.getRect(),
                       shapeBorder: widget.shapeBorder,
                       color: widget.overlayColor),
                 ),
@@ -303,14 +303,14 @@ class _ShowcaseState extends State<Showcase> with TickerProviderStateMixin {
 
 class _TargetWidget extends StatelessWidget {
   final Offset offset;
-  final Size size;
-  final Animation<double> widthAnimation;
-  final VoidCallback onTap;
-  final ShapeBorder shapeBorder;
+  final Size? size;
+  final Animation<double>? widthAnimation;
+  final VoidCallback? onTap;
+  final ShapeBorder? shapeBorder;
 
   _TargetWidget({
-    Key key,
-    @required this.offset,
+    Key? key,
+    required this.offset,
     this.size,
     this.widthAnimation,
     this.onTap,
@@ -327,8 +327,8 @@ class _TargetWidget extends StatelessWidget {
         child: GestureDetector(
           onTap: onTap,
           child: Container(
-            height: size.height + 16,
-            width: size.width + 16,
+            height: size!.height + 16,
+            width: size!.width + 16,
             decoration: ShapeDecoration(
               shape: shapeBorder ??
                   RoundedRectangleBorder(

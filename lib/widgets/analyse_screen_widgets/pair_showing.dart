@@ -4,7 +4,6 @@ import '../../models/analyse.dart';
 import '../../models/analysen.dart';
 import '../../showcaseview/showcaseview.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_shine/flutter_shine.dart';
 
 class PairShowing extends StatefulWidget {
 
@@ -15,7 +14,7 @@ class PairShowing extends StatefulWidget {
 
 class PairShowingState extends State<PairShowing> {
   bool editPair = false;
-  Analyse analyse;
+  late Analyse analyse;
   FocusNode editPairFocus = FocusNode();
   bool loading = false;
 
@@ -70,14 +69,7 @@ class PairShowingState extends State<PairShowing> {
                         ),
                       )
                     : !loading
-                        ? FlutterShine(
-                            config: Config(
-                              shadowColor: Colors.black,
-                            ),
-                            light: Light(
-                              intensity: 0.3,
-                            ),
-                            builder: (ctx, ShineShadow shineShadow) => InkWell(
+                        ? InkWell(
                               customBorder: CircleBorder(),
                               onTap: () {
                                 setState(() {
@@ -92,18 +84,18 @@ class PairShowingState extends State<PairShowing> {
                                       ? Text("")
                                       : FittedBox(
                                           child: Text(
-                                            analyse.pair,
+                                            analyse.pair!,
                                             style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 30,
                                               color: Colors.white,
-                                              shadows: shineShadow?.shadows,
+                                              //shadows: shineShadow?.shadows,
                                             ),
                                           ),
                                         ),
                                 ),
                               ),
-                            ),
+
                           )
                         : CircularProgressIndicator(),
               ),
@@ -117,7 +109,7 @@ class UpperCaseTextFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     return TextEditingValue(
-      text: newValue.text?.toUpperCase(),
+      text: newValue.text.toUpperCase(),
       selection: newValue.selection,
     );
   }

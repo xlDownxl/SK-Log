@@ -11,8 +11,8 @@ class AnalyseImage extends StatefulWidget {
 }
 
 class _AnalyseImageState extends State<AnalyseImage> {
-  var pictureIndex = 0;
-  Analyse analyse;
+  int? pictureIndex = 0;
+  late Analyse analyse;
 
   @override
   Widget build(BuildContext context) {
@@ -20,22 +20,22 @@ class _AnalyseImageState extends State<AnalyseImage> {
     return Column(children: [
       Flexible(
         child: LayoutBuilder(
-          builder: (ctx, constraints) => (analyse.links[0] != "") &&
+          builder: (ctx, constraints) => (analyse.links![0] != "") &&
                   (pictureIndex == 0)
               ? Image.network(
-                  analyse.links[0],
+                  analyse.links![0],
                   height: constraints.maxHeight,
                   width: constraints.maxWidth,
                 )
-              : (analyse.links[1] != "") && (pictureIndex == 1)
+              : (analyse.links![1] != "") && (pictureIndex == 1)
                   ? Image.network(
-                      analyse.links[1],
+                      analyse.links![1],
                       height: constraints.maxHeight,
                       width: constraints.maxWidth,
                     )
-                  : (analyse.links[2] != "") && (pictureIndex == 2)
+                  : (analyse.links![2] != "") && (pictureIndex == 2)
                       ? Image.network(
-                          analyse.links[2],
+                          analyse.links![2],
                           height: constraints.maxHeight,
                           width: constraints.maxWidth,
                         )
@@ -59,7 +59,7 @@ class _AnalyseImageState extends State<AnalyseImage> {
           Radio(
             value: 0,
             groupValue: pictureIndex,
-            onChanged: (val) {
+            onChanged: (dynamic val) {
               setState(() {
                 pictureIndex = val;
               });
@@ -68,8 +68,8 @@ class _AnalyseImageState extends State<AnalyseImage> {
           Radio(
               value: 1,
               groupValue: pictureIndex,
-              onChanged: analyse.links[1] != ""
-                  ? (val) {
+              onChanged: analyse.links![1] != ""
+                  ? (dynamic val) {
                       setState(() {
                         pictureIndex = val;
                       });
@@ -78,8 +78,8 @@ class _AnalyseImageState extends State<AnalyseImage> {
           Radio(
               value: 2,
               groupValue: pictureIndex,
-              onChanged: analyse.links[2] != ""
-                  ? (val) {
+              onChanged: analyse.links![2] != ""
+                  ? (dynamic val) {
                       setState(() {
                         pictureIndex = val;
                       });

@@ -18,10 +18,10 @@ class Routes {
   static String analyse_id = AnalyseScreen.routeName+"/:id";
   static String new_analyse = AnalyseScreen.routeName;
 
-  static void configureRoutes(fluro.Router router) {
+  static void configureRoutes(fluro.FluroRouter router) {
     router.notFoundHandler = fluro.Handler(
       // ignore: missing_return
-        handlerFunc: (BuildContext context, Map<String, List<String>> params) {
+        handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       print("ROUTE WAS NOT FOUND !!!");
     });
     router.define(login, handler: loginHandler);

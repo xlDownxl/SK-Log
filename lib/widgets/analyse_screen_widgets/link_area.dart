@@ -14,17 +14,17 @@ class LinkArea extends StatefulWidget {
 class LinkAreaState extends State<LinkArea> {
   bool showTwo = false;
   bool showThree = false;
-  Analyse analyse;
+  late Analyse analyse;
   var textEditingController;
-  Future pairLoadingFuture;
+  Future? pairLoadingFuture;
 
   @override
   void initState() {
     analyse = Provider.of<Analyse>(context, listen: false);
-    if (analyse.links[1] != "") {
+    if (analyse.links![1] != "") {
       showTwo = true;
     }
-    if (analyse.links[2] != "") {
+    if (analyse.links![2] != "") {
       showThree = true;
     }
     super.initState();
@@ -72,7 +72,7 @@ class LinkAreaState extends State<LinkArea> {
             analyse.setLink(val, 2);
         },
         controller: textEditingController,
-        initialValue: analyse.links[index] != "" ? analyse.links[index] : "",
+        initialValue: analyse.links![index] != "" ? analyse.links![index] : "",
       );
     }
 

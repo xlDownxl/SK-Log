@@ -1,14 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../flutterLogin/flutter_login.dart';
+import 'package:flutter_login/flutter_login.dart';
 import '../models/user_tags.dart';
 import 'user_pairs.dart';
 import 'analysen.dart';
 
 class AppUser with ChangeNotifier {
-  String email;
-  String id;
-  FirebaseUser fbUser;
+  String? email;
+  String? id;
+  var fbUser;
   bool isNew = false;
 
   void reset() {
@@ -22,10 +22,10 @@ class AppUser with ChangeNotifier {
   Future<String> recoverPassword(String name) async {
     return FirebaseAuth.instance.sendPasswordResetEmail(email: name).then((_) {
       return null;
-    }).catchError((error) => error.code);
+    }).catchError((error) => error.code) as Future<String>;
   }
 
-  Future<String> handle_auth(
+  Future<String?> handle_auth(
       LoginData data, Analysen analysen, UserTags userTags) async {
      var code = await _auth(data, analysen, userTags);
     switch (code) {

@@ -28,18 +28,18 @@ import 'package:flutter/material.dart';
 
 class ShowCaseWidget extends StatefulWidget {
   final Builder builder;
-  final VoidCallback onFinish;
+  final VoidCallback? onFinish;
 
-  const ShowCaseWidget({@required this.builder, this.onFinish});
+  const ShowCaseWidget({required this.builder, this.onFinish});
 
   static activeTargetWidget(BuildContext context) {
     return context
-        .dependOnInheritedWidgetOfExactType<_InheritedShowCaseView>()
+        .dependOnInheritedWidgetOfExactType<_InheritedShowCaseView>()!
         .activeWidgetIds;
   }
 
-  static ShowCaseWidgetState of(BuildContext context) {
-    ShowCaseWidgetState state =
+  static ShowCaseWidgetState? of(BuildContext context) {
+    ShowCaseWidgetState? state =
     context.findAncestorStateOfType<ShowCaseWidgetState>();
     if (state != null) {
       return context.findAncestorStateOfType<ShowCaseWidgetState>();
@@ -53,8 +53,8 @@ class ShowCaseWidget extends StatefulWidget {
 }
 
 class ShowCaseWidgetState extends State<ShowCaseWidget> {
-  List<GlobalKey> ids;
-  int activeWidgetId;
+  List<GlobalKey>? ids;
+  int? activeWidgetId;
 
   void startShowCase(List<GlobalKey> widgetIds) {
     setState(() {
@@ -63,15 +63,15 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
     });
   }
 
-  void completed(GlobalKey id) {
-    if (ids != null && ids[activeWidgetId] == id) {
+  void completed(GlobalKey? id) {
+    if (ids != null && ids![activeWidgetId!] == id) {
       setState(() {
-        ++activeWidgetId;
+        //++activeWidgetId;
 
-        if (activeWidgetId >= ids.length) {
+        if (activeWidgetId! >= ids!.length) {
           _cleanupAfterSteps();
           if (widget.onFinish != null) {
-            widget.onFinish();
+            widget.onFinish!();
           }
         }
       });
@@ -93,17 +93,17 @@ class ShowCaseWidgetState extends State<ShowCaseWidget> {
   Widget build(BuildContext context) {
     return _InheritedShowCaseView(
       child: widget.builder,
-      activeWidgetIds: ids?.elementAt(activeWidgetId),
+      activeWidgetIds: ids?.elementAt(activeWidgetId!),
     );
   }
 }
 
 class _InheritedShowCaseView extends InheritedWidget {
-  final GlobalKey activeWidgetIds;
+  final GlobalKey? activeWidgetIds;
 
   _InheritedShowCaseView({
-    @required this.activeWidgetIds,
-    @required child,
+    required this.activeWidgetIds,
+    required child,
   }) : super(child: child);
 
   @override

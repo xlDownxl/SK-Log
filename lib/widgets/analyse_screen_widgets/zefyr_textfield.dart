@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 class ZefyrTextField extends StatefulWidget {
   final field;
 
-  ZefyrTextField({this.field, Key key}) : super(key: key);
+  ZefyrTextField({this.field, Key? key}) : super(key: key);
 
   @override
   ZefyrTextFieldState createState() => ZefyrTextFieldState();
@@ -16,15 +16,15 @@ class ZefyrTextField extends StatefulWidget {
 class ZefyrTextFieldState extends State<ZefyrTextField> {
  // NotusDocument document;
  // ZefyrController _controller;
-  FocusNode _focusNode;
-  Analyse analyse;
-  TextEditingController tec; // = TextEditingController();
+  FocusNode? _focusNode;
+  late Analyse analyse;
+  TextEditingController? tec; // = TextEditingController();
 
   void safeDocument() {
     if (widget.field == "description") {
-      analyse.description = tec.text;
+      analyse.description = tec!.text;
     } else {
-      analyse.learning = tec.text;
+      analyse.learning = tec!.text;
     }
     /* if (widget.field == "description") {
       analyse.description = json.encode(document.toJson());

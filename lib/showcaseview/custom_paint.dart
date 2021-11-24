@@ -28,12 +28,12 @@ import 'package:flutter/material.dart';
 
 class ShapePainter extends CustomPainter {
   Rect rect;
-  final ShapeBorder shapeBorder;
-  final Color color;
-  final double opacity;
+  final ShapeBorder? shapeBorder;
+  final Color? color;
+  final double? opacity;
 
   ShapePainter({
-    @required this.rect,
+    required this.rect,
     this.color,
     this.shapeBorder,
     this.opacity,

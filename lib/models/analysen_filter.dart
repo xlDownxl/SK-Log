@@ -45,14 +45,14 @@ import 'package:flutter/material.dart';
 }*/
 
 class AnalyseFilter with ChangeNotifier{
-  String pair;
-  List<String> tags = [];
-  DateTime time;
-  String word;
+  String? pair;
+  List<String?> tags = [];
+  DateTime? time;
+  String? word;
 
-  bool isTag;
-  bool isPair;
-  bool isSearch;
+  late bool isTag;
+  late bool isPair;
+  late bool isSearch;
 
   void reset(){
     isPair = false;
@@ -62,7 +62,7 @@ class AnalyseFilter with ChangeNotifier{
     isSearch = false;
   }
 
-  void addPairFilter(String pair) {
+  void addPairFilter(String? pair) {
     if(pair==""){
       isPair = false;
     }
@@ -72,7 +72,7 @@ class AnalyseFilter with ChangeNotifier{
     this.pair = pair;
   }
 
-  void addTagFilter(List<String> filterList) {
+  void addTagFilter(List<String?> filterList) {
     if(filterList.isEmpty){
       isTag = false;
     }

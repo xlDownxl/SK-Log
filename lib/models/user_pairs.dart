@@ -5,7 +5,7 @@ class UserPairs {
     return _pairs;
   }
 
-  void add(String pair) {
+  void add(String? pair) {
       _pairs[pair]=1;
   }
 }

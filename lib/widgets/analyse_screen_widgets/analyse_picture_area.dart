@@ -14,7 +14,7 @@ class AnalysePictureArea extends StatefulWidget {
 }
 
 class AnalysePictureAreaState extends State<AnalysePictureArea> {
-  Analyse analyse;
+  Analyse? analyse;
 
   var pairShowing = GlobalKey<PairShowingState>();
   var linkArea = GlobalKey<LinkAreaState>();

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import '../widgets/entry_list.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../showcaseview/showcaseview.dart';
@@ -112,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var appBar = GradientAppBar(
+    var appBar = AppBar(
       automaticallyImplyLeading: false,
       leading:Container(),/* Row(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -175,13 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),*/
       centerTitle: true,
-      gradient: LinearGradient(colors: [
-        Theme.of(context).accentColor,
-        Theme.of(context).primaryColor,
-      ], stops: [
-        0.65,
-        1
-      ]),
+
     );
 
     return WillPopScope(

@@ -28,22 +28,22 @@ import 'package:flutter/material.dart';
 import 'get_position.dart';
 
 class ToolTipWidget extends StatelessWidget {
-  final GetPosition position;
-  final Offset offset;
-  final Size screenSize;
-  final String title;
-  final String description;
-  final Animation<double> animationOffset;
-  final TextStyle titleTextStyle;
-  final TextStyle descTextStyle;
-  final Widget container;
-  final Color tooltipColor;
-  final Color textColor;
-  final bool showArrow;
-  final double contentHeight;
-  final double contentWidth;
-  static bool isArrowUp;
-  final VoidCallback onTooltipTap;
+  final GetPosition? position;
+  final Offset? offset;
+  final Size? screenSize;
+  final String? title;
+  final String? description;
+  final Animation<double>? animationOffset;
+  final TextStyle? titleTextStyle;
+  final TextStyle? descTextStyle;
+  final Widget? container;
+  final Color? tooltipColor;
+  final Color? textColor;
+  final bool? showArrow;
+  final double? contentHeight;
+  final double? contentWidth;
+  static late bool isArrowUp;
+  final VoidCallback? onTooltipTap;
 
   ToolTipWidget({
     this.position,
@@ -64,19 +64,19 @@ class ToolTipWidget extends StatelessWidget {
   });
 
   bool isCloseToTopOrBottom(Offset position) {
-    double height = 120;
+    double? height = 120;
     if (contentHeight != null) {
       height = contentHeight;
     }
-    return (screenSize.height - position.dy) <= height;
+    return (screenSize!.height - position.dy) <= height!;
   }
 
-  String findPositionForContent(Offset position) {
+  String findPositionForContent(Offset? position) {
     if(description=="Wenn du deinen Tradingview Link einfügst wird das Chartsymbol automatisch erkannt und hier angezeigt"||description=="Hier werden deine Screenshots angezeigt. Mit den Punkten unterhalb kannst du zwischen mehreren Bildern wechseln"||description=="Füge hier den Link zu deinem Tradingview Screenshot ein, falls du mehr als ein Bild speichern willst, klicke auf den Plus-Button"||description=="Hier kannst du alle deine angelegten Analysen verwalten"){
       return 'ABOVE';
     }
 
-    if (isCloseToTopOrBottom(position)) {
+    if (isCloseToTopOrBottom(position!)) {
       return 'ABOVE';
     } else {
       return 'BELOW';
@@ -84,8 +84,8 @@ class ToolTipWidget extends StatelessWidget {
   }
 
   double _getTooltipWidth() {
-    double titleLength = title == null ? 0 : (title.length * 10.0);
-    double descriptionLength = (description.length * 7.0);
+    double titleLength = title == null ? 0 : (title!.length * 10.0);
+    double descriptionLength = (description!.length * 7.0);
     if (titleLength > descriptionLength) {
       return titleLength + 10;
     } else {
@@ -94,51 +94,51 @@ class ToolTipWidget extends StatelessWidget {
   }
 
   bool _isLeft() {
-    double screenWidth = screenSize.width / 3;
-    return !(screenWidth <= position.getCenter());
+    double screenWidth = screenSize!.width / 3;
+    return !(screenWidth <= position!.getCenter());
   }
 
   bool _isRight() {
-    double screenWidth = screenSize.width / 3;
-    return ((screenWidth * 2) <= position.getCenter());
+    double screenWidth = screenSize!.width / 3;
+    return ((screenWidth * 2) <= position!.getCenter());
   }
 
-  double _getLeft() {
+  double? _getLeft() {
     if (_isLeft()) {
-      double leftPadding = position.getCenter() - (_getTooltipWidth() * 0.1);
-      if (leftPadding + _getTooltipWidth() > screenSize.width) {
-        leftPadding = (screenSize.width - 20) - _getTooltipWidth();
+      double leftPadding = position!.getCenter() - (_getTooltipWidth() * 0.1);
+      if (leftPadding + _getTooltipWidth() > screenSize!.width) {
+        leftPadding = (screenSize!.width - 20) - _getTooltipWidth();
       }
       if (leftPadding < 20) {
         leftPadding = 14;
       }
       return leftPadding;
     } else if (!(_isRight())) {
-      return position.getCenter() - (_getTooltipWidth() * 0.5);
+      return position!.getCenter() - (_getTooltipWidth() * 0.5);
     } else {
       return null;
     }
   }
 
-  double _getRight() {
+  double? _getRight() {
     if (_isRight()) {
-      double rightPadding = position.getCenter() + (_getTooltipWidth() / 2);
-      if (rightPadding + _getTooltipWidth() > screenSize.width) {
+      double rightPadding = position!.getCenter() + (_getTooltipWidth() / 2);
+      if (rightPadding + _getTooltipWidth() > screenSize!.width) {
         rightPadding = 14;
       }
       return rightPadding;
     } else if (!(_isLeft())) {
-      return position.getCenter() - (_getTooltipWidth() * 0.5);
+      return position!.getCenter() - (_getTooltipWidth() * 0.5);
     } else {
       return null;
     }
   }
 
   double _getSpace() {
-    double space = position.getCenter() - (contentWidth / 2);
-    if (space + contentWidth > screenSize.width) {
-      space = screenSize.width - contentWidth - 8;
-    } else if (space < (contentWidth / 2)) {
+    double space = position!.getCenter() - (contentWidth! / 2);
+    if (space + contentWidth! > screenSize!.width) {
+      space = screenSize!.width - contentWidth! - 8;
+    } else if (space < (contentWidth! / 2)) {
       space = 16;
     }
     return space;
@@ -151,15 +151,15 @@ class ToolTipWidget extends StatelessWidget {
     isArrowUp = contentOffsetMultiplier == 1.0 ? true : false;
 
     final contentY = isArrowUp
-        ? position.getBottom() + (contentOffsetMultiplier * 3)
-        : position.getTop() + (contentOffsetMultiplier * 3);
+        ? position!.getBottom() + (contentOffsetMultiplier * 3)
+        : position!.getTop() + (contentOffsetMultiplier * 3);
 
-    final contentFractionalOffset = contentOffsetMultiplier.clamp(-1.0, 0.0);
+    final num contentFractionalOffset = contentOffsetMultiplier.clamp(-1.0, 0.0);
 
     double paddingTop = isArrowUp ? 22 : 0;
     double paddingBottom = isArrowUp ? 0 : 27;
 
-    if (!showArrow) {
+    if (!showArrow!) {
       paddingTop = 10;
       paddingBottom = 10;
     }
@@ -167,18 +167,18 @@ class ToolTipWidget extends StatelessWidget {
     if (container == null) {
       return Stack(
         children: <Widget>[
-          showArrow ? _getArrow(contentOffsetMultiplier) : Container(),
+          showArrow! ? _getArrow(contentOffsetMultiplier) : Container(),
           Positioned(
             top: contentY,
             left: _getLeft(),
             right: _getRight(),
             child: FractionalTranslation(
-              translation: Offset(0.0, contentFractionalOffset),
+              translation: Offset(0.0, contentFractionalOffset as double),
               child: SlideTransition(
                 position: Tween<Offset>(
                   begin: Offset(0.0, contentFractionalOffset / 10),
                   end: Offset(0.0, 0.100),
-                ).animate(animationOffset),
+                ).animate(animationOffset!),
                 child: Material(
                   color: Colors.transparent,
                   child: Container(
@@ -203,22 +203,16 @@ class ToolTipWidget extends StatelessWidget {
                                   children: <Widget>[
                                     title != null
                                         ? Text(
-                                      title,
+                                      title!,
                                       style: titleTextStyle ??
-                                          Theme.of(context)
-                                              .textTheme
-                                              .title
-                                              .merge(TextStyle(
-                                              color: textColor)),
+                                          TextStyle(
+                                              color: textColor),
                                     )
                                         : Container(),
                                     Text(
-                                      description,
+                                      description!,
                                       style: descTextStyle ??
-                                          Theme.of(context)
-                                              .textTheme
-                                              .subtitle
-                                              .merge(TextStyle(color: textColor)),
+                                          TextStyle(color: textColor),
                                     ),
                                   ],
                                 ),
@@ -242,12 +236,12 @@ class ToolTipWidget extends StatelessWidget {
             left: _getSpace(),
             top: contentY - 10,
             child: FractionalTranslation(
-              translation: Offset(0.0, contentFractionalOffset),
+              translation: Offset(0.0, contentFractionalOffset as double),
               child: SlideTransition(
                 position: Tween<Offset>(
                   begin: Offset(0.0, contentFractionalOffset / 5),
                   end: Offset(0.0, 0.100),
-                ).animate(animationOffset),
+                ).animate(animationOffset!),
                 child: Material(
                   color: Colors.transparent,
                   child: GestureDetector(
@@ -274,15 +268,15 @@ class ToolTipWidget extends StatelessWidget {
   Widget _getArrow(contentOffsetMultiplier) {
     final contentFractionalOffset = contentOffsetMultiplier.clamp(-1.0, 0.0);
     return Positioned(
-      top: isArrowUp ? position.getBottom() : position.getTop() - 1,
-      left: position.getCenter() - 24,
+      top: isArrowUp ? position!.getBottom() : position!.getTop() - 1,
+      left: position!.getCenter() - 24,
       child: FractionalTranslation(
         translation: Offset(0.0, contentFractionalOffset),
         child: SlideTransition(
           position: Tween<Offset>(
             begin: Offset(0.0, contentFractionalOffset / 5),
             end: Offset(0.0, 0.150),
-          ).animate(animationOffset),
+          ).animate(animationOffset!),
           child: isArrowUp
               ? Icon(
             Icons.arrow_drop_up,

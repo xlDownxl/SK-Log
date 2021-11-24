@@ -9,9 +9,9 @@ class Analysen with ChangeNotifier {
   LinkedHashMap analysen =
       LinkedHashMap(); //When specified as <String,Analyse> an type error with dynamic,dynamic not fitting
   LinkedHashMap allAnalysen = LinkedHashMap();
-  Firestore store;
-  AnalyseFilter filter = AnalyseFilter();
-  String userId;
+  FirebaseFirestore? store;
+  AnalyseFilter? filter = AnalyseFilter();
+  String? userId;
   UserPairs userPairs = UserPairs();
 
   Analysen();
@@ -28,20 +28,20 @@ class Analysen with ChangeNotifier {
     userPairs = UserPairs();
   }
 
-  Future loadWithId(String id, bool isNew) async {
+  Future loadWithId(String? id, bool isNew) async {
     this.userId = id;
     if (!isNew) {
-      return Firestore.instance
+      return FirebaseFirestore.instance
           .collection("Users")
-          .document(userId)
+          .doc(userId)
           .collection("analysen")
-          .orderBy("date", descending: false)
-          .getDocuments()
+          .orderBy("date", descending: false).get()
           .then((snapshot) {
-        snapshot.documents.forEach((document) {
-          allAnalysen[document.documentID] =
-              (Analyse.fromMap(document.data, document.documentID));
-          userPairs.add(document.data["pair"]);
+        snapshot.docs.forEach((document) {
+
+          allAnalysen[document.id] =
+              (Analyse.fromMap(document.data(), document.id));
+          userPairs.add(document.data()["pair"]);
         });
       }).then((_) {
         analysen = allAnalysen;
@@ -56,25 +56,25 @@ class Analysen with ChangeNotifier {
   }
 
   void get() {
-    if (!filter.isPair && !filter.isTag) {
+    if (!filter!.isPair && !filter!.isTag) {
       analysen = allAnalysen;
     } else {
-      if (filter.isPair && filter.isTag) {
+      if (filter!.isPair && filter!.isTag) {
         analysen = LinkedHashMap();
         allAnalysen.values.forEach((analyse) {
-          if (analyse.pair == filter.pair &&
-              filter.tags.every((tag) {
+          if (analyse.pair == filter!.pair &&
+              filter!.tags.every((tag) {
                 return analyse.activeTags.contains(tag);
               })) {
             analysen[analyse.id] = analyse;
           }
         });
       } else {
-        if (filter.isTag) {
-          if (filter.tags.isNotEmpty) {
+        if (filter!.isTag) {
+          if (filter!.tags.isNotEmpty) {
             analysen = LinkedHashMap();
             allAnalysen.values.forEach((analyse) {
-              if (filter.tags.every((tag) {
+              if (filter!.tags.every((tag) {
                 return analyse.activeTags.contains(tag);
               })) {
                 analysen[analyse.id] = analyse;
@@ -82,10 +82,10 @@ class Analysen with ChangeNotifier {
             });
           }
         } else {
-          if (filter.isPair) {
+          if (filter!.isPair) {
             analysen = LinkedHashMap();
             allAnalysen.values.forEach((analyse) {
-              if (analyse.pair == filter.pair) {
+              if (analyse.pair == filter!.pair) {
                 analysen[analyse.id] = analyse;
               }
             });
@@ -93,10 +93,10 @@ class Analysen with ChangeNotifier {
         }
       }
     } //TODO issearch auslagern damit bei searchbar nur untere search function gecalled wird
-    if (filter.isSearch) {
+    if (filter!.isSearch) {
       LinkedHashMap wordFilterAnalysen = LinkedHashMap();
       analysen.values.forEach((analyse) {
-        if (equalsIgnoreCase(analyse.title, filter.word)) {
+        if (equalsIgnoreCase(analyse.title, filter!.word)) {
           wordFilterAnalysen[analyse.id] = analyse;
         }
       });
@@ -105,17 +105,17 @@ class Analysen with ChangeNotifier {
     notifyListeners();
   }
 
-  bool equalsIgnoreCase(String string1, String string2) {
-    return string1.toLowerCase().contains(string2?.toLowerCase());
+  bool equalsIgnoreCase(String string1, String? string2) {
+    return string1.toLowerCase().contains(string2?.toLowerCase()??"");
   }
 
-  void setFilter(AnalyseFilter filter) {
+  void setFilter(AnalyseFilter? filter) {
     this.filter = filter;
     get();
   }
 
   void addSearch(String value) {
-    filter.addSearch(value);
+    filter!.addSearch(value);
     get();
   }
 
@@ -127,13 +127,13 @@ class Analysen with ChangeNotifier {
     return result;
   }
 
-  Future delete(String id) {
-    var ref = Firestore.instance
+  Future delete(String? id) {
+    var ref = FirebaseFirestore.instance
         .collection("Users")
-        .document(userId)
+        .doc(userId)
         .collection("analysen");
 
-    return ref.document(id).delete().then((_) {
+    return ref.doc(id).delete().then((_) {
       allAnalysen.removeWhere((key, analyse) {
         //TODO check if both analysen+allanalysen deleted werden
         return key == id;
@@ -145,22 +145,22 @@ class Analysen with ChangeNotifier {
   Future add(
     Analyse analyse,
   ) {
-    var ref = Firestore.instance
+    var ref = FirebaseFirestore.instance
         .collection("Users")
-        .document(userId)
+        .doc(userId)
         .collection("analysen");
     return ref.add({
       "title": analyse.title,
-      "link": analyse.links.toList(),
+      "link": analyse.links!.toList(),
       "tags": analyse.activeTags,
       "description": analyse.description,
       "learning": analyse.learning,
       "pair": analyse.pair,
       "date": analyse.date.millisecondsSinceEpoch,
     }).then((val) {
-      analyse.id = val.documentID;
+      analyse.id = val.id;
       allAnalysen[analyse.id] = analyse;
-      if (!filter.isPair && !filter.isTag) {
+      if (!filter!.isPair && !filter!.isTag) {
         notifyListeners();
       } else {
         get();
@@ -175,12 +175,12 @@ class Analysen with ChangeNotifier {
   }
 
   Future update(Analyse analyse) {
-    var ref = Firestore.instance
+    var ref = FirebaseFirestore.instance
         .collection("Users")
-        .document(userId)
+        .doc(userId)
         .collection("analysen");
 
-    return ref.document(analyse.id).updateData({
+    return ref.doc(analyse.id).update({
       "title": analyse.title,
       "tags": analyse.activeTags,
       "link": analyse.links,
@@ -195,7 +195,7 @@ class Analysen with ChangeNotifier {
     });
   }
 
-  Analyse getAnalyse(String id) {
+  Analyse? getAnalyse(String? id) {
     return allAnalysen[id];
   }
 }

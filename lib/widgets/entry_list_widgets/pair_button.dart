@@ -5,7 +5,6 @@ import '../../models/analysen_filter.dart';
 import '../../models/analysen.dart';
 import '../../models/helper_providers.dart';
 import 'dart:math';
-import 'package:flutter_shine/flutter_shine.dart';
 
 class PairButton extends StatefulWidget {
   PairButton(key): super(key: key);
@@ -15,10 +14,10 @@ class PairButton extends StatefulWidget {
 
 class PairButtonState extends State<PairButton> with SingleTickerProviderStateMixin<PairButton>{
   bool hover = false;
-  AnalyseFilter filter;
+  AnalyseFilter? filter;
 
-  AnimationController controller;
-  Animation flip_anim;
+  late AnimationController controller;
+  late Animation flip_anim;
 
 
   @override
@@ -112,17 +111,10 @@ class PairButtonState extends State<PairButton> with SingleTickerProviderStateMi
           }),
         ),
         Flexible(
-          child: filter.isPair
+          child: filter!.isPair
               ? LayoutBuilder(builder: (ctx, constraints) {
                   var size = max(constraints.maxWidth, constraints.maxHeight);
-                  return FlutterShine(
-                    config: Config(
-                      shadowColor: Colors.black,
-                    ),
-                    light: Light(
-                      intensity: 0.7,
-                    ),
-                    builder: (ctx, ShineShadow shineShadow) => AnimatedBuilder(
+                  return  AnimatedBuilder(
                       animation: controller,
                       builder:(ctx,child) => Transform(
                         transform: Matrix4.identity()
@@ -130,7 +122,7 @@ class PairButtonState extends State<PairButton> with SingleTickerProviderStateMi
                           ..rotateY(4 * pi * flip_anim.value),
                         alignment: Alignment.center,
                         child: RotationTransition(
-                          turns: flip_anim,
+                          turns: flip_anim as Animation<double>,
                           child: Material(
                             color: Colors.redAccent,
                             shape: CircleBorder(),
@@ -141,7 +133,7 @@ class PairButtonState extends State<PairButton> with SingleTickerProviderStateMi
                                 borderRadius: BorderRadius.circular(25.0),
                                 onTap: () {
                                   controller.reset();
-                                  filter.addPairFilter("");
+                                  filter!.addPairFilter("");
                                   Provider.of<Analysen>(context, listen: false)
                                       .setFilter(filter);
                                   hover = false;
@@ -164,12 +156,12 @@ class PairButtonState extends State<PairButton> with SingleTickerProviderStateMi
                                             ))
                                           : FittedBox(
                                               child: Text(
-                                              filter.pair.toUpperCase(),
+                                              filter!.pair!.toUpperCase(),
                                               style: TextStyle(
                                                 color: Colors.white,
                                                 fontSize: size / 12 + 8,
                                                 fontWeight: FontWeight.bold,
-                                                shadows: shineShadow?.shadows,
+                                                //shadows: shineShadow?.shadows,
                                               ),
                                             ))),
                                 ),
@@ -178,7 +170,7 @@ class PairButtonState extends State<PairButton> with SingleTickerProviderStateMi
                           ),
                         ),
                       ),
-                    ),
+
                   );
                 })
               : Container(),

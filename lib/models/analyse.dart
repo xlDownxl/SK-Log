@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class Analyse with ChangeNotifier {
-  String id;
-  List<dynamic> links;
+  String? id;
+  List<dynamic>? links;
   var description;
-  String title;
-  String learning;
-  String pair;
+  String? title;
+  String? learning;
+  String? pair;
   var activeTags;
-  DateTime date;
+  late DateTime date;
 
   Analyse() {
     date = DateTime.now();
@@ -21,14 +21,14 @@ class Analyse with ChangeNotifier {
   }
 
   void setLink(String link, int index){
-    links[index]=link;
+    links![index]=link;
     notifyListeners();
   }
 
   Future getPair(tv_url,) async {
     String url = "https://sk-log.appspot.com/getpair?id=" + tv_url;
-
-    return http.get(url).then((response) {
+    return Future.delayed(Duration.zero);
+    /*return http.get(url).then((response) {
       if (response.statusCode != 200) {
         throw ("response timed out");
       } else {
@@ -38,11 +38,11 @@ class Analyse with ChangeNotifier {
         notifyListeners();
         //analysen.notify();
       }
-    });
+    });*/
   }
 
   Future setLinkAuto(String link,) {
-    this.links[0] = link;
+    this.links![0] = link;
     return getPair(link,);
   }
 

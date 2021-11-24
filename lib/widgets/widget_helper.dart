@@ -1,12 +1,11 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-Size getWidgetSize(GlobalKey key) {
-  final RenderBox renderBox = key.currentContext?.findRenderObject();
+Size? getWidgetSize(GlobalKey key) {
+  final RenderBox? renderBox = key.currentContext?.findRenderObject() as RenderBox?;
   return renderBox?.size;
 }
-
+/*
 Flushbar showSuccessToast(BuildContext context, String message) {
   return Flushbar(
     title: 'Success',
@@ -43,4 +42,4 @@ Flushbar showErrorToast(BuildContext context, String message) {
     onTap: (flushbar) => flushbar.dismiss(),
   )..show(context);
 }
-
+*/

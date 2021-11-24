@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_shine/flutter_shine.dart';
 import 'package:provider/provider.dart';
 import '../../models/helper_providers.dart';
 
@@ -12,20 +11,12 @@ class Headline extends StatelessWidget {
     buildText(text){
       return Center(
           child: FittedBox(
-            child: FlutterShine(
-              config: Config(
-                shadowColor: Colors.grey,
-                blur: 25,
-              ),
-              light: Light(
-                intensity: 0.3,
-              ),
-              builder: (ctx,shineShadows)=>
+            child:
                   Text(text,
-                    style: headlineStyle.copyWith(shadows: shineShadows?.shadows),
+                    style: headlineStyle.copyWith(),
                   ),
             ),
-          ));
+          );
     }
 
     return Container(
@@ -51,22 +42,14 @@ class Headline extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Flexible(
-                    child: FlutterShine(
-                      config: Config(
-                        shadowColor: Colors.grey,
-                        blur: 25,
-                      ),
-                      light: Light(
-                        intensity: 0.3,
-                      ),
-                      builder: (ctx,shineShadows)=> FittedBox(
+                    child: FittedBox(
                         child: Text(
                           "Datum",
-                          style: headlineStyle.copyWith(shadows: shineShadows?.shadows),
+                          style: headlineStyle.copyWith(),
                         ),
                       ),
                     ),
-                  ),
+
                  // SizedBox(width: 10,),
                   Flexible(
                     child: Provider.of<Ascending>(context, listen: false).asc

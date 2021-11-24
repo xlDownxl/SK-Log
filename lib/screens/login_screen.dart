@@ -5,10 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart';
 import '../models/user_tags.dart';
-import '../flutterLogin/flutter_login.dart';
+import 'package:flutter_login/flutter_login.dart';
 import 'home_screen.dart';
 import '../models/analysen.dart';
 import '../routing/application.dart';
+
 
 
 class LoginScreen extends StatefulWidget {
@@ -21,16 +22,16 @@ class LoginScreen extends StatefulWidget {
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class _LoginPageState extends State<LoginScreen> {
-  AppUser user;
+  late AppUser user;
   var init = true;
-  var subscription;
+  late var subscription;
   bool showLoadingIndicator = false;
 
   @override
   void initState() {
     super.initState();
 
-   subscription = _auth.onAuthStateChanged.listen((data) {
+   subscription = _auth.authStateChanges().listen((data) {
       if (data != null) {
         var analyseFuture = Provider.of<Analysen>(context, listen: false)
             .loadWithId(data.uid, false);
@@ -90,7 +91,7 @@ class _LoginPageState extends State<LoginScreen> {
               onSignup: (data) {
                 user.isNew=true;
                 return user.handle_auth(
-                    data,
+                    LoginData(name: data.name!,password: data.password!),
                     Provider.of<Analysen>(context, listen: false),
                     Provider.of<UserTags>(context, listen: false),
 

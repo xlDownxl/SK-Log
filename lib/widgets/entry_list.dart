@@ -12,7 +12,6 @@ import 'entry_list_widgets/filter_control.dart';
 import '../routing/application.dart';
 import 'dart:math';
 import 'package:fluro/fluro.dart';
-import 'package:flutter_shine/flutter_shine.dart';
 import 'draggable_scrollbar.dart';
 import 'entry_list_widgets/pair_button.dart';
 
@@ -34,16 +33,16 @@ class EntryList extends StatefulWidget {
 
 class EntryListState extends State<EntryList> {
   final IconData icon = Icons.add;
-  FilterMode filterMode;
-  AnalyseFilter analyseFilter;
-  Ascending asc;
-  Analysen analysen;
-  bool anim;
+  FilterMode? filterMode;
+  AnalyseFilter? analyseFilter;
+  late Ascending asc;
+  late Analysen analysen;
+  late bool anim;
   ScrollController scrollController = ScrollController();
   GlobalKey<PairButtonState> pairButton = GlobalKey<PairButtonState>();
 
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       Provider.of<Animations>(context, listen: false).animEntry = false;
     });
     super.initState();
@@ -62,14 +61,7 @@ class EntryListState extends State<EntryList> {
       return SizedBox(
         width: constraints.maxHeight * 0.15,
         height: constraints.maxHeight * 0.15,
-        child: FlutterShine(
-          config: Config(
-            shadowColor: Colors.black,
-          ),
-          light: Light(
-            intensity: 0.5,
-          ),
-          builder: (ctx, ShineShadow shineShadow) => Material(
+        child: Material(
             color: Colors.orange,
             elevation: 4,
             shape: CircleBorder(),
@@ -91,7 +83,7 @@ class EntryListState extends State<EntryList> {
                           String.fromCharCode(icon.codePoint),
                           style: TextStyle(
                               fontSize: constr.maxHeight,
-                              shadows: shineShadow?.shadows,
+                              //shadows: shineShadow?.shadows,
                               fontFamily: icon.fontFamily,
                               package: icon.fontPackage,
                               color: Colors.white)),
@@ -101,7 +93,7 @@ class EntryListState extends State<EntryList> {
               ),
             ),
           ),
-        ),
+
       );
     });
 
@@ -118,14 +110,19 @@ class EntryListState extends State<EntryList> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Flexible(
-                flex: 2,
+              Container(
+                height:200,
+                width:500,
                 child: FilterControl(pairButton),
               ),
-              Headline(),
-              Flexible(
-                flex: 12,
-                child: Container(
+              Container(
+                  height:200,
+                  width:500,
+                  child: Headline()),
+              Container(
+                height:400,
+                width:500,
+                child:/* Container(
                   child: AnimationLimiter(
                     child: DraggableScrollbar.rrect(
                       labelTextBuilder: (double offset)  {
@@ -144,7 +141,7 @@ class EntryListState extends State<EntryList> {
                       backgroundColor: Colors.grey,
                       controller: scrollController,
                       alwaysVisibleScrollThumb: true,
-                      child: ListView.builder(
+                      child:*/ ListView.builder(
                         padding: EdgeInsets.only(right: 20),
                         controller: scrollController,
                         itemBuilder: (ctx, index) {
@@ -164,9 +161,9 @@ class EntryListState extends State<EntryList> {
                         itemCount: analysen.analysen.length,
                       ),
                     ),
-                  ),
-                ),
-              ),
+                //  ),
+               // ),
+             // ),
             ],
           ),
         ),

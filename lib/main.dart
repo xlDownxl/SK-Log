@@ -8,10 +8,17 @@ import 'models/helper_providers.dart';
 import 'package:fluro/fluro.dart' as fluro;
 import 'routing/routes.dart';
 import 'routing/application.dart';
-import 'package:google_fonts/google_fonts.dart';
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp().catchError((e) {
+print(e.toString());
+  });
 
   runApp(MyApp());
+
 }
 
 class MyApp extends StatefulWidget {
@@ -27,7 +34,7 @@ const Color secondaryColor = Color(0xFF13B9FD);
 class _MyAppState extends State<MyApp> {
 
   _MyAppState() {
-    final router = fluro.Router();
+    final router = fluro.FluroRouter();
     Routes.configureRoutes(router);
     Application.router = router;
   }

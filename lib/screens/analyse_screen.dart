@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/screens/home_screen.dart';
 import '../widgets/analyse_screen_widgets/analyse_input_area.dart';
 import '../widgets/analyse_screen_widgets/analyse_picture_area.dart';
-import 'package:gradient_app_bar/gradient_app_bar.dart';
+
 import 'package:provider/provider.dart';
 import '../models/analysen.dart';
 import '../models/analyse.dart';
@@ -28,7 +28,7 @@ class AnalyseScreen extends StatefulWidget {
 class _AnalyseScreenState extends State<AnalyseScreen>
     with ScreenLoader<AnalyseScreen> {
   FocusNode titleFocus = FocusNode();
-  Analyse analyse;
+  Analyse? analyse;
 
   final GlobalKey<ZefyrTextFieldState> descriptionKey =
       GlobalKey<ZefyrTextFieldState>();
@@ -60,34 +60,34 @@ class _AnalyseScreenState extends State<AnalyseScreen>
   }
 
   Future safe() {
-    if (analyse.pair == null) {
-      analyse.pair = "Others";
+    if (analyse!.pair == null) {
+      analyse!.pair = "Others";
     }
-    descriptionKey.currentState.safeDocument();
-    learningKey.currentState.safeDocument();
+    descriptionKey.currentState!.safeDocument();
+    learningKey.currentState!.safeDocument();
     if (widget.analyseId == null) {
-      if(apa.currentState.linkArea.currentState.pairLoadingFuture!=null){
-        return apa.currentState.linkArea.currentState.pairLoadingFuture.then((value) {
-          return Provider.of<Analysen>(context, listen: false).add(analyse);
+      if(apa.currentState!.linkArea.currentState!.pairLoadingFuture!=null){
+        return apa.currentState!.linkArea.currentState!.pairLoadingFuture!.then((value) {
+          return Provider.of<Analysen>(context, listen: false).add(analyse!);
         }).catchError((error) {
           print(error);
-          return Provider.of<Analysen>(context, listen: false).add(analyse);
+          return Provider.of<Analysen>(context, listen: false).add(analyse!);
         });}
       else{
-        return Provider.of<Analysen>(context, listen: false).add(analyse);
+        return Provider.of<Analysen>(context, listen: false).add(analyse!);
       }
     } else {
-      if(apa.currentState.linkArea.currentState.pairLoadingFuture!=null) {
-        return apa.currentState.linkArea.currentState.pairLoadingFuture.then((
+      if(apa.currentState!.linkArea.currentState!.pairLoadingFuture!=null) {
+        return apa.currentState!.linkArea.currentState!.pairLoadingFuture!.then((
             value) { //maybe use oncompleted
-          return Provider.of<Analysen>(context, listen: false).update(analyse);
+          return Provider.of<Analysen>(context, listen: false).update(analyse!);
         }).catchError((error) {
           print(error);
-          return Provider.of<Analysen>(context, listen: false).update(analyse);
+          return Provider.of<Analysen>(context, listen: false).update(analyse!);
         });
       }
       else{
-        return Provider.of<Analysen>(context, listen: false).update(analyse);
+        return Provider.of<Analysen>(context, listen: false).update(analyse!);
       }
     }
   }
@@ -129,8 +129,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
             .then((value) {
           Navigator.pop(context, analyse);
         }).catchError((error) {
-          showErrorToast(context,
-              "Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
+          print("Löschen fehlgeschlagen. Bitte überprüfe deine Internet Verbindung oder kontaktiere einen Admin.");
         });
       });
     } else {
@@ -160,13 +159,13 @@ class _AnalyseScreenState extends State<AnalyseScreen>
         ),
         cursorColor: Colors.white,
         onChanged: (val) {
-          analyse.title = val;
+          analyse!.title = val;
         },
-        initialValue: analyse.title,
+        initialValue: analyse!.title,
       ),
     );
 
-    var appBar = GradientAppBar(
+    var appBar = AppBar(
       leading: Container(
         padding: EdgeInsets.all(10),
         child: InkWell(
@@ -176,13 +175,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
           },
         ),
       ),
-      gradient: LinearGradient(colors: [
-        Theme.of(context).accentColor,
-        Theme.of(context).primaryColor,
-      ], stops: [
-        0.65,
-        1
-      ]),
+
       title: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
@@ -225,7 +218,7 @@ class _AnalyseScreenState extends State<AnalyseScreen>
             value: analyse,
             child: WillPopScope(
               onWillPop: () async {
-                return await goBack(true);
+                return await (goBack(true) as Future<bool>);
               },
               child: ShowCaseWidget(
                 builder: Builder(

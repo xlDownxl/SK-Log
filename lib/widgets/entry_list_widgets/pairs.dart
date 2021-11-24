@@ -4,7 +4,6 @@ import '../../models/analysen_filter.dart';
 import '../../models/analysen.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../../models/helper_providers.dart';
-import 'package:flutter_shine/flutter_shine.dart';
 import 'pair_button.dart';
 class Pairs extends StatelessWidget {
   final GlobalKey<PairButtonState> pairButtonKey;
@@ -36,7 +35,7 @@ class Pairs extends StatelessWidget {
         ),
         padding:  EdgeInsets.all(40),
         children: <Widget>[
-          ...buildPairs(),
+          ...buildPairs() as Iterable<Widget>,
         ],
       ),
     );
@@ -67,14 +66,7 @@ class _GridElementState extends State<GridElement> {
       duration: const Duration(milliseconds: 375),
       child: ScaleAnimation(
         child: FadeInAnimation(
-          child: FlutterShine(
-            config: Config(
-              shadowColor: Theme.of(context).primaryColor,
-            ),
-            light: Light(
-              intensity: 0.5,
-            ),
-            builder: (ctx, ShineShadow shineShadow) =>
+          child:
                  AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.fastOutSlowIn,
@@ -99,7 +91,7 @@ class _GridElementState extends State<GridElement> {
                               fontWeight: FontWeight.bold,
                               fontSize: _hovering?35:30,
                               //color: Colors.white,
-                              shadows: shineShadow?.shadows,
+                              //shadows: shineShadow?.shadows,
                             ),
                           ),
                         ),
@@ -112,7 +104,7 @@ class _GridElementState extends State<GridElement> {
                           Provider.of<AnalyseFilter>(context, listen: false));
                       Provider.of<FilterMode>(context, listen: false)
                           .deactivatePairFilter();
-                      widget.pairButtonKey.currentState.controller.forward();
+                      widget.pairButtonKey.currentState!.controller.forward();
                     },
                     onHover: (val) {
                       setState(() {
@@ -124,7 +116,7 @@ class _GridElementState extends State<GridElement> {
                 ),
               ),
           ),
-        ),
+
       ),
     );
   }

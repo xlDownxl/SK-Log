@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../flutter_tags/tag.dart';
+
+import 'package:flutter_tags/flutter_tags.dart';
+
 import 'dart:math';
 import '../../models/user_tags.dart';
 import 'package:provider/provider.dart';
@@ -13,12 +15,12 @@ class TagsFilterWidget extends StatefulWidget {
 }
 
 class _TagsFilterWidgetState extends State<TagsFilterWidget> {
-  List<String> filterTags = [];
+  List<String?> filterTags = [];
 
   @override
   Widget build(BuildContext context) {
     var userTags = Provider.of<UserTags>(context);
-    var _tags = userTags.getTags();
+    var _tags = userTags.getTags()!;
 
     return SingleChildScrollView(
       child: Container(
@@ -27,7 +29,7 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
           data: ThemeData(
             fontFamily: "OpenSans"
           ),
-          child: Tags(
+          child:false? Tags(
             spacing: 4,
             runSpacing: 3,
             itemCount: _tags.length,
@@ -58,7 +60,7 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
                         Provider.of<AnalyseFilter>(context, listen: false));
                   }
                 },
-                onRemoved: () {
+                /*onRemoved: () {
                   if (filterTags.contains(_tags[index])) {
                     filterTags.remove(_tags[index]);
                     Provider.of<AnalyseFilter>(context, listen: false)
@@ -68,18 +70,17 @@ class _TagsFilterWidgetState extends State<TagsFilterWidget> {
                   }
                   userTags.delete(_tags[index]).catchError((_) {
                     userTags.add(_tags[index]);
-                    showErrorToast(context,
-                        "Ein Fehler beim entfernen des Tags ist aufgetreten");
+                    print( "Ein Fehler beim entfernen des Tags ist aufgetreten");
                   });
-                  return true;
-                },
+                 // return true;
+                },*/
                 removeButton: ItemTagsRemoveButton(
                   color: Colors.white,
                   backgroundColor: Colors.red[900],
                 ), // OR null,
               );
             },
-          ),
+          ):Container(),
         ),
       ),
     );

@@ -10,15 +10,14 @@ import 'package:flutter/gestures.dart';
 import '../../routing/application.dart';
 import 'package:fluro/fluro.dart';
 
-import 'package:flushbar/flushbar.dart';
 
 class ListElement extends StatelessWidget {
-  final String analyseId;
+  final String? analyseId;
 
   ListElement(this.analyseId);
 
   final double fSize = 20;
-  OverlayEntry overlayEntry;
+  OverlayEntry? overlayEntry;
 
   String writeTags(tags) {
     StringBuffer builder = StringBuffer();
@@ -31,7 +30,7 @@ class ListElement extends StatelessWidget {
   }
 
   showOverlay(BuildContext context, Analyse analyse, Offset position) async {
-    OverlayState overlayState = Overlay.of(context);
+    OverlayState? overlayState = Overlay.of(context);
     if (overlayEntry == null) {
       // this is to fix the issue that mousewheel triggers on enter, so it will trigger twice and will not delete the first one, so the first on is stuck
       overlayEntry = OverlayEntry(
@@ -43,19 +42,19 @@ class ListElement extends StatelessWidget {
                 border: Border.all(
                     color: Colors.black45, style: BorderStyle.solid)),
             child: Image.network(
-              analyse.links[0],
+              analyse.links![0],
               scale: 2.5,
             ),
           ),
         ),
       );
-      overlayState.insert(overlayEntry);
+      overlayState!.insert(overlayEntry!);
     }
   }
 
   deleteOverlay() {
     if (overlayEntry != null) {
-      overlayEntry.remove();
+      overlayEntry!.remove();
       overlayEntry = null;
     }
   }
@@ -70,7 +69,7 @@ class ListElement extends StatelessWidget {
       onEnter: (event) {
         if (Provider.of<UsingScrollbar>(context, listen: false).use ==
             false) //kann ich auch problemlos einschalten
-        if (analyse.links[0] != "") {
+        if (analyse.links![0] != "") {
           showOverlay(context, analyse, event.position);
         }
       },
@@ -89,41 +88,10 @@ class ListElement extends StatelessWidget {
         child: InkWell(
           onTap: () async {
             var deletedAnalyse = await Application.router.navigateTo(
-                context, AnalyseScreen.routeName + "/" + analyse.id,
+                context, AnalyseScreen.routeName + "/" + analyse.id!,
                 transition: TransitionType.fadeIn);
             if (deletedAnalyse != null) {
-              Flushbar(
-                padding: EdgeInsets.all(10),
-                borderRadius: 8,
-                backgroundColor: Theme.of(context).primaryColor,
-                boxShadows: [
-                  BoxShadow(
-                    color: Colors.black45,
-                    offset: Offset(3, 3),
-                    blurRadius: 3,
-                  ),
-                ],
-                duration: Duration(seconds: 3),
-                //dismissDirection: FlushbarDismissDirection.HORIZONTAL,
-                forwardAnimationCurve: Curves.fastLinearToSlowEaseIn,
-                messageText: Text(
-                  deletedAnalyse.title + " gelöscht",
-                  style: TextStyle(fontSize: 24, color: Colors.white),
-                ),
-                mainButton: FlatButton(
-                  onPressed: () {
-                    if (undoActive) {
-                      undoActive = false;
-                      analysen.add(analyse);
-                    }
-                  },
-                  child: Text(
-                    "Undo",
-                    style: TextStyle(fontSize: 24),
-                  ),
-                  color: Theme.of(context).primaryColor,
-                ),
-              )..show(context);
+             print("flushbar");
             }
           },
           child: Container(
@@ -135,7 +103,7 @@ class ListElement extends StatelessWidget {
                   child: Center(
                     child: FittedBox(
                         child: Text(
-                      analyse.title,
+                      analyse.title!,
                       style: TextStyle(
                           fontWeight: FontWeight.bold, fontSize: fSize),
                     )),
@@ -150,7 +118,7 @@ class ListElement extends StatelessWidget {
                   child: Center(
                       child: FittedBox(
                     child: Text(
-                      analyse.pair,
+                      analyse.pair!,
                       style: TextStyle(fontSize: fSize),
                     ),
                   )),

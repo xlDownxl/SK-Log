@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../flutter_tags/tag.dart';
+import 'package:flutter_tags/flutter_tags.dart';
 import 'dart:math';
 import 'package:provider/provider.dart';
 import '../../models/user_tags.dart';
@@ -16,7 +16,7 @@ class _TagsWidgetState extends State<TagsWidget> {
   Widget build(BuildContext context) {
     Analyse analyse = Provider.of<Analyse>(context);
     UserTags userTags = Provider.of<UserTags>(context);
-    List<dynamic> _tags = userTags.getTags();
+    List<dynamic> _tags = userTags.getTags()!;
 
     return Padding(
       padding: EdgeInsets.only(top: 3),
@@ -36,10 +36,9 @@ class _TagsWidgetState extends State<TagsWidget> {
                 onSubmitted: (String str) {
                   userTags.add(str).catchError((_) {
                     setState(() {
-                      userTags.getTags().remove(str);
+                      userTags.getTags()!.remove(str);
                     });
-                    showErrorToast(context,
-                        "Ein Fehler beim hinzufügen des Tags ist aufgetreten");
+                    print("Ein Fehler beim hinzufügen des Tags ist aufgetreten");
                   });
                 },
               ),
@@ -58,23 +57,23 @@ class _TagsWidgetState extends State<TagsWidget> {
                   ),
                   active: analyse.activeTags.contains(_tags[index]),
                   onPressed: (item) {
-                    if (!item.active) {
+                    if (!item.active!) {
                       analyse.activeTags.remove(item.title);
                     } else {
                       analyse.activeTags.add(item.title);
                     }
                   },
-                  onRemoved: () {
+
+                  /*onRemoved: () {
                     if (analyse.activeTags.contains(_tags[index])) {
                       analyse.activeTags.remove(_tags[index]);
                     }
                       userTags.delete(_tags[index]).catchError((_) {
                           userTags.add(_tags[index]);
-                        showErrorToast(context,
-                            "Ein Fehler beim entfernen des Tags ist aufgetreten");
+                        print(  "Ein Fehler beim entfernen des Tags ist aufgetreten");
                       });
                      // does this really remove or do i need to init usertags alone
-                  },
+                  },*/
                   removeButton: ItemTagsRemoveButton(
                       color: Colors.white,backgroundColor: Colors.red,
                   ), // OR null,
